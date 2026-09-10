@@ -1,13 +1,14 @@
 # Netlify configuration — My Kenyalang Homes
 #
-# Netlify auto-installs @netlify/plugin-nextjs for Next.js projects, which
-# handles routing and any future server-rendered routes or API handlers. Every
-# page is statically prerendered today, but keeping the standard runtime means
-# adding an intake API later needs no deployment change.
+# The app is a static export (see next.config.ts) — every route is prerendered
+# HTML, so it deploys as plain files with no Next.js runtime involved.
+#
+# When a backend is added, drop `output: "export"` from next.config.ts, remove
+# the `publish` line below and add the @netlify/plugin-nextjs runtime.
 
 [build]
   command = "npm run build"
-  publish = ".next"
+  publish = "out"
 
 [build.environment]
   NODE_VERSION = "22"

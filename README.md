@@ -9,10 +9,15 @@ a financing pathway to a submitted application.
 ```bash
 npm install
 npm run dev      # http://localhost:3000
-npm run build    # production build
-npm run start    # serve the production build
+npm run build    # static export to out/
 npm run lint     # eslint
 ```
+
+Deployed at **https://my-kenyalang-homes.netlify.app**.
+
+The build is a static export (`output: "export"`), so `out/` can be served by
+any static host. That holds only while every route is prerendered — adding an
+API route or middleware means moving to a Node runtime.
 
 ## The journey
 

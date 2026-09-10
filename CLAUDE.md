@@ -6,8 +6,13 @@ for what runs and what is still stubbed, and `DESIGN.md` for the design system.
 ## Commands
 
 ```bash
-npm run dev | build | start | lint
+npm run dev | build | lint
 ```
+
+`npm run build` produces a **static export** in `out/` (`output: "export"` in
+`next.config.ts`), so `next start` does not apply — serve `out/` with any static
+server. Adding an API route, middleware or a server action means dropping the
+export and moving to a Node runtime; `next.config.ts` records what to change.
 
 ## Conventions
 
