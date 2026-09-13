@@ -1,37 +1,62 @@
 # Image slots
 
-Every file below is a **generated placeholder**. To use real photography,
-overwrite the file at the same path with the same filename — no code change is
-needed. Aspect ratios are what the layout expects; anything close will crop
-gracefully (all slots use `object-fit: cover`).
+Two kinds of image are in use.
 
-If a file is ever missing, the page paints a calm gradient block instead of a
-broken image, so a half-finished photo set never ships a broken page.
+**Photographs** are real pictures of Kuching and Sarawak, taken from Wikimedia
+Commons under licences that permit commercial use (CC BY, CC0 or public
+domain). Nothing share-alike or non-commercial is used: cropping a share-alike
+photo would create an adaptation we'd have to relicense. Attribution is
+published at `/credits` and generated from `src/lib/credits.ts`.
 
-| Path | Size (px) | Used on | Subject |
+**Illustrations** are original architectural drawings made for this project.
+The six home designs are illustrations on purpose. A photograph of a real
+house next to "Indicative Price" and "Choose This Home" would imply that
+specific building is on offer; a drawing represents the design *type* honestly
+until EG Megah's own renders exist.
+
+## Replacing an image
+
+Overwrite the file at the same path with the same filename — no code change is
+needed. If a file is missing the page paints a calm gradient instead of a
+broken image. **If you replace a photograph, update or remove its entry in
+`src/lib/credits.ts`**, because CC BY attribution must stay accurate.
+
+When the real home renders arrive, drop them over `homes/home-01.jpg` …
+`home-06.jpg` (800x500) and they become photographs — remove nothing from
+credits, since the illustrations were ours.
+
+## Current slots
+
+| Path | Kind | Credit | Licence |
 |---|---|---|---|
-| `hero-family.jpg` | 1600×900 | Home | Family in front of a completed home. Keep the left third uncluttered — the headline sits there. |
-| `hero-land.jpg` | 1600×560 | Choose Land | Sarawak landscape / river valley. |
-| `hero-homes.jpg` | 1600×560 | Choose Home | Kuching skyline with the DUN building. |
-| `hero-financing.jpg` | 1600×560 | Choose Financing | Modern home exterior. |
-| `hero-financing-form.jpg` | 1600×560 | Financing Application | Kuching waterfront. |
-| `hero-confirmation.jpg` | 1600×620 | Confirmation | Completed home entrance / signage. |
-| `hero-how-it-works.jpg` | 1600×480 | How It Works | Wide river and mountains. |
-| `kuching-sunset.jpg` | 1600×620 | Home (closing band) | Kuching waterfront at sunset. |
-| `footer-skyline.jpg` | 1600×420 | All pages (footer) | Night skyline. Sits behind a dark green wash, so contrast matters more than detail. |
-| `custom-home.jpg` | 900×320 | Choose Home | Architectural sketch or rendering. |
-| `own-financing.jpg` | 800×520 | Choose Financing | Planning notebook / desk scene. |
-| `own-financing-wide.jpg` | 1000×440 | How It Works | Home exterior. Overlaid with a dark green gradient — use a calm image. |
-| `bank-financing-wide.jpg` | 1000×440 | How It Works | Bank or office building. |
-| `journey/land.jpg` | 400×400 | Home | Land parcel, square crop. |
-| `journey/home.jpg` | 400×400 | Home | Finished home, square crop. |
-| `journey/financing.jpg` | 400×400 | Home | Documents and calculator, square crop. |
-| `land/own-land.jpg` | 800×500 | Choose Land | Open land. |
-| `land/family-land.jpg` | 800×500 | Choose Land | Handshake / family agreement. |
-| `land/find-land.jpg` | 800×500 | Choose Land | Aerial view of available plots. |
-| `homes/home-01.jpg` … `home-06.jpg` | 800×500 | Choose Home | One render per design, matching `HOME_DESIGNS` in `src/lib/content.ts`. |
+| `footer-skyline.jpg` | photograph | Peter Gronemann from Switzerland | CC BY 2.0 |
+| `hero-confirmation.jpg` | photograph | Thomas Quine | CC BY 2.0 |
+| `hero-family.jpg` | photograph | Esther Siaw | CC BY 4.0 |
+| `hero-financing-form.jpg` | photograph | Fabio Achilli from Milano, Italy | CC BY 2.0 |
+| `hero-financing.jpg` | photograph | Kuchingites | Public domain |
+| `hero-homes.jpg` | photograph | Fabio Achilli from Milano, Italy | CC BY 2.0 |
+| `hero-how-it-works.jpg` | photograph | Fabio Achilli from Milano, Italy | CC BY 2.0 |
+| `hero-land.jpg` | photograph | User:Jeremylf | Public domain |
+| `journey/land.jpg` | photograph | Gariey Sia | CC0 |
+| `kuching-sunset.jpg` | photograph | Peter Gronemann from Switzerland | CC BY 2.0 |
+| `land/family-land.jpg` | photograph | Unknown | CC BY 2.0 |
+| `land/find-land.jpg` | photograph | Fabio Achilli from Milano, Italy | CC BY 2.0 |
+| `land/own-land.jpg` | photograph | Gariey Sia | CC0 |
+| `homes/home-01.jpg` | illustration | original work for this project | — |
+| `homes/home-02.jpg` | illustration | original work for this project | — |
+| `homes/home-03.jpg` | illustration | original work for this project | — |
+| `homes/home-04.jpg` | illustration | original work for this project | — |
+| `homes/home-05.jpg` | illustration | original work for this project | — |
+| `homes/home-06.jpg` | illustration | original work for this project | — |
+| `journey/home.jpg` | illustration | original work for this project | — |
+| `journey/financing.jpg` | illustration | original work for this project | — |
+| `own-financing.jpg` | illustration | original work for this project | — |
+| `own-financing-wide.jpg` | illustration | original work for this project | — |
+| `bank-financing-wide.jpg` | illustration | original work for this project | — |
+| `custom-home.jpg` | illustration | original work for this project | — |
 
-## Regenerating the placeholders
+## Sizes
 
-They were produced by rendering gradients in headless Chromium. Nothing in the
-app depends on that script — the files are committed as ordinary assets.
+Heroes are 1600px wide (480–900 tall). Home cards and land cards are 800x500.
+Journey thumbnails are 400x400 square. The footer band is 1600x420. Anything
+close will crop gracefully — every slot uses `object-fit: cover`.

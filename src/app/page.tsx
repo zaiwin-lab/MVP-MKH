@@ -67,7 +67,7 @@ export default function HomePage() {
           <div className="shell relative py-14 md:py-20">
             <ScriptMark
               lines={["Same Land.", "A Brighter Tomorrow."]}
-              className="absolute right-6 top-8 hidden xl:block"
+              className="absolute right-6 top-8 hidden [text-shadow:0_1px_12px_rgb(253_252_249_/_0.9)] xl:block"
             />
 
             <div className="max-w-xl">
@@ -206,10 +206,13 @@ export default function HomePage() {
               className="absolute inset-0 size-full"
             />
             <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-parchment-100 to-transparent" />
+            {/* The sky in this photograph is bright, so the white script needs
+                its own scrim rather than relying on a drop shadow. */}
+            <div className="absolute inset-y-0 right-0 hidden w-1/2 bg-gradient-to-l from-forest-900/55 to-transparent md:block" />
             <div className="shell relative flex h-full items-end justify-end pb-8">
               <ScriptMark
                 lines={["More Than Homes.", "A Brighter Sarawak."]}
-                className="hidden text-white drop-shadow md:block"
+                className="hidden text-white [text-shadow:0_1px_10px_rgb(8_37_27_/_0.7)] md:block"
               />
             </div>
           </div>

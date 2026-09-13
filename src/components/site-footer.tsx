@@ -15,6 +15,8 @@ const LEGAL_LINKS = [
   { href: "/privacy", label: "Privacy Policy" },
   { href: "/terms", label: "Terms of Use" },
   { href: "/help", label: "Help Centre" },
+  // CC BY obliges us to publish attribution where the images are used.
+  { href: "/credits", label: "Credits" },
 ];
 
 /**
