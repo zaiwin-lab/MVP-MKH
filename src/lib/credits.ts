@@ -9,18 +9,13 @@
  * CC BY requires attribution, so this list is published at /credits and must
  * stay accurate. If you replace a photo, update or remove its entry.
  *
- * The architectural illustrations of the home designs are original work for
- * this project and need no attribution.
+ * The home designs and some land imagery are AI-generated through Canva
+ * rather than photographed, so they have no photographer to credit — but the
+ * credits page says so plainly, because a visitor is entitled to know that the
+ * homes shown are representations rather than pictures of built houses.
  */
 
 export const PHOTO_CREDITS = [
-  {
-    title: "Bako National Park, Sarawak (42340518240).jpg",
-    artist: "Fabio Achilli from Milano, Italy",
-    licence: "CC BY 2.0",
-    source: "https://commons.wikimedia.org/wiki/File:Bako_National_Park,_Sarawak_(42340518240).jpg",
-    slots: ["land/find-land.jpg"],
-  },
   {
     title: "Bako National Park, Sarawak (43243218635).jpg",
     artist: "Fabio Achilli from Milano, Italy",
@@ -41,13 +36,6 @@ export const PHOTO_CREDITS = [
     licence: "Public domain",
     source: "https://commons.wikimedia.org/wiki/File:Kuching_City_Centre_Padungan.jpg",
     slots: ["hero-financing.jpg"],
-  },
-  {
-    title: "Mount Santubong and Sarawak River, Malaysia.JPG",
-    artist: "User:Jeremylf",
-    licence: "Public domain",
-    source: "https://commons.wikimedia.org/wiki/File:Mount_Santubong_and_Sarawak_River,_Malaysia.JPG",
-    slots: ["hero-land.jpg"],
   },
   {
     title: "New Sarawak State Legislative Assembly Building from Darul Hana Bridge, Kuching, Sarawak.jpg",

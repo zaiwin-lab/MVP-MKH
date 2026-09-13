@@ -51,16 +51,27 @@ export default function CreditsPage() {
         ))}
       </ul>
 
-      <Section heading="Illustrations">
+      <Section heading="Home designs and some land imagery">
         <p>
-          The architectural illustrations of the six home designs, and the
-          drawings on the financing and custom-home panels, were made for this
-          project.
+          The images of the six home designs, and some of the land imagery, are
+          AI-generated through Canva. They are{" "}
+          <strong className="text-ink-800">
+            representations of each design type, not photographs of built homes
+          </strong>
+          , and not construction drawings.
         </p>
         <p>
-          They are indicative representations of each design type, not
-          photographs of built homes, and not construction drawings. Final
-          designs, specifications and finishes are confirmed per project.
+          Built-up area, room counts, specifications, finishes and pricing are
+          confirmed per project and are shown as &ldquo;To Be Confirmed&rdquo;
+          until they are. Nothing on this page should be read as a picture of
+          the house you will receive.
+        </p>
+      </Section>
+
+      <Section heading="Illustrations">
+        <p>
+          The drawings on the financing panels and the custom-home strip were
+          made for this project.
         </p>
       </Section>
     </ProsePage>

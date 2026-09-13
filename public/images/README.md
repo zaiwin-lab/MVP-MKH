@@ -1,6 +1,6 @@
 # Image slots
 
-Two kinds of image are in use.
+Three kinds of image are in use.
 
 **Photographs** are real pictures of Kuching and Sarawak, taken from Wikimedia
 Commons under licences that permit commercial use (CC BY, CC0 or public
@@ -8,11 +8,14 @@ domain). Nothing share-alike or non-commercial is used: cropping a share-alike
 photo would create an adaptation we'd have to relicense. Attribution is
 published at `/credits` and generated from `src/lib/credits.ts`.
 
-**Illustrations** are original architectural drawings made for this project.
-The six home designs are illustrations on purpose. A photograph of a real
-house next to "Indicative Price" and "Choose This Home" would imply that
-specific building is on offer; a drawing represents the design *type* honestly
-until EG Megah's own renders exist.
+**AI-generated images** come from Canva and cover the six home designs, the
+Choose Land hero and the aerial land view. They are representations of each
+design type, not photographs of built houses — which is the honest position
+until EG Megah's own renders exist, and is stated plainly on `/credits`.
+They need no attribution.
+
+**Illustrations** are original drawings made for this project: the financing
+panels and the custom-home drafting sketch.
 
 ## Importing licensed photography
 
