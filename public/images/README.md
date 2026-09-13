@@ -14,7 +14,24 @@ house next to "Indicative Price" and "Choose This Home" would imply that
 specific building is on offer; a drawing represents the design *type* honestly
 until EG Megah's own renders exist.
 
-## Replacing an image
+## Importing licensed photography
+
+The fastest route, and the one that gets the crops right:
+
+```bash
+npm run import-photos -- ~/Downloads/mkh-photos
+```
+
+Put the licensed originals in one folder, named so each filename contains
+either its slot (e.g. `home-03`) or the stock image ID recorded in
+`scripts/import-photos.mjs`. The script crops each to the slot's aspect ratio,
+resizes, optimises and writes it here. It warns when a source is too small to
+fill its slot without upscaling, and lists any file whose name matched no slot
+rather than ignoring it silently. Originals are left untouched.
+
+Run it with no folder to print every slot and its size.
+
+## Replacing an image by hand
 
 Overwrite the file at the same path with the same filename — no code change is
 needed. If a file is missing the page paints a calm gradient instead of a
