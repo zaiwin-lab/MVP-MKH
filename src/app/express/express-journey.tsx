@@ -30,8 +30,14 @@ import {
   PrimaryButton,
   ProgressRail,
   STEP_IDS,
+  BentoCard,
+  Eyebrow,
+  LangPills,
+  PillBadge,
+  PreviewCard,
   SectionDivider,
   SectionHeading,
+  StepCard,
   Select,
   TextInput,
   ThemeToggle,
@@ -209,7 +215,8 @@ export function ExpressJourney() {
         <>
           <Hero lang={lang} />
           <Reasons lang={lang} />
-          <main id="main" className="shell max-w-3xl pb-20 pt-12 sm:pb-28 sm:pt-16">
+          <Process lang={lang} />
+          <main id="main" className="shell max-w-4xl pb-20 pt-6 sm:pb-28 sm:pt-10">
             <form
               name={FORM_NAME}
               method="POST"
@@ -271,7 +278,7 @@ export function ExpressJourney() {
         </>
       )}
 
-      <ExpressFooter lang={lang} />
+      <ExpressFooter lang={lang} onLang={setLang} />
 
       {/* Outside the <form>: nested forms are invalid HTML. */}
       <AiCalculator
@@ -299,20 +306,41 @@ function StickyHeader({
   lang: Lang;
   onLang: (next: Lang) => void;
 }) {
+  const t = COPY[lang];
   return (
-    <header className="ex-border sticky top-0 z-(--z-sticky) border-b bg-[var(--ex-base)]/75 backdrop-blur-xl">
-      <div className="shell max-w-5xl py-3 sm:py-3.5">
-        <div className="flex items-center gap-2.5">
-          <HornbillMark tone="light" className="h-7 w-auto shrink-0 sm:h-8" />
-          <span className="ex-ink truncate font-display text-[0.9375rem] font-bold tracking-tight sm:text-[1.0625rem]">
-            My Kenyalang Homes
+    <header className="ex-border sticky top-0 z-(--z-sticky) border-b bg-[var(--ex-base)]/80 backdrop-blur-xl">
+      <div className="shell max-w-6xl py-3">
+        <div className="flex items-center gap-3">
+          <span className="chrome-panel flex size-10 shrink-0 items-center justify-center rounded-xl sm:size-11">
+            <HornbillMark tone="light" className="h-6 w-auto sm:h-7" />
           </span>
-          <span className="ml-auto" />
-          <LangToggle lang={lang} onChange={onLang} />
-          <ThemeToggle lang={lang} />
+          <span className="min-w-0 leading-none">
+            <span className="ex-ink block truncate font-express text-[1rem] font-extrabold tracking-[-0.02em] sm:text-[1.125rem]">
+              My Kenyalang Homes
+            </span>
+            <span className="ex-dim mt-1 hidden text-[0.625rem] font-bold uppercase tracking-[0.14em] sm:block">
+              {t.expressBadge}
+            </span>
+          </span>
+
+          <span className="ml-auto flex items-center gap-2">
+            <LangToggle lang={lang} onChange={onLang} />
+            <ThemeToggle lang={lang} />
+            <PrimaryButton
+              onClick={() =>
+                document
+                  .getElementById("section-tanah")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+              className="hidden h-11 items-center gap-2 px-5 text-[0.8125rem] md:inline-flex"
+            >
+              {t.heroCta}
+              <Icon name="arrow" className="size-4" />
+            </PrimaryButton>
+          </span>
         </div>
         {showRail ? (
-          <div className="mt-3 sm:mt-3.5">
+          <div className="mt-3">
             <ProgressRail activeIndex={activeStep} lang={lang} />
           </div>
         ) : null}
@@ -325,59 +353,64 @@ function Hero({ lang }: { lang: Lang }) {
   const t = COPY[lang];
   return (
     <section className="relative overflow-hidden">
-      <div className="shell relative max-w-5xl pb-14 pt-12 sm:pb-20 sm:pt-16">
-        <p className="rise ex-soft text-[0.75rem] font-semibold uppercase tracking-[0.2em]">
-          {t.brandPartners}
-        </p>
-        <p className="rise ex-accent ex-accent-wash mt-4 inline-flex items-center gap-2 rounded-full border border-champagne-400/35 px-3.5 py-1.5 text-[0.6875rem] font-bold uppercase tracking-[0.16em] [animation-delay:60ms]">
-          <span aria-hidden className="size-1.5 rounded-full bg-champagne-300" />
-          {t.expressBadge}
-        </p>
-        <h1 className="rise ex-ink mt-6 max-w-[18ch] text-balance font-display text-[2.5rem] font-bold leading-[1.02] tracking-[-0.03em] [animation-delay:120ms] sm:text-[4rem]">
-          {t.heroTitle}
-          <span className="ex-accent mt-1.5 block">{t.heroTitleAccent}</span>
-        </h1>
-        <p className="rise ex-soft mt-6 max-w-[56ch] text-pretty text-[1.0625rem] leading-[1.7] [animation-delay:180ms] sm:text-[1.125rem]">
-          {t.heroBody}
-        </p>
+      <div className="shell relative max-w-6xl pb-16 pt-12 sm:pb-24 sm:pt-16">
+        <div className="grid items-center gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:gap-14">
+          <div>
+            <span className="rise inline-block">
+              <PillBadge>{t.expressBadge}</PillBadge>
+            </span>
+            <h1 className="rise ex-ink display-xl mt-6 text-balance text-[2.75rem] [animation-delay:80ms] sm:text-[4.25rem]">
+              {t.heroTitle}
+              <span className="ex-accent mt-1 block">{t.heroTitleAccent}</span>
+            </h1>
+            <p className="rise ex-soft mt-6 max-w-[52ch] text-pretty text-[1.0625rem] leading-[1.65] [animation-delay:140ms] sm:text-[1.125rem]">
+              {t.heroBody}
+            </p>
+            <p className="rise ex-accent mt-6 text-[0.6875rem] font-bold uppercase tracking-[0.18em] [animation-delay:180ms]">
+              &#10022; {t.poweredBy} &#10022;
+            </p>
 
-        <div className="rise mt-8 flex flex-wrap items-center gap-x-4 gap-y-3 [animation-delay:240ms]">
-          <PrimaryButton
-            onClick={() => document.getElementById("section-tanah")?.scrollIntoView({ behavior: "smooth" })}
-            className="inline-flex h-14 items-center gap-2 px-7 text-[0.9375rem]"
-          >
-            {t.heroCta}
-            <Icon name="arrow" className="size-4" />
-          </PrimaryButton>
-          <ul className="flex flex-wrap items-center gap-x-4 gap-y-2">
-            {t.trust.map((item) => (
-              <li
-                key={item}
-                className="ex-soft flex items-center gap-1.5 text-[0.8125rem] font-semibold uppercase tracking-[0.1em]"
+            <div className="rise mt-8 flex flex-col gap-3 [animation-delay:220ms] sm:flex-row sm:items-center">
+              <PrimaryButton
+                onClick={() =>
+                  document
+                    .getElementById("section-tanah")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
+                className="inline-flex h-14 items-center justify-center gap-2 px-7 text-[0.9375rem]"
               >
-                <Icon name="check" className="ex-accent size-4" />
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Three facts answering the only objections an ad visitor has. */}
-        <dl className="rise mt-12 grid grid-cols-3 gap-2.5 [animation-delay:300ms] sm:gap-4">
-          {t.statValues.map((value, i) => (
-            <div
-              key={t.statLabels[i]}
-              className="chrome-panel relative rounded-express px-3 py-5 text-center sm:py-6"
-            >
-              <dt className="ex-dim text-[0.625rem] font-semibold uppercase tracking-[0.1em] sm:text-[0.6875rem]">
-                {t.statLabels[i]}
-              </dt>
-              <dd className="ex-accent mt-2 font-display text-[1.375rem] font-bold sm:text-[1.75rem]">
-                {value}
-              </dd>
+                {t.heroCta}
+                <Icon name="arrow" className="size-4" />
+              </PrimaryButton>
+              <a
+                href="#section-process"
+                className="ex-border ex-ink inline-flex h-14 items-center justify-center rounded-control border px-7 text-[0.9375rem] font-semibold transition-colors duration-200 hover:opacity-80"
+              >
+                {t.heroSecondary}
+              </a>
             </div>
-          ))}
-        </dl>
+
+            <ul className="rise mt-9 grid gap-3 [animation-delay:280ms] sm:grid-cols-3">
+              {t.heroProofs.map((proof) => (
+                <li key={proof.label} className="flex items-start gap-2.5">
+                  <Icon name="check" className="ex-accent mt-0.5 size-4 shrink-0" />
+                  <span className="min-w-0">
+                    <span className="ex-ink block text-[0.875rem] font-bold">
+                      {proof.label}
+                    </span>
+                    <span className="ex-dim block text-[0.8125rem] leading-snug">
+                      {proof.note}
+                    </span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="rise [animation-delay:340ms]">
+            <PreviewCard lang={lang} />
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -385,45 +418,110 @@ function Hero({ lang }: { lang: Lang }) {
 
 function Reasons({ lang }: { lang: Lang }) {
   const t = COPY[lang];
+  const icons = ["land", "1 Tingkat", "wallet", "guide"];
   return (
-    <section className="shell max-w-5xl py-6 sm:py-10">
-      <h2 className="ex-ink text-balance font-display text-[1.625rem] font-bold leading-tight tracking-[-0.02em] sm:text-[2.125rem]">
-        {t.reasonsTitle}
-      </h2>
-      <ol className="mt-6 grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
-        {t.reasons.map((reason, i) => (
-          <li key={reason.title} className="chrome-panel relative rounded-express p-5 sm:p-6">
-            <span
-              aria-hidden
-              className="ex-accent font-display text-[1.375rem] font-bold leading-none tabular-nums"
-            >
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <h3 className="ex-ink mt-3 font-display text-[1.0625rem] font-bold leading-snug">
-              {reason.title}
-            </h3>
-            <p className="ex-soft mt-2 text-pretty text-[0.875rem] leading-relaxed">
-              {reason.body}
-            </p>
-          </li>
-        ))}
-      </ol>
+    <section className="band-raised">
+      <div className="shell max-w-6xl py-16 sm:py-24">
+        <div className="text-center">
+          <Eyebrow>{t.reasonsEyebrow}</Eyebrow>
+          <h2 className="ex-ink display-lg mx-auto mt-4 max-w-[20ch] text-balance text-[1.875rem] sm:text-[2.75rem]">
+            {t.reasonsTitle}
+            <span className="ex-dim block">{t.reasonsTitleTwo}</span>
+          </h2>
+          <p className="ex-soft mx-auto mt-5 max-w-[52ch] text-pretty text-[1rem] leading-relaxed sm:text-[1.0625rem]">
+            {t.reasonsLede}
+          </p>
+        </div>
+
+        {/* Asymmetric on purpose: four equal boxes read as a template. */}
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {t.reasons.map((reason, i) => (
+            <BentoCard
+              key={reason.title}
+              icon={icons[i]}
+              title={reason.title}
+              body={reason.body}
+              wide={i === 0 || i === 3}
+              tinted={i === 0}
+            />
+          ))}
+        </div>
+      </div>
     </section>
   );
 }
 
-function ExpressFooter({ lang }: { lang: Lang }) {
+function Process({ lang }: { lang: Lang }) {
+  const t = COPY[lang];
+  const icons = ["user", "wallet", "Phone Call"];
+  return (
+    <section id="section-process" className="scroll-mt-28">
+      <div className="shell max-w-6xl py-16 sm:py-24">
+        <div className="text-center">
+          <Eyebrow>{t.processEyebrow}</Eyebrow>
+          <h2 className="ex-ink display-lg mt-4 text-balance text-[1.875rem] sm:text-[2.75rem]">
+            {t.processTitle}
+          </h2>
+          <p className="ex-soft mx-auto mt-5 max-w-[52ch] text-pretty text-[1rem] leading-relaxed sm:text-[1.0625rem]">
+            {t.processLede}
+          </p>
+        </div>
+        <ol className="mt-12 grid gap-4 sm:grid-cols-3">
+          {t.process.map((step, i) => (
+            <StepCard
+              key={step.title}
+              index={i + 1}
+              icon={icons[i]}
+              title={step.title}
+              body={step.body}
+            />
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+function ExpressFooter({
+  lang,
+  onLang,
+}: {
+  lang: Lang;
+  onLang: (next: Lang) => void;
+}) {
   const t = COPY[lang];
   return (
     <footer className="ex-border border-t">
-      <div className="shell max-w-5xl py-10 text-center">
-        <HornbillMark tone="light" className="mx-auto h-8 w-auto opacity-70" />
-        <p className="ex-soft mt-4 text-[0.8125rem] font-semibold uppercase tracking-[0.14em]">
-          {t.brandPartners}
-        </p>
-        <p className="ex-dim mx-auto mt-3 max-w-[60ch] text-pretty text-[0.8125rem] leading-relaxed">
-          {t.footerNote}
-        </p>
+      <div className="shell max-w-6xl py-10">
+        <div className="flex flex-col items-center gap-8 text-center lg:flex-row lg:items-start lg:justify-between lg:text-left">
+          <div className="flex items-center gap-3">
+            <span className="chrome-panel flex size-10 shrink-0 items-center justify-center rounded-xl">
+              <HornbillMark tone="light" className="h-6 w-auto" />
+            </span>
+            <span className="leading-none">
+              <span className="ex-ink block font-express text-[1rem] font-extrabold tracking-[-0.02em]">
+                My Kenyalang Homes
+              </span>
+              <span className="ex-dim mt-1 block text-[0.625rem] font-bold uppercase tracking-[0.14em]">
+                {t.brandPartners}
+              </span>
+            </span>
+          </div>
+
+          <div className="flex flex-col items-center gap-3">
+            <span className="ex-dim text-[0.625rem] font-bold uppercase tracking-[0.16em]">
+              {t.footerLanguage}
+            </span>
+            <LangPills lang={lang} onChange={onLang} />
+          </div>
+
+          <p className="ex-dim max-w-[38ch] text-pretty text-[0.75rem] leading-relaxed">
+            {t.footerNote}
+            <span className="mt-1.5 block">
+              &copy; {new Date().getFullYear()} My Kenyalang Homes. {t.footerRights}
+            </span>
+          </p>
+        </div>
       </div>
     </footer>
   );
@@ -611,7 +709,7 @@ function FinancingSection({
               <p className="ex-accent text-[0.6875rem] font-semibold uppercase tracking-[0.14em]">
                 {t.calcKicker}
               </p>
-              <p className="ex-ink mt-1.5 font-display text-[1.125rem] font-bold leading-snug">
+              <p className="ex-ink display-md mt-1.5 text-[1.125rem]">
                 {t.calcPrompt}
               </p>
               <p className="ex-soft mt-1 text-[0.875rem] leading-relaxed">
@@ -795,14 +893,19 @@ function FinalCta({
   const t = COPY[lang];
   return (
     <div className="text-center">
-      <p className="ex-accent inline-flex items-center gap-2 text-[0.75rem] font-semibold uppercase tracking-[0.16em]">
+      <p className="ex-accent inline-flex items-center gap-2 text-[0.75rem] font-bold uppercase tracking-[0.18em]">
         <Icon name="check" className="size-3.5" />
         {t.ctaKicker}
       </p>
-      <p className="ex-soft mx-auto mt-3 max-w-sm text-[1rem] leading-relaxed">
-        {t.ctaBody}
-        <br />
-        <span className="ex-dim">{t.ctaNoDocs}</span>
+      <h2 className="ex-ink display-lg mx-auto mt-4 max-w-[16ch] text-balance text-[1.875rem] sm:text-[2.5rem]">
+        {t.closerTitle}
+        <span className="ex-accent block">{t.closerTitleTwo}</span>
+      </h2>
+      <p className="ex-soft mx-auto mt-4 max-w-[48ch] text-pretty text-[1rem] leading-relaxed">
+        {t.closerLede}
+      </p>
+      <p className="ex-dim mx-auto mt-3 max-w-sm text-[0.9375rem] leading-relaxed">
+        {t.ctaBody} {t.ctaNoDocs}
       </p>
 
       <PrimaryButton
@@ -854,7 +957,7 @@ function SuccessPanel({
       <p className="rise ex-accent mt-7 text-[0.75rem] font-semibold uppercase tracking-[0.2em] [animation-delay:60ms]">
         {t.successKicker}
       </p>
-      <h1 className="rise ex-ink mt-4 max-w-[16ch] text-balance font-display text-[2.25rem] font-bold leading-[1.04] tracking-[-0.03em] [animation-delay:120ms] sm:text-[3.25rem]">
+      <h1 className="rise ex-ink display-xl mt-4 max-w-[16ch] text-balance text-[2.5rem] [animation-delay:120ms] sm:text-[3.5rem]">
         {t.successTitle(firstName)}
       </h1>
       <p className="rise ex-soft mt-4 max-w-lg text-[1.125rem] leading-relaxed [animation-delay:180ms]">
@@ -866,7 +969,7 @@ function SuccessPanel({
           <span className="ex-dim text-[0.6875rem] font-semibold uppercase tracking-[0.16em]">
             {t.referenceLabel}
           </span>
-          <span className="ex-accent mt-1.5 font-display text-[1.75rem] font-bold tracking-wide">
+          <span className="ex-accent display-lg mt-1.5 text-[1.75rem] tracking-[0.01em]">
             {leadId}
           </span>
         </div>
@@ -875,7 +978,7 @@ function SuccessPanel({
       <ol className="mt-12 grid gap-3 sm:grid-cols-2 sm:gap-4">
         {t.nextSteps.map((step, index) => (
           <li key={step} className="chrome-panel relative flex gap-3.5 rounded-express p-5 sm:p-6">
-            <span className="ex-accent-wash ex-accent flex size-7 shrink-0 items-center justify-center rounded-full font-display text-[0.75rem] font-bold tabular-nums">
+            <span className="ex-accent-wash ex-accent flex size-7 shrink-0 items-center justify-center rounded-full text-[0.75rem] font-bold tabular-nums">
               {String(index + 1).padStart(2, "0")}
             </span>
             <span className="ex-soft text-pretty text-[0.9375rem] leading-relaxed">

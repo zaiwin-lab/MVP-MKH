@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Source_Sans_3, Caveat } from "next/font/google";
+import { Playfair_Display, Source_Sans_3, Caveat, Figtree } from "next/font/google";
 import { JourneyProvider } from "@/lib/journey";
 import "./globals.css";
 
@@ -11,6 +11,18 @@ const playfair = Playfair_Display({
 
 const sourceSans = Source_Sans_3({
   variable: "--font-source-sans",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+/**
+ * Figtree carries the Express portal alone: display weights at 800 and body
+ * at 400-600, one family with real weight contrast rather than a serif and a
+ * sans competing. The main portal keeps Playfair and Source Sans; the two
+ * registers are meant to look different.
+ */
+const figtree = Figtree({
+  variable: "--font-figtree",
   subsets: ["latin"],
   display: "swap",
 });
@@ -46,7 +58,7 @@ export default function RootLayout({
     // would leave --font-display invalid at :root and inherit down empty.
     <html
       lang="en-MY"
-      className={`${playfair.variable} ${sourceSans.variable} ${caveat.variable}`}
+      className={`${playfair.variable} ${sourceSans.variable} ${caveat.variable} ${figtree.variable}`}
     >
       <body>
         <a

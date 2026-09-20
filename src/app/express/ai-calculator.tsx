@@ -119,7 +119,7 @@ export function AiCalculator({
             </p>
             <h2
               id="ai-calc-title"
-              className="ex-ink mt-1.5 font-display text-[1.5rem] font-bold leading-tight"
+              className="ex-ink display-md mt-1.5 text-[1.5rem]"
             >
               {t.calcTitle}
             </h2>
@@ -281,7 +281,7 @@ export function AiCalculator({
                 <p className="ex-accent text-[0.6875rem] font-semibold uppercase tracking-[0.14em]">
                   {t.calcResultLabel}
                 </p>
-                <p className="ex-accent mt-2 font-display text-[1.75rem] font-bold leading-tight sm:text-[2rem]">
+                <p className="ex-accent display-lg mt-2 text-[1.75rem] sm:text-[2rem]">
                   {formatRM(result.lowerFinancing)} &ndash;{" "}
                   {formatRM(result.upperFinancing)}
                 </p>

@@ -288,7 +288,7 @@ export function SectionHeading({
         </span>
         <span aria-hidden className="chrome-rule h-px flex-1" />
       </div>
-      <h2 className="ex-ink mt-4 text-balance font-display text-[1.75rem] font-bold leading-[1.1] tracking-[-0.02em] sm:text-[2.25rem]">
+      <h2 className="ex-ink display-lg mt-4 text-balance text-[1.875rem] sm:text-[2.375rem]">
         {title}
       </h2>
       <p className="ex-soft mt-2.5 max-w-[62ch] text-pretty text-[1rem] leading-relaxed sm:text-[1.0625rem]">
@@ -488,6 +488,155 @@ export function ChoiceTile({
       </span>
       {note ? <span className="ex-dim text-[0.75rem] leading-tight">{note}</span> : null}
     </label>
+  );
+}
+
+/* --------------------------------------------------------------------------
+   Marketing furniture
+   -------------------------------------------------------------------------- */
+
+/** Small gold label above a section heading. One per band, never per block. */
+export function Eyebrow({ children }: { children: ReactNode }) {
+  return (
+    <p className="ex-accent text-[0.75rem] font-bold uppercase tracking-[0.2em]">
+      {children}
+    </p>
+  );
+}
+
+/** Outlined pill with a lit dot, as used above the hero headline. */
+export function PillBadge({ children }: { children: ReactNode }) {
+  return (
+    <p className="ex-accent ex-border inline-flex items-center gap-2.5 rounded-full border px-4 py-2 text-[0.6875rem] font-bold uppercase tracking-[0.16em] sm:text-[0.75rem]">
+      <span aria-hidden className="size-1.5 rounded-full bg-champagne-400" />
+      {children}
+    </p>
+  );
+}
+
+/**
+ * A bento cell. `wide` spans two columns on desktop, which is what stops the
+ * grid reading as four identical boxes.
+ */
+export function BentoCard({
+  icon,
+  title,
+  body,
+  wide = false,
+  tinted = false,
+}: {
+  icon: string;
+  title: string;
+  body: string;
+  wide?: boolean;
+  tinted?: boolean;
+}) {
+  return (
+    <div
+      className={`chrome-panel relative flex flex-col rounded-express-lg p-6 sm:p-7 ${
+        wide ? "lg:col-span-2" : ""
+      } ${tinted ? "ex-accent-wash" : ""}`}
+    >
+      <span className="ex-chip ex-accent mb-5 flex size-12 items-center justify-center rounded-2xl">
+        <Icon name={icon} className="size-6" />
+      </span>
+      <h3 className="ex-ink display-md text-[1.125rem] sm:text-[1.25rem]">{title}</h3>
+      <p className="ex-soft mt-2.5 text-pretty text-[0.9375rem] leading-relaxed">{body}</p>
+    </div>
+  );
+}
+
+/** A process card carrying its own number as a badge over the icon tile. */
+export function StepCard({
+  index,
+  icon,
+  title,
+  body,
+}: {
+  index: number;
+  icon: string;
+  title: string;
+  body: string;
+}) {
+  return (
+    <li className="chrome-panel relative flex flex-col rounded-express-lg p-6 text-center sm:p-7">
+      <span className="relative mx-auto mb-5">
+        <span className="ex-chip ex-accent flex size-14 items-center justify-center rounded-2xl">
+          <Icon name={icon} className="size-7" />
+        </span>
+        <span className="gold-chrome absolute -right-2 -top-2 flex size-6 items-center justify-center rounded-full text-[0.6875rem] font-bold tabular-nums text-navy-950">
+          {index}
+        </span>
+      </span>
+      <h3 className="ex-ink display-md text-[1.0625rem] sm:text-[1.125rem]">{title}</h3>
+      <p className="ex-soft mt-2.5 text-pretty text-[0.9375rem] leading-relaxed">{body}</p>
+    </li>
+  );
+}
+
+/**
+ * The hero's product preview. It shows a real calculator result rather than a
+ * decorative shape, and says plainly that it is an example so nobody reads it
+ * as their own number.
+ */
+export function PreviewCard({ lang }: { lang: Lang }) {
+  const t = COPY[lang];
+  return (
+    <figure className="chrome-panel relative overflow-hidden rounded-express-lg p-5 sm:p-6">
+      <span aria-hidden className="mb-5 flex items-center gap-1.5">
+        <span className="size-2.5 rounded-full bg-[#ff5f57]" />
+        <span className="size-2.5 rounded-full bg-[#febc2e]" />
+        <span className="size-2.5 rounded-full bg-[#28c840]" />
+      </span>
+      <figcaption className="ex-dim text-[0.6875rem] font-bold uppercase tracking-[0.16em]">
+        {t.mockTitle}
+      </figcaption>
+      <p className="ex-accent display-lg mt-2.5 text-[1.5rem] sm:text-[1.875rem]">
+        {t.mockRange}
+      </p>
+      <dl className="mt-5 space-y-2.5">
+        {t.mockRows.map((row) => (
+          <div
+            key={row.label}
+            className="ex-border flex items-center justify-between gap-4 border-b pb-2.5 text-[0.875rem] last:border-b-0"
+          >
+            <dt className="ex-soft">{row.label}</dt>
+            <dd className="ex-ink font-bold">{row.value}</dd>
+          </div>
+        ))}
+      </dl>
+      <p className="ex-dim mt-4 text-[0.75rem] leading-relaxed">{t.mockFoot}</p>
+    </figure>
+  );
+}
+
+/** Footer language pills, as on the reference site. */
+export function LangPills({
+  lang,
+  onChange,
+}: {
+  lang: Lang;
+  onChange: (next: Lang) => void;
+}) {
+  return (
+    <div role="group" aria-label={COPY[lang].langLabel} className="flex items-center gap-2">
+      {LANGS.map((entry) => {
+        const active = entry.code === lang;
+        return (
+          <button
+            key={entry.code}
+            type="button"
+            onClick={() => onChange(entry.code)}
+            aria-pressed={active}
+            className={`min-h-9 rounded-full px-4 py-2 text-[0.75rem] font-bold tracking-wide transition-colors duration-200 ${
+              active ? "gold-chrome text-navy-950" : "ex-chip ex-soft hover:opacity-80"
+            }`}
+          >
+            {entry.label}
+          </button>
+        );
+      })}
+    </div>
   );
 }
 

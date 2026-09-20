@@ -64,6 +64,13 @@ steps or gates to it; every extra interaction costs conversions.
   `chrome-panel` (glass), and the hairline `inset 0 1px 0` highlight along
   each panel's top edge. That highlight is what makes a surface look like
   polished metal.
+- **Figtree is the only family on this page**, display at 800 and body at
+  400-600, via the `font-express` / `display-xl` / `display-lg` / `display-md`
+  utilities. The main portal keeps Playfair and Source Sans; the two registers
+  are meant to look different, so don't reach for `font-display` here.
+- **Sections alternate grounds.** `band-raised` steps toward the light in
+  either theme, so the page has rhythm instead of one continuous field. Use it
+  on every other band, not on adjacent ones.
 - Labels are 14px semibold, not 13px bold. Small bold text blooms on a dark
   ground and reads as heavy; one notch lighter and larger is easier to read
   and no less premium. Fields do not carry an "optional" badge: section 01

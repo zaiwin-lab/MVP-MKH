@@ -31,8 +31,30 @@ type Copy = {
   statLabels: [string, string, string];
   statValues: [string, string, string];
 
+  poweredBy: string;
+  heroSecondary: string;
+  heroProofs: { label: string; note: string }[];
+  mockTitle: string;
+  mockRange: string;
+  mockRows: { label: string; value: string }[];
+  mockFoot: string;
+
+  reasonsEyebrow: string;
   reasonsTitle: string;
+  reasonsTitleTwo: string;
+  reasonsLede: string;
   reasons: { title: string; body: string }[];
+
+  processEyebrow: string;
+  processTitle: string;
+  processLede: string;
+  process: { title: string; body: string }[];
+
+  closerTitle: string;
+  closerTitleTwo: string;
+  closerLede: string;
+  footerLanguage: string;
+  footerRights: string;
 
   steps: [string, string, string, string, string];
   stepNav: string;
@@ -158,7 +180,27 @@ const ms: Copy = {
   statLabels: ["Masa diperlukan", "Dokumen sekarang", "Kos pendaftaran"],
   statValues: ["2 minit", "Tiada", "Percuma"],
 
-  reasonsTitle: "4 Sebab Untuk Mula Hari Ini",
+  poweredBy: "Dikuasakan oleh EG Megah Holdings",
+  heroSecondary: "Lihat cara ia berfungsi",
+  heroProofs: [
+    { label: "Percuma sepenuhnya", note: "Tiada bayaran pendaftaran" },
+    { label: "2 minit sahaja", note: "Borang ringkas, bukan borang bank" },
+    { label: "Tiada dokumen", note: "Belum perlu apa-apa sekarang" },
+  ],
+  mockTitle: "Anggaran Kelayakan",
+  mockRange: "RM586,011 \u2013 RM747,669",
+  mockRows: [
+    { label: "Ansuran bulanan", value: "RM3,300" },
+    { label: "Tempoh", value: "30 tahun" },
+    { label: "Jenis", value: "Bersama pasangan" },
+  ],
+  mockFoot: "Contoh anggaran. Cuba dengan angka anda sendiri.",
+
+  reasonsEyebrow: "Keistimewaan",
+  reasonsTitle: "Semua yang anda perlu.",
+  reasonsTitleTwo: "Tiada yang menyusahkan.",
+  reasonsLede:
+    "Satu borang ringkas, kemudian team kami yang uruskan selebihnya.",
   reasons: [
     {
       title: "Tanah anda dinilai dahulu",
@@ -177,6 +219,31 @@ const ms: Copy = {
       body: "Seorang consultant menguruskan perjalanan anda dari mula hingga kunci.",
     },
   ],
+
+  processEyebrow: "Proses",
+  processTitle: "Siap dalam 2 minit",
+  processLede: "Tiga langkah mudah sebelum consultant kami hubungi anda.",
+  process: [
+    {
+      title: "Isi borang ringkas",
+      body: "Kongsikan tanah, pilihan rumah dan sasaran pembiayaan anda. Semua ruangan awal adalah pilihan.",
+    },
+    {
+      title: "Kami semak dan sediakan",
+      body: "Team kami nilai maklumat anda dan sediakan cadangan rumah serta laluan pembiayaan yang sesuai.",
+    },
+    {
+      title: "Consultant hubungi anda",
+      body: "Mengikut kaedah pilihan anda, lengkap dengan process flow dan senarai dokumen.",
+    },
+  ],
+
+  closerTitle: "Rumah anda",
+  closerTitleTwo: "bermula di sini.",
+  closerLede:
+    "Sertai keluarga Sarawak yang sedang membina rumah sendiri bersama My Kenyalang Homes.",
+  footerLanguage: "Bahasa",
+  footerRights: "Hak cipta terpelihara.",
 
   steps: ["Tanah", "Rumah", "Bajet", "Guide", "Siap"],
   stepNav: "Langkah perjalanan",
@@ -317,7 +384,26 @@ const en: Copy = {
   statLabels: ["Time needed", "Documents now", "Registration cost"],
   statValues: ["2 minutes", "None", "Free"],
 
-  reasonsTitle: "4 Reasons To Start Today",
+  poweredBy: "Powered by EG Megah Holdings",
+  heroSecondary: "See how it works",
+  heroProofs: [
+    { label: "Completely free", note: "No registration fee" },
+    { label: "Two minutes", note: "A short form, not a bank form" },
+    { label: "No documents", note: "Nothing needed from you yet" },
+  ],
+  mockTitle: "Eligibility Estimate",
+  mockRange: "RM586,011 \u2013 RM747,669",
+  mockRows: [
+    { label: "Monthly instalment", value: "RM3,300" },
+    { label: "Tenure", value: "30 years" },
+    { label: "Type", value: "Joint with spouse" },
+  ],
+  mockFoot: "An example. Try it with your own figures.",
+
+  reasonsEyebrow: "What you get",
+  reasonsTitle: "Everything you need.",
+  reasonsTitleTwo: "Nothing that slows you down.",
+  reasonsLede: "One short form, then our team handles the rest.",
   reasons: [
     {
       title: "Your land comes first",
@@ -336,6 +422,31 @@ const en: Copy = {
       body: "A single consultant handles your journey from the first call to the keys.",
     },
   ],
+
+  processEyebrow: "Process",
+  processTitle: "Done in two minutes",
+  processLede: "Three simple steps before our consultant calls you.",
+  process: [
+    {
+      title: "Fill the short form",
+      body: "Share your land, preferred home and financing target. Everything in the early sections is optional.",
+    },
+    {
+      title: "We review and prepare",
+      body: "Our team assesses what you sent and prepares home proposals and a financing route that fits.",
+    },
+    {
+      title: "A consultant contacts you",
+      body: "By the method you chose, with the process flow and document checklist in hand.",
+    },
+  ],
+
+  closerTitle: "Your home",
+  closerTitleTwo: "starts here.",
+  closerLede:
+    "Join the Sarawak families building their own homes with My Kenyalang Homes.",
+  footerLanguage: "Language",
+  footerRights: "All rights reserved.",
 
   steps: ["Land", "Home", "Budget", "Guide", "Done"],
   stepNav: "Journey steps",
