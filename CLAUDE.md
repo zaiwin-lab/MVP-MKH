@@ -112,11 +112,15 @@ steps or gates to it; every extra interaction costs conversions.
   number and the calculator can never disagree in front of a customer. Change
   the inputs there, not the copy. The card names the income it assumes.
 - Technical surfaces: `blueprint-grid` (drafting paper behind the hero, masked
-  so it never reaches the copy), `spec-rule` (a hairline dimensioned with a
-  tick at each end) and `gloss-sheen`. The sheen is themed, because a white
-  highlight on the bright theme's white card is invisible; there it darkens
-  instead. Always pair `gloss-sheen` with `chrome-panel`: it is a highlight on
-  a surface, and without the surface it reads as a stray gradient.
+  so it never reaches the copy), `star-field` (points of light over the same
+  ground, twenty radial stops in one background-image so the whole field costs
+  one paint and no DOM) and `glass-chip` for pills.
+- **The preview card stays clean.** No sheen, no specular band across it: the
+  client asked for the figure to read plainly. The shine belongs in the
+  background and on the chips, not over data.
+- `spec-rule` is for a divider with room around it. Do not put it inline
+  before a short label, where the end ticks read as a stray symbol rather
+  than as a dimension.
 - **Copy lives in `src/lib/i18n.ts`**, in English, Bahasa Malaysia, Chinese
   and Iban. Only labels translate; the option `value` a customer picks is
   canonical Malay and is what reaches the CRM. Translating stored values would

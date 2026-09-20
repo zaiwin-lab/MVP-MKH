@@ -383,6 +383,10 @@ function Hero({ lang }: { lang: Lang }) {
         aria-hidden
         className="blueprint-grid pointer-events-none absolute inset-0 -z-10"
       />
+      <span
+        aria-hidden
+        className="star-field pointer-events-none absolute inset-0 -z-10"
+      />
       <div className="shell relative max-w-6xl pb-16 pt-12 sm:pb-24 sm:pt-16">
         <div className="grid items-center gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:gap-14">
           <div>
@@ -397,7 +401,10 @@ function Hero({ lang }: { lang: Lang }) {
               {t.heroBody}
             </p>
             <div className="rise mt-7 flex items-center gap-3 [animation-delay:180ms]">
-              <span aria-hidden className="spec-rule h-2 w-10 shrink-0 sm:w-14" />
+              <span
+                aria-hidden
+                className="h-px w-8 shrink-0 rounded-full bg-gradient-to-r from-transparent to-[var(--ex-accent)] sm:w-12"
+              />
               <p className="ex-accent text-[0.6875rem] font-bold uppercase tracking-[0.16em]">
                 {t.poweredBy}
               </p>

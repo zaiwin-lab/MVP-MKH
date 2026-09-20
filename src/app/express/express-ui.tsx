@@ -489,7 +489,7 @@ export function Eyebrow({ children }: { children: ReactNode }) {
 /** Outlined pill with a lit dot, as used above the hero headline. */
 export function PillBadge({ children }: { children: ReactNode }) {
   return (
-    <p className="ex-accent ex-border inline-flex items-center gap-2.5 rounded-full border px-4 py-2 text-[0.6875rem] font-bold uppercase tracking-[0.16em] sm:text-[0.75rem]">
+    <p className="glass-chip ex-accent ex-border inline-flex items-center gap-2.5 rounded-full border px-4 py-2 text-[0.6875rem] font-bold uppercase tracking-[0.16em] sm:text-[0.75rem]">
       <span aria-hidden className="size-1.5 rounded-full bg-amber-400" />
       {children}
     </p>
@@ -538,10 +538,7 @@ export function PreviewCard({ lang }: { lang: Lang }) {
     { label: t.mockType, value: t.mockJointValue },
   ];
   return (
-    <figure className="chrome-panel relative isolate overflow-hidden rounded-express-lg p-5 sm:p-6">
-      {/* Light falling across glass. It needs the panel underneath it. */}
-      <span aria-hidden className="gloss-sheen pointer-events-none absolute inset-0 -z-10" />
-
+    <figure className="chrome-panel relative overflow-hidden rounded-express-lg p-5 sm:p-6">
       <span aria-hidden className="mb-5 flex items-center gap-1.5">
         <span className="size-2.5 rounded-full bg-[#ff5f57]" />
         <span className="size-2.5 rounded-full bg-[#febc2e]" />
