@@ -383,10 +383,6 @@ function Hero({ lang }: { lang: Lang }) {
         aria-hidden
         className="blueprint-grid pointer-events-none absolute inset-0 -z-10"
       />
-      <span
-        aria-hidden
-        className="star-field pointer-events-none absolute inset-0 -z-10"
-      />
       <div className="shell relative max-w-6xl pb-16 pt-12 sm:pb-24 sm:pt-16">
         <div className="grid items-center gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:gap-14">
           <div>

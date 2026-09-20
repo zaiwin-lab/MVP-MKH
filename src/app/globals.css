@@ -277,9 +277,15 @@
   /* The signature's hover colour. Bright violet rather than the amber the
      rest of the page uses, so the credit line reads as its own mark. */
   --ex-violet: #b39dff;
+  /* A step lighter than the page ground: in a dark theme a raised surface
+     catches more light, so lifting it is what reads as elevation. */
+  --ex-card: #0d2444;
+  --ex-card-border: rgb(255 255 255 / 0.1);
+  --ex-card-lip: rgb(255 255 255 / 0.12);
+  --ex-cast-near: rgb(0 0 0 / 0.45);
+  --ex-cast-mid: rgb(0 0 0 / 0.5);
+  --ex-cast-far: rgb(0 0 0 / 0.72);
   --ex-grid-minor: rgb(255 255 255 / 0.035);
-  --ex-star: rgb(255 255 255 / 0.55);
-  --ex-star-dim: rgb(160 200 245 / 0.32);
   --ex-sheen: rgb(255 255 255 / 0.16);
   --ex-sheen-soft: rgb(255 255 255 / 0.07);
   --ex-grid-major: rgb(122 170 230 / 0.075);
@@ -331,9 +337,13 @@
   --ex-danger: #a3121a;
 
   --ex-violet: #6d28d9;
+  --ex-card: #ffffff;
+  --ex-card-border: rgb(11 32 53 / 0.08);
+  --ex-card-lip: rgb(255 255 255 / 0.9);
+  --ex-cast-near: rgb(11 32 53 / 0.08);
+  --ex-cast-mid: rgb(11 32 53 / 0.14);
+  --ex-cast-far: rgb(11 32 53 / 0.26);
   --ex-grid-minor: rgb(11 32 53 / 0.035);
-  --ex-star: rgb(37 130 230 / 0.3);
-  --ex-star-dim: rgb(37 130 230 / 0.16);
   --ex-sheen: rgb(11 32 53 / 0.05);
   --ex-sheen-soft: rgb(11 32 53 / 0.022);
   --ex-grid-major: rgb(11 32 53 / 0.075);
@@ -556,32 +566,6 @@
   background-repeat: no-repeat;
 }
 
-/* Points of light scattered over the hero ground, as on the client's other
-   campaign site. Twenty radial stops in one background-image rather than
-   twenty elements: the whole field costs one paint and no DOM. Sizes and
-   opacities vary so it reads as depth rather than as a regular pattern. */
-@utility star-field {
-  background-image:
-    radial-gradient(1.5px 1.5px at 8% 18%, var(--ex-star) 50%, transparent 100%),
-    radial-gradient(1px 1px at 17% 62%, var(--ex-star-dim) 50%, transparent 100%),
-    radial-gradient(2px 2px at 24% 31%, var(--ex-star) 50%, transparent 100%),
-    radial-gradient(1px 1px at 31% 77%, var(--ex-star-dim) 50%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 39% 12%, var(--ex-star) 50%, transparent 100%),
-    radial-gradient(1px 1px at 46% 48%, var(--ex-star-dim) 50%, transparent 100%),
-    radial-gradient(2px 2px at 53% 84%, var(--ex-star) 50%, transparent 100%),
-    radial-gradient(1px 1px at 61% 26%, var(--ex-star-dim) 50%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 68% 59%, var(--ex-star) 50%, transparent 100%),
-    radial-gradient(1px 1px at 74% 15%, var(--ex-star-dim) 50%, transparent 100%),
-    radial-gradient(2px 2px at 81% 71%, var(--ex-star) 50%, transparent 100%),
-    radial-gradient(1px 1px at 88% 38%, var(--ex-star-dim) 50%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 94% 82%, var(--ex-star) 50%, transparent 100%),
-    radial-gradient(1px 1px at 12% 90%, var(--ex-star-dim) 50%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 57% 5%, var(--ex-star) 50%, transparent 100%),
-    radial-gradient(1px 1px at 35% 44%, var(--ex-star-dim) 50%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 86% 8%, var(--ex-star) 50%, transparent 100%),
-    radial-gradient(1px 1px at 4% 48%, var(--ex-star-dim) 50%, transparent 100%);
-}
-
 /* The glass-and-shine treatment for a badge or pill: a light top edge over a
    translucent ground, which is what makes a chip read as glass rather than
    as a filled shape. */
@@ -594,6 +578,21 @@
   );
   box-shadow: inset 0 1px 0 var(--ex-highlight);
   backdrop-filter: blur(10px);
+}
+
+/* An elevated card: a solid fill, not glass, so it separates cleanly from
+   the gradient behind it, over three stacked shadows. The stack is what sells
+   the height: a tight contact shadow right under the edge, a mid shadow for
+   the body, and a wide soft one for the cast. A single large blur reads as
+   fog; three tiers read as an object above a surface. */
+@utility float-card {
+  background-color: var(--ex-card);
+  border: 1px solid var(--ex-card-border);
+  box-shadow:
+    inset 0 1px 0 var(--ex-card-lip),
+    0 1px 2px var(--ex-cast-near),
+    0 10px 20px -8px var(--ex-cast-mid),
+    0 34px 64px -24px var(--ex-cast-far);
 }
 
 /* --- Bands -------------------------------------------------------------- */

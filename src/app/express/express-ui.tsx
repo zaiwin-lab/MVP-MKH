@@ -538,7 +538,7 @@ export function PreviewCard({ lang }: { lang: Lang }) {
     { label: t.mockType, value: t.mockJointValue },
   ];
   return (
-    <figure className="chrome-panel relative overflow-hidden rounded-express-lg p-5 sm:p-6">
+    <figure className="float-card relative overflow-hidden rounded-express-lg p-5 sm:p-6">
       <span aria-hidden className="mb-5 flex items-center gap-1.5">
         <span className="size-2.5 rounded-full bg-[#ff5f57]" />
         <span className="size-2.5 rounded-full bg-[#febc2e]" />

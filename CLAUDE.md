@@ -112,9 +112,14 @@ steps or gates to it; every extra interaction costs conversions.
   number and the calculator can never disagree in front of a customer. Change
   the inputs there, not the copy. The card names the income it assumes.
 - Technical surfaces: `blueprint-grid` (drafting paper behind the hero, masked
-  so it never reaches the copy), `star-field` (points of light over the same
-  ground, twenty radial stops in one background-image so the whole field costs
-  one paint and no DOM) and `glass-chip` for pills.
+  so it never reaches the copy) and `glass-chip` for pills. A star field was
+  tried over the same ground and rejected; don't reintroduce it.
+- **The preview card uses `float-card`, not `chrome-panel`.** It is a solid
+  fill rather than glass, so it separates from the gradient instead of
+  dissolving into it, over three stacked shadows: a tight contact shadow, a
+  mid shadow for the body and a wide cast. One large blur reads as fog; three
+  tiers read as an object above a surface. In the dark theme its fill is a
+  step *lighter* than the ground, because a raised surface catches more light.
 - **The preview card stays clean.** No sheen, no specular band across it: the
   client asked for the figure to read plainly. The shine belongs in the
   background and on the chips, not over data.
