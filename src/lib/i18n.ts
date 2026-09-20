@@ -14,7 +14,7 @@ export const LANGS: { code: Lang; label: string; full: string }[] = [
   { code: "en", label: "EN", full: "English" },
   { code: "ms", label: "BM", full: "Bahasa Malaysia" },
   { code: "zh", label: "\u4e2d", full: "\u4e2d\u6587" },
-  { code: "iba", label: "IBAN", full: "Jaku Iban" },
+  { code: "iba", label: "IB", full: "Jaku Iban" },
 ];
 
 /** The page prerenders in Malay, so this is also the server snapshot. */
@@ -23,7 +23,7 @@ export const DEFAULT_LANG: Lang = "ms";
 type Copy = {
   htmlLang: string;
   brandPartners: string;
-  expressBadge: string;
+  programBadge: string;
   heroTitle: string;
   heroTitleAccent: string;
   heroBody: string;
@@ -40,12 +40,6 @@ type Copy = {
   mockRange: string;
   mockRows: { label: string; value: string }[];
   mockFoot: string;
-
-  reasonsEyebrow: string;
-  reasonsTitle: string;
-  reasonsTitleTwo: string;
-  reasonsLede: string;
-  reasons: { title: string; body: string }[];
 
   processEyebrow: string;
   processTitle: string;
@@ -177,7 +171,7 @@ type Copy = {
 const ms: Copy = {
   htmlLang: "ms-MY",
   brandPartners: "EG Megah Holdings × KOBIS Berhad",
-  expressBadge: "Express Journey",
+  programBadge: "Program Pemilikan Rumah",
   heroTitle: "Jom Kita Mulakan!",
   heroTitleAccent: "Perjalanan Membina Rumah Impian Anda.",
   heroBody:
@@ -205,29 +199,6 @@ const ms: Copy = {
   ],
   mockFoot: "Contoh anggaran. Cuba dengan angka anda sendiri.",
 
-  reasonsEyebrow: "Keistimewaan",
-  reasonsTitle: "Semua yang anda perlu.",
-  reasonsTitleTwo: "Tiada yang menyusahkan.",
-  reasonsLede:
-    "Satu borang ringkas, kemudian team kami yang uruskan selebihnya.",
-  reasons: [
-    {
-      title: "Tanah anda dinilai dahulu",
-      body: "Kami lihat lokasi dan saiz tanah anda sebelum cadangkan apa-apa rumah.",
-    },
-    {
-      title: "Rumah yang padan",
-      body: "Cadangan direka mengikut bilangan bilik dan bajet yang anda sasarkan.",
-    },
-    {
-      title: "Pembiayaan dipandu",
-      body: "Kami terangkan proses bank dan dokumen yang perlu, langkah demi langkah.",
-    },
-    {
-      title: "Satu team, satu rujukan",
-      body: "Seorang consultant menguruskan perjalanan anda dari mula hingga kunci.",
-    },
-  ],
 
   processEyebrow: "Proses",
   processTitle: "Siap dalam 2 minit",
@@ -374,23 +345,23 @@ const ms: Copy = {
   calcCloseLabel: "Tutup kalkulator",
 
   footerNote:
-    "My Kenyalang Homes, Express Journey. Maklumat yang anda kongsikan digunakan untuk menghubungi anda berkenaan pemilikan rumah dan pembiayaan sahaja.",
+    "Maklumat yang anda kongsikan digunakan untuk menghubungi anda berkenaan pemilikan rumah dan pembiayaan sahaja.",
   langLabel: "Pilih bahasa",
   bubbleCalc: "AI Calculator",
   bubbleWhatsApp: "WhatsApp",
-  kobisSignature: "Direka dan dibina oleh KOBIS Berhad",
+  kobisSignature: "Direka & Dibina oleh KOBIS Berhad",
   waHandoffTitle: "Mahu terus berbual?",
   waHandoffBody:
     "Hantar ringkasan anda terus ke WhatsApp kami. Semua maklumat sudah diisi \u2014 anda cuma perlu tekan hantar.",
   waHandoffCta: "Buka WhatsApp",
   waIntro: (reference) =>
-    `Hai My Kenyalang Homes. Saya baru hantar borang Express. Rujukan saya ${reference}.`,
+    `Hai My Kenyalang Homes. Saya baru hantar borang pendaftaran. Rujukan saya ${reference}.`,
 };
 
 const en: Copy = {
   htmlLang: "en-MY",
   brandPartners: "EG Megah Holdings × KOBIS Berhad",
-  expressBadge: "Express Journey",
+  programBadge: "Home Ownership Programme",
   heroTitle: "Let's Begin.",
   heroTitleAccent: "The Journey To Your Own Home.",
   heroBody:
@@ -418,28 +389,6 @@ const en: Copy = {
   ],
   mockFoot: "An example. Try it with your own figures.",
 
-  reasonsEyebrow: "What you get",
-  reasonsTitle: "Everything you need.",
-  reasonsTitleTwo: "Nothing that slows you down.",
-  reasonsLede: "One short form, then our team handles the rest.",
-  reasons: [
-    {
-      title: "Your land comes first",
-      body: "We look at where your land is and how big it is before proposing any home.",
-    },
-    {
-      title: "A home that fits",
-      body: "Proposals are shaped around the rooms you need and the budget you have in mind.",
-    },
-    {
-      title: "Financing, explained",
-      body: "We walk you through the bank process and the documents needed, step by step.",
-    },
-    {
-      title: "One team, one reference",
-      body: "A single consultant handles your journey from the first call to the keys.",
-    },
-  ],
 
   processEyebrow: "Process",
   processTitle: "Done in two minutes",
@@ -585,17 +534,17 @@ const en: Copy = {
   calcCloseLabel: "Close calculator",
 
   footerNote:
-    "My Kenyalang Homes, Express Journey. What you share is used only to contact you about home ownership and financing.",
+    "What you share is used only to contact you about home ownership and financing.",
   langLabel: "Choose language",
   bubbleCalc: "AI Calculator",
   bubbleWhatsApp: "WhatsApp",
-  kobisSignature: "Designed and built by KOBIS Berhad",
+  kobisSignature: "Designed & Built by KOBIS Berhad",
   waHandoffTitle: "Prefer to chat now?",
   waHandoffBody:
     "Send your summary straight to our WhatsApp. Everything is filled in already \u2014 you only press send.",
   waHandoffCta: "Open WhatsApp",
   waIntro: (reference) =>
-    `Hi My Kenyalang Homes. I have just submitted the Express form. My reference is ${reference}.`,
+    `Hi My Kenyalang Homes. I have just submitted the registration form. My reference is ${reference}.`,
 };
 
 /* --------------------------------------------------------------------------
@@ -606,7 +555,7 @@ const en: Copy = {
 const zh: Copy = {
   htmlLang: "zh-MY",
   brandPartners: "EG Megah Holdings \u00d7 KOBIS Berhad",
-  expressBadge: "\u5feb\u901f\u767b\u8bb0",
+  programBadge: "\u7f6e\u4e1a\u8ba1\u5212",
   heroTitle: "\u5f00\u59cb\u5427\uff01",
   heroTitleAccent: "\u5efa\u9020\u60a8\u68a6\u60f3\u5bb6\u56ed\u7684\u65c5\u7a0b\u3002",
   heroBody:
@@ -633,28 +582,6 @@ const zh: Copy = {
   ],
   mockFoot: "\u6b64\u4e3a\u793a\u4f8b\u3002\u8bf7\u7528\u60a8\u81ea\u5df1\u7684\u6570\u5b57\u8bd5\u7b97\u3002",
 
-  reasonsEyebrow: "\u60a8\u5c06\u83b7\u5f97",
-  reasonsTitle: "\u60a8\u6240\u9700\u7684\u4e00\u5207\u3002",
-  reasonsTitleTwo: "\u6ca1\u6709\u591a\u4f59\u7684\u9ebb\u70e6\u3002",
-  reasonsLede: "\u4e00\u4efd\u7b80\u77ed\u8868\u683c\uff0c\u5176\u4f59\u4ea4\u7ed9\u6211\u4eec\u7684\u56e2\u961f\u3002",
-  reasons: [
-    {
-      title: "\u5148\u8bc4\u4f30\u60a8\u7684\u571f\u5730",
-      body: "\u6211\u4eec\u4f1a\u5148\u770b\u571f\u5730\u7684\u4f4d\u7f6e\u548c\u9762\u79ef\uff0c\u624d\u63d0\u51fa\u623f\u5c4b\u5efa\u8bae\u3002",
-    },
-    {
-      title: "\u5408\u9002\u7684\u623f\u5c4b",
-      body: "\u5efa\u8bae\u6839\u636e\u60a8\u9700\u8981\u7684\u623f\u95f4\u6570\u76ee\u548c\u9884\u7b97\u8bbe\u8ba1\u3002",
-    },
-    {
-      title: "\u8d37\u6b3e\u5168\u7a0b\u5f15\u5bfc",
-      body: "\u6211\u4eec\u4f1a\u9010\u6b65\u8bf4\u660e\u94f6\u884c\u6d41\u7a0b\u548c\u6240\u9700\u6587\u4ef6\u3002",
-    },
-    {
-      title: "\u4e00\u4e2a\u56e2\u961f\uff0c\u4e00\u4e2a\u7f16\u53f7",
-      body: "\u4e00\u4f4d\u987e\u95ee\u8ddf\u8fdb\u60a8\u7684\u6574\u4e2a\u65c5\u7a0b\uff0c\u76f4\u5230\u4ea4\u623f\u3002",
-    },
-  ],
 
   processEyebrow: "\u6d41\u7a0b",
   processTitle: "\u4e24\u5206\u949f\u5b8c\u6210",
@@ -799,7 +726,7 @@ const zh: Copy = {
   calcCloseLabel: "\u5173\u95ed\u8ba1\u7b97\u5668",
 
   footerNote:
-    "My Kenyalang Homes \u5feb\u901f\u767b\u8bb0\u3002\u60a8\u63d0\u4f9b\u7684\u8d44\u6599\u4ec5\u7528\u4e8e\u5c31\u8d2d\u623f\u4e0e\u8d37\u6b3e\u4e8b\u5b9c\u8054\u7edc\u60a8\u3002",
+    "\u60a8\u63d0\u4f9b\u7684\u8d44\u6599\u4ec5\u7528\u4e8e\u5c31\u8d2d\u623f\u4e0e\u8d37\u6b3e\u4e8b\u5b9c\u8054\u7edc\u60a8\u3002",
   langLabel: "\u9009\u62e9\u8bed\u8a00",
   bubbleCalc: "AI \u8ba1\u7b97\u5668",
   bubbleWhatsApp: "WhatsApp",
@@ -809,7 +736,7 @@ const zh: Copy = {
     "\u628a\u60a8\u7684\u6458\u8981\u76f4\u63a5\u53d1\u5230\u6211\u4eec\u7684 WhatsApp\u3002\u5185\u5bb9\u5df2\u7ecf\u586b\u597d\uff0c\u60a8\u53ea\u9700\u6309\u53d1\u9001\u3002",
   waHandoffCta: "\u6253\u5f00 WhatsApp",
   waIntro: (reference) =>
-    `\u60a8\u597d My Kenyalang Homes\u3002\u6211\u521a\u63d0\u4ea4\u4e86\u5feb\u901f\u8868\u683c\uff0c\u6211\u7684\u7f16\u53f7\u662f ${reference}\u3002`,
+    `\u60a8\u597d My Kenyalang Homes\u3002\u6211\u521a\u63d0\u4ea4\u4e86\u767b\u8bb0\u8868\u683c\uff0c\u6211\u7684\u7f16\u53f7\u662f ${reference}\u3002`,
 };
 /* --------------------------------------------------------------------------
    Iban. Written to be read by a Sarawakian speaker, not transliterated from
@@ -821,7 +748,7 @@ const zh: Copy = {
 const iba: Copy = {
   htmlLang: "iba-MY",
   brandPartners: "EG Megah Holdings \u00d7 KOBIS Berhad",
-  expressBadge: "Pejalai Express",
+  programBadge: "Program Pengempu Rumah",
   heroTitle: "Aram Kitai Berengkah!",
   heroTitleAccent: "Pejalai Ngaga Rumah Impian Nuan.",
   heroBody:
@@ -848,28 +775,6 @@ const iba: Copy = {
   ],
   mockFoot: "Tu chunto aja. Uji enggau nambar nuan empu.",
 
-  reasonsEyebrow: "Utai ti diberi",
-  reasonsTitle: "Semua ti diguna nuan.",
-  reasonsTitleTwo: "Nadai utai ti nyusah.",
-  reasonsLede: "Siti borang ti mudah, udah nya pengawa kami ngintu ti bukai.",
-  reasons: [
-    {
-      title: "Tanah nuan dipeda dulu",
-      body: "Kami meda endur enggau besai tanah nuan sebedau nyadika saran pasal rumah.",
-    },
-    {
-      title: "Rumah ti ngena",
-      body: "Saran digaga nitih penyampau bilik enggau bajet ti dikira nuan.",
-    },
-    {
-      title: "Pinjam ti ditunjuk",
-      body: "Kami nerangka jalai bank enggau surat ti diguna, siti-siti.",
-    },
-    {
-      title: "Siti pengawa, siti nombor",
-      body: "Siku consultant ngintu pejalai nuan ari pun datai ke kunchi rumah.",
-    },
-  ],
 
   processEyebrow: "Jalai",
   processTitle: "Tembu dalam dua minit",
@@ -1015,7 +920,7 @@ const iba: Copy = {
   calcCloseLabel: "Tutup calculator",
 
   footerNote:
-    "My Kenyalang Homes, Pejalai Express. Penerang ti dibagi nuan semina dikena kena ngabas nuan pasal pengempu rumah enggau pinjam.",
+    "Penerang ti dibagi nuan semina dikena kena ngabas nuan pasal pengempu rumah enggau pinjam.",
   langLabel: "Pilih jaku",
   bubbleCalc: "AI Calculator",
   bubbleWhatsApp: "WhatsApp",
@@ -1025,7 +930,7 @@ const iba: Copy = {
     "Kirim ringkasan nuan terus ngagai WhatsApp kami. Semua udah diisi \u2014 nuan semina nekan kirim.",
   waHandoffCta: "Buka WhatsApp",
   waIntro: (reference) =>
-    `Halo My Kenyalang Homes. Aku baru ngirim borang Express. Nombor aku ${reference}.`,
+    `Halo My Kenyalang Homes. Aku baru ngirim borang daftar. Nombor aku ${reference}.`,
 };
 
 export const COPY: Record<Lang, Copy> = { ms, en, zh, iba };

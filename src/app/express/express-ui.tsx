@@ -495,38 +495,6 @@ export function PillBadge({ children }: { children: ReactNode }) {
   );
 }
 
-/**
- * A bento cell. `wide` spans two columns on desktop, which is what stops the
- * grid reading as four identical boxes.
- */
-export function BentoCard({
-  icon,
-  title,
-  body,
-  wide = false,
-  tinted = false,
-}: {
-  icon: string;
-  title: string;
-  body: string;
-  wide?: boolean;
-  tinted?: boolean;
-}) {
-  return (
-    <div
-      className={`chrome-panel relative flex flex-col rounded-express-lg p-6 sm:p-7 ${
-        wide ? "lg:col-span-2" : ""
-      } ${tinted ? "ex-accent-wash" : ""}`}
-    >
-      <span className="ex-chip ex-accent mb-5 flex size-12 items-center justify-center rounded-2xl">
-        <Icon name={icon} className="size-6" />
-      </span>
-      <h3 className="ex-ink display-md text-[1.125rem] sm:text-[1.25rem]">{title}</h3>
-      <p className="ex-soft mt-2.5 text-pretty text-[0.9375rem] leading-relaxed">{body}</p>
-    </div>
-  );
-}
-
 /** A process card carrying its own number as a badge over the icon tile. */
 export function StepCard({
   index,
@@ -655,62 +623,46 @@ export function whatsappLink(number: string, message: string) {
 }
 
 /**
- * Two reachable actions, pinned to the bottom corners: the calculator on the
- * left and WhatsApp on the right. They sit clear of the submit button, which
- * spans the column between them.
+ * WhatsApp, pinned bottom-right. It renders only when a number is configured,
+ * and sits clear of the submit button, which spans the column beside it.
  */
 export function ServiceBubbles({
   lang,
-  onCalculator,
   whatsappHref,
 }: {
   lang: Lang;
-  onCalculator: () => void;
   whatsappHref: string | null;
 }) {
-  const t = COPY[lang];
+  if (!whatsappHref) return null;
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-(--z-stickybar) px-3 pb-3 sm:px-5 sm:pb-5">
-      <div className="mx-auto flex max-w-6xl items-end justify-between gap-3">
-        <button
-          type="button"
-          onClick={onCalculator}
-          className="chrome-panel ex-ink pointer-events-auto inline-flex h-12 items-center gap-2 rounded-full pl-3 pr-4 text-[0.8125rem] font-bold shadow-lg transition-transform duration-200 hover:-translate-y-0.5"
+      <div className="mx-auto flex max-w-6xl justify-end">
+        <a
+          href={whatsappHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="pointer-events-auto inline-flex h-12 items-center gap-2 rounded-full bg-[#25d366] pl-3 pr-4 text-[0.8125rem] font-bold text-[#04301a] shadow-lg transition-transform duration-200 hover:-translate-y-0.5"
         >
-          <span className="ex-accent-wash ex-accent flex size-8 items-center justify-center rounded-full">
-            <Icon name="spark" className="size-4" />
+          <span className="flex size-8 items-center justify-center rounded-full bg-white/25">
+            <svg viewBox="0 0 24 24" className="size-[1.125rem]" aria-hidden>
+              <path
+                d="M12.03 3.2A8.78 8.78 0 003.4 11.9c0 1.54.41 3.04 1.18 4.36L3.3 20.7l4.56-1.24a8.74 8.74 0 004.17 1.06h.01a8.78 8.78 0 008.76-8.7 8.78 8.78 0 00-8.77-8.62z"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.7"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M9.1 7.9c.2-.02.4-.02.58-.01.19.01.44-.7.84.64l.55 1.35c.07.17.12.37.01.57-.11.2-.17.32-.33.5-.16.17-.34.39-.15.71.19.32.85 1.4 1.83 2.27 1.26 1.12 2.32 1.47 2.65 1.63.33.17.52.14.71-.08.19-.23.82-.95 1.04-1.28.22-.33.44-.27.73-.16.3.11 1.87.88 2.19 1.04"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            </svg>
           </span>
-          <span className="hidden sm:inline">{t.bubbleCalc}</span>
-        </button>
-
-        {whatsappHref ? (
-          <a
-            href={whatsappHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="pointer-events-auto inline-flex h-12 items-center gap-2 rounded-full bg-[#25d366] pl-3 pr-4 text-[0.8125rem] font-bold text-[#04301a] shadow-lg transition-transform duration-200 hover:-translate-y-0.5"
-          >
-            <span className="flex size-8 items-center justify-center rounded-full bg-white/25">
-              <svg viewBox="0 0 24 24" className="size-[1.125rem]" aria-hidden>
-                <path
-                  d="M12.03 3.2A8.78 8.78 0 003.4 11.9c0 1.54.41 3.04 1.18 4.36L3.3 20.7l4.56-1.24a8.74 8.74 0 004.17 1.06h.01a8.78 8.78 0 008.76-8.7 8.78 8.78 0 00-8.77-8.62z"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.7"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M9.1 7.9c.2-.02.4-.02.58-.01.19.01.44-.7.84.64l.55 1.35c.07.17.12.37.01.57-.11.2-.17.32-.33.5-.16.17-.34.39-.15.71.19.32.85 1.4 1.83 2.27 1.26 1.12 2.32 1.47 2.65 1.63.33.17.52.14.71-.08.19-.23.82-.95 1.04-1.28.22-.33.44-.27.73-.16.3.11 1.87.88 2.19 1.04"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </span>
-            <span className="hidden sm:inline">{t.bubbleWhatsApp}</span>
-          </a>
-        ) : null}
+          <span className="hidden sm:inline">{COPY[lang].bubbleWhatsApp}</span>
+        </a>
       </div>
     </div>
   );
@@ -723,11 +675,11 @@ export function KobisSignature({ lang, href }: { lang: Lang; href: string }) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="ex-dim group relative isolate inline-flex overflow-hidden rounded-full px-3 py-1.5 text-[0.75rem] font-semibold transition-colors duration-200 hover:text-[var(--ex-accent)]"
+      className="ex-soft group relative isolate inline-flex overflow-hidden rounded-full py-1.5 text-[0.75rem] font-semibold transition-colors duration-200 hover:text-[var(--ex-violet)]"
     >
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-y-0 -left-1/3 -z-10 w-1/3 -skew-x-12 bg-[var(--ex-accent)]/25 opacity-0 transition-all duration-700 [transition-timing-function:var(--ease-out-quart)] group-hover:left-[110%] group-hover:opacity-100"
+        className="pointer-events-none absolute inset-y-0 -left-1/3 -z-10 w-1/3 -skew-x-12 bg-[var(--ex-violet)]/30 opacity-0 transition-all duration-700 [transition-timing-function:var(--ease-out-quart)] group-hover:left-[110%] group-hover:opacity-100"
       />
       {COPY[lang].kobisSignature}
     </a>

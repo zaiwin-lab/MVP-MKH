@@ -3,13 +3,13 @@ import { SITE_URL } from "@/lib/content";
 import { THEME_BOOTSTRAP } from "@/lib/ex-theme";
 import { ExpressJourney } from "./express-journey";
 
-const OG_TITLE = "My Kenyalang Homes \u2014 Express Journey";
+const OG_TITLE = "My Kenyalang Homes \u2014 Program Pemilikan Rumah";
 const OG_DESCRIPTION =
   "Jom Kita Mulakan! Daftar dalam 2 minit. Percuma, ringkas, dipandu. Tiada dokumen diperlukan sekarang.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Express Journey \u2014 Jom Kita Mulakan!",
+  title: "Program Pemilikan Rumah \u2014 Jom Kita Mulakan!",
   description: OG_DESCRIPTION,
   alternates: { canonical: "/express/" },
   openGraph: {
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
         url: "/og-express.jpg",
         width: 1200,
         height: 630,
-        alt: "My Kenyalang Homes Express Journey \u2014 Jom Kita Mulakan!",
+        alt: "My Kenyalang Homes \u2014 Jom Kita Mulakan! Program Pemilikan Rumah Sarawak.",
       },
     ],
   },

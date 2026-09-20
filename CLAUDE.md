@@ -79,8 +79,15 @@ steps or gates to it; every extra interaction costs conversions.
   family, so the two read as one material. The ground is a royal navy lit by
   three sources: blue top-left, amber top-right where the action sits, and a
   violet cast underneath that stops a deep navy going flat and grey.
-- **No logo mark in this header.** The wordmark alone is the identity here;
-  don't reintroduce `HornbillMark` on this page.
+- **No logo mark in this header**, and no tagline under the wordmark. The
+  wordmark alone is the identity here; don't reintroduce `HornbillMark`.
+- **The word "Express" does not appear in customer-facing copy.** The client
+  considers it wrong for a home-building commitment. The badge names the
+  programme instead (`programBadge`). The route stays `/express` because it is
+  a path, not copy.
+- The footer sits on `band-deep`, which sets its own ground: the page gradient
+  lightens toward the middle and would otherwise leave the footer paler than
+  the header. Credits sit left, language pills centre.
 - **No photographs on this page.** It runs on drawn icons in boxed panels;
   `ICONS` in `express-ui.tsx` is the set, keyed by the option value it belongs
   to. Do not reintroduce imagery here.

@@ -30,7 +30,6 @@ import {
   PrimaryButton,
   ProgressRail,
   STEP_IDS,
-  BentoCard,
   Eyebrow,
   KobisSignature,
   LangPills,
@@ -246,7 +245,6 @@ export function ExpressJourney() {
       ) : (
         <>
           <Hero lang={lang} />
-          <Reasons lang={lang} />
           <Process lang={lang} />
           <main id="main" className="shell max-w-4xl pb-20 pt-6 sm:pb-28 sm:pt-10">
             <form
@@ -310,13 +308,9 @@ export function ExpressJourney() {
         </>
       )}
 
-      <ExpressFooter lang={lang} onLang={setLang} />
+      <ExpressFooter lang={lang} onLang={setLang} clearBubble={Boolean(waHref)} />
 
-      <ServiceBubbles
-        lang={lang}
-        onCalculator={() => setCalcOpen(true)}
-        whatsappHref={waHref}
-      />
+      <ServiceBubbles lang={lang} whatsappHref={waHref} />
 
       {/* Outside the <form>: nested forms are invalid HTML. */}
       <AiCalculator
@@ -349,13 +343,8 @@ function StickyHeader({
     <header className="ex-border sticky top-0 z-(--z-sticky) border-b bg-[var(--ex-base)]/80 backdrop-blur-xl">
       <div className="shell max-w-6xl py-3">
         <div className="flex items-center gap-3">
-          <span className="min-w-0 leading-none">
-            <span className="ex-ink block truncate font-express text-[1rem] font-extrabold tracking-[-0.02em] sm:text-[1.125rem]">
-              My Kenyalang Homes
-            </span>
-            <span className="ex-dim mt-1 hidden text-[0.625rem] font-bold uppercase tracking-[0.14em] sm:block">
-              {t.expressBadge}
-            </span>
+          <span className="ex-ink min-w-0 truncate font-express text-[1.125rem] font-extrabold tracking-[-0.03em] sm:text-[1.375rem]">
+            My Kenyalang Homes
           </span>
 
           <span className="ml-auto flex items-center gap-2">
@@ -392,7 +381,7 @@ function Hero({ lang }: { lang: Lang }) {
         <div className="grid items-center gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:gap-14">
           <div>
             <span className="rise inline-block">
-              <PillBadge>{t.expressBadge}</PillBadge>
+              <PillBadge>{t.programBadge}</PillBadge>
             </span>
             <h1 className="rise ex-ink display-xl mt-6 text-balance text-[2.75rem] [animation-delay:80ms] sm:text-[4.25rem]">
               {t.heroTitle}
@@ -451,41 +440,6 @@ function Hero({ lang }: { lang: Lang }) {
   );
 }
 
-function Reasons({ lang }: { lang: Lang }) {
-  const t = COPY[lang];
-  const icons = ["land", "1 Tingkat", "wallet", "guide"];
-  return (
-    <section className="band-raised">
-      <div className="shell max-w-6xl py-16 sm:py-24">
-        <div className="text-center">
-          <Eyebrow>{t.reasonsEyebrow}</Eyebrow>
-          <h2 className="ex-ink display-lg mx-auto mt-4 max-w-[20ch] text-balance text-[1.875rem] sm:text-[2.75rem]">
-            {t.reasonsTitle}
-            <span className="ex-dim block">{t.reasonsTitleTwo}</span>
-          </h2>
-          <p className="ex-soft mx-auto mt-5 max-w-[52ch] text-pretty text-[1rem] leading-relaxed sm:text-[1.0625rem]">
-            {t.reasonsLede}
-          </p>
-        </div>
-
-        {/* Asymmetric on purpose: four equal boxes read as a template. */}
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {t.reasons.map((reason, i) => (
-            <BentoCard
-              key={reason.title}
-              icon={icons[i]}
-              title={reason.title}
-              body={reason.body}
-              wide={i === 0 || i === 3}
-              tinted={i === 0}
-            />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function Process({ lang }: { lang: Lang }) {
   const t = COPY[lang];
   const icons = ["user", "wallet", "Phone Call"];
@@ -520,24 +474,31 @@ function Process({ lang }: { lang: Lang }) {
 function ExpressFooter({
   lang,
   onLang,
+  clearBubble,
 }: {
   lang: Lang;
   onLang: (next: Lang) => void;
+  /** Reserve room for the floating WhatsApp button, when there is one. */
+  clearBubble: boolean;
 }) {
   const t = COPY[lang];
   return (
-    <footer className="ex-border border-t">
-      <div className="shell max-w-6xl pb-24 pt-10">
-        <div className="flex flex-col items-center gap-8 text-center lg:flex-row lg:items-start lg:justify-between lg:text-left">
-          <div className="flex items-center gap-3">
-            <span className="leading-none">
-              <span className="ex-ink block font-express text-[1rem] font-extrabold tracking-[-0.02em]">
-                My Kenyalang Homes
-              </span>
-              <span className="ex-dim mt-1 block text-[0.625rem] font-bold uppercase tracking-[0.14em]">
-                {t.brandPartners}
-              </span>
-            </span>
+    <footer className="band-deep ex-border border-t">
+      <div className={`shell max-w-6xl pt-12 ${clearBubble ? "pb-24" : "pb-12"}`}>
+        <div className="flex flex-col items-center gap-9 text-center lg:flex-row lg:items-start lg:justify-between lg:text-left">
+          <div className="min-w-0">
+            <p className="ex-ink font-express text-[1.125rem] font-extrabold tracking-[-0.03em]">
+              My Kenyalang Homes
+            </p>
+            <p className="ex-dim mt-1.5 text-[0.6875rem] font-bold uppercase tracking-[0.14em]">
+              {t.brandPartners}
+            </p>
+            <p className="ex-dim mt-5 text-[0.75rem]">
+              &copy; {new Date().getFullYear()} My Kenyalang Homes. {t.footerRights}
+            </p>
+            <p className="mt-1">
+              <KobisSignature lang={lang} href={EXPRESS_CONTACT.kobisUrl} />
+            </p>
           </div>
 
           <div className="flex flex-col items-center gap-3">
@@ -547,17 +508,9 @@ function ExpressFooter({
             <LangPills lang={lang} onChange={onLang} />
           </div>
 
-          <div className="max-w-[38ch]">
-            <p className="ex-dim text-pretty text-[0.75rem] leading-relaxed">
-              {t.footerNote}
-            </p>
-            <p className="ex-dim mt-1.5 text-[0.75rem]">
-              &copy; {new Date().getFullYear()} My Kenyalang Homes. {t.footerRights}
-            </p>
-            <p className="-ml-3 mt-1">
-              <KobisSignature lang={lang} href={EXPRESS_CONTACT.kobisUrl} />
-            </p>
-          </div>
+          <p className="ex-dim max-w-[34ch] text-pretty text-[0.75rem] leading-relaxed">
+            {t.footerNote}
+          </p>
         </div>
       </div>
     </footer>

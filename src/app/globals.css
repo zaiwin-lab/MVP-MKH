@@ -274,6 +274,10 @@
 
   --ex-danger: var(--color-danger-300);
 
+  /* The signature's hover colour. Bright violet rather than the amber the
+     rest of the page uses, so the credit line reads as its own mark. */
+  --ex-violet: #b39dff;
+
   --ex-band-raised: #0c2142;
   --ex-band-raised-border: rgb(255 255 255 / 0.07);
 }
@@ -319,6 +323,8 @@
   --ex-lit-ink: #08182b;
 
   --ex-danger: #a3121a;
+
+  --ex-violet: #6d28d9;
 
   --ex-band-raised: #ffffff;
   --ex-band-raised-border: rgb(11 32 53 / 0.08);
@@ -444,51 +450,65 @@
 
 /* --- Semantic text ------------------------------------------------------ */
 
-.ex-ink {
-  color: var(--ex-ink);
-}
-.ex-soft {
-  color: var(--ex-ink-soft);
-}
-.ex-dim {
-  color: var(--ex-ink-dim);
-}
-.ex-accent {
-  color: var(--ex-accent);
-}
-.ex-danger {
-  color: var(--ex-danger);
-}
-.ex-border {
-  border-color: var(--ex-border);
-}
-.ex-border-strong {
-  border-color: var(--ex-border-strong);
-}
-.ex-chip {
-  background-color: var(--ex-chip);
-}
-.ex-accent-wash {
-  background-color: color-mix(in srgb, var(--ex-accent) 14%, transparent);
-}
+/* These sit in `components` on purpose. Emitted unlayered they would beat
+   every Tailwind utility, because unlayered CSS wins over any @layer
+   regardless of specificity, and a `hover:text-[...]` alongside `ex-soft`
+   would silently do nothing. In `components` the cascade puts utilities
+   after them, which is what a utility is for. */
+@layer components {
+  .ex-ink {
+    color: var(--ex-ink);
+  }
+  .ex-soft {
+    color: var(--ex-ink-soft);
+  }
+  .ex-dim {
+    color: var(--ex-ink-dim);
+  }
+  .ex-accent {
+    color: var(--ex-accent);
+  }
+  .ex-danger {
+    color: var(--ex-danger);
+  }
+  .ex-border {
+    border-color: var(--ex-border);
+  }
+  .ex-border-strong {
+    border-color: var(--ex-border-strong);
+  }
+  .ex-chip {
+    background-color: var(--ex-chip);
+  }
+  .ex-accent-wash {
+    background-color: color-mix(in srgb, var(--ex-accent) 14%, transparent);
+  }
 
-/* Native select menus paint on the OS surface, not the page, so their colours
-   are set here rather than inherited from the field. */
-.express-root {
-  font-family: var(--font-express);
-}
+  /* Native select menus paint on the OS surface, not the page, so their colours
+     are set here rather than inherited from the field. */
+  .express-root {
+    font-family: var(--font-express);
+  }
 
-.express-root option {
-  background-color: var(--ex-base);
-  color: var(--ex-ink);
-}
+  .express-root option {
+    background-color: var(--ex-base);
+    color: var(--ex-ink);
+  }
 
-.express-root ::placeholder {
-  color: var(--ex-ink-dim);
-  opacity: 1;
+  .express-root ::placeholder {
+    color: var(--ex-ink-dim);
+    opacity: 1;
+  }
 }
 
 /* --- Bands -------------------------------------------------------------- */
+
+/* The closing band. It sets its own ground rather than inheriting the page
+   gradient, which lightens toward the middle and would leave the footer
+   paler than the header above it. */
+@utility band-deep {
+  background-color: var(--ex-base);
+}
 
 /* A section that steps toward the light, bordered top and bottom so the
    change of ground reads as deliberate rather than as a rendering seam. */
