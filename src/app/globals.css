@@ -103,11 +103,29 @@
   --radius-card: 0.625rem;
   --radius-control: 0.5rem;
 
-  /* Express surfaces sit on ivory, so they need a softer, wider shadow than
-     the main portal's cards and a slightly more generous radius. */
-  --radius-express: 1rem;
-  --shadow-express: 0 1px 2px rgb(11 32 53 / 0.04), 0 18px 40px -28px rgb(11 32 53 / 0.35);
-  --shadow-express-lg: 0 2px 4px rgb(11 32 53 / 0.06), 0 32px 64px -32px rgb(11 32 53 / 0.45);
+  /* Express surfaces sit on ivory and carry the weight of the page, so they
+     take a wide, brand-tinted shadow and a generous radius. The shadow is
+     navy rather than black: a neutral drop shadow on a warm ground reads as
+     dirt, a hue-matched one reads as depth. */
+  --radius-express: 1.25rem;
+  --radius-express-lg: 1.75rem;
+  --shadow-express: 0 2px 8px rgb(11 32 53 / 0.05), 0 16px 48px -20px rgb(11 32 53 / 0.22);
+  --shadow-express-lg: 0 4px 16px rgb(11 32 53 / 0.07), 0 32px 72px -28px rgb(11 32 53 / 0.32);
+  --shadow-express-xl: 0 8px 24px rgb(11 32 53 / 0.09), 0 48px 96px -32px rgb(11 32 53 / 0.42);
+  /* Lift for the primary action only. Champagne-tinted so the button looks
+     lit rather than stuck onto the page. */
+  --shadow-champagne: 0 2px 8px rgb(167 122 32 / 0.18), 0 16px 36px -14px rgb(167 122 32 / 0.45);
+
+  /* Exponential ease. Motion decelerates hard at the end, which reads as
+     weight settling rather than a linear slide. */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+
+  /* Semantic stacking order. Never an arbitrary 9999. */
+  --z-sticky: 40;
+  --z-stickybar: 45;
+  --z-backdrop: 50;
+  --z-modal: 60;
 
   /* --- Shadow --- */
   --shadow-card: 0 1px 2px rgb(10 28 51 / 0.05), 0 8px 24px -12px rgb(10 28 51 / 0.14);
@@ -180,7 +198,7 @@
   );
 }
 
-/* The Express primary action. Deliberately flatter than `gold-face` — the
+/* The Express primary action. Deliberately flatter than `gold-face` - the
    brief calls for restraint, so this is a two-stop shade, not a sheen. */
 @utility champagne-face {
   background-image: linear-gradient(
@@ -188,6 +206,49 @@
     var(--color-champagne-400) 0%,
     var(--color-champagne-500) 100%
   );
+}
+
+/* The Express hero ground. Four stops rather than two: a flat navy panel
+   reads as a coloured box, while a slow shift through the scale reads as
+   depth behind the type. */
+@utility navy-depth {
+  background-image: linear-gradient(
+    160deg,
+    var(--color-navy-950) 0%,
+    var(--color-navy-900) 38%,
+    var(--color-navy-800) 68%,
+    var(--color-navy-700) 100%
+  );
+}
+
+/* The success panel sets light type over a sunset photograph whose sky is
+   bright. The veil is therefore heaviest at the top, where the heading and
+   the reference number sit, and eases only slightly further down. Anything
+   lighter and the champagne kicker drops under 3:1 against cloud. */
+@utility photo-scrim {
+  background-image: linear-gradient(
+    to bottom,
+    rgb(5 15 27 / 0.82) 0%,
+    rgb(5 15 27 / 0.7) 45%,
+    rgb(5 15 27 / 0.8) 100%
+  );
+}
+
+/* Entrance for the hero and the section headings. Defined here rather than
+   inline so the reduced-motion block below can neutralise every use at once. */
+@keyframes express-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1.25rem, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@utility rise {
+  animation: express-rise 0.7s var(--ease-out-expo) both;
 }
 
 @utility eyebrow {

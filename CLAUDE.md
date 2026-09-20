@@ -67,3 +67,13 @@ steps or gates to it; every extra interaction costs conversions.
 - The AI calculator is optional, never blocks submission, and calls the real
   DSR model in `src/lib/eligibility.ts`. It must keep saying it is an estimate,
   not an approval.
+- **Copy lives in `src/lib/i18n.ts`**, in Bahasa Malaysia and English. Only
+  labels translate; the option `value` a customer picks is canonical Malay and
+  is what reaches the CRM. Translating stored values would split every report
+  in two. Adding a language means adding a key to `COPY`, nothing else.
+- Photography comes from `public/images/` and carries the page. Preview any
+  replacement before shipping it; a wrong photo here misrepresents a home.
+- **Audit contrast against rendered pixels, not computed styles.** Tailwind v4
+  emits `oklab()` and `color-mix()`, which naive parsers read as near-black and
+  which produce a page of phantom failures. Screenshot, take the modal pixel in
+  each text box as the ground and the glyph core as the ink.

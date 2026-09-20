@@ -6,6 +6,7 @@ import {
   calculateEligibility,
   formatRM,
 } from "@/lib/eligibility";
+import { COPY, type Lang } from "@/lib/i18n";
 
 /* --------------------------------------------------------------------------
    Optional 60-second financing estimate.
@@ -35,11 +36,14 @@ export function AiCalculator({
   open,
   onClose,
   financingTarget,
+  lang,
 }: {
   open: boolean;
   onClose: () => void;
   financingTarget: string;
+  lang: Lang;
 }) {
+  const t = COPY[lang];
   const [income, setIncome] = useState("");
   const [commitments, setCommitments] = useState("");
   const [age, setAge] = useState("");
@@ -84,7 +88,7 @@ export function AiCalculator({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-navy-950/60 p-0 backdrop-blur-[2px] sm:items-center sm:p-4"
+      className="fixed inset-0 z-(--z-modal) flex items-end justify-center bg-navy-950/70 p-0 backdrop-blur-sm sm:items-center sm:p-4"
       onClick={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
@@ -93,24 +97,24 @@ export function AiCalculator({
         role="dialog"
         aria-modal="true"
         aria-labelledby="ai-calc-title"
-        className="max-h-[92dvh] w-full max-w-lg overflow-y-auto rounded-t-express bg-white p-6 shadow-express-lg sm:rounded-express sm:p-8"
+        className="max-h-[92dvh] w-full max-w-lg overflow-y-auto rounded-t-express-lg bg-white p-6 shadow-express-xl sm:rounded-express-lg sm:p-8"
       >
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-[0.6875rem] font-bold tracking-[0.16em] text-champagne-600">
-              ANGGARAN AWAL
+            <p className="text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-champagne-700">
+              {t.calcKicker}
             </p>
             <h2
               id="ai-calc-title"
-              className="mt-1.5 font-display text-[1.375rem] leading-tight text-navy-900"
+              className="mt-1.5 font-display text-[1.375rem] font-bold leading-tight text-navy-900"
             >
-              AI Financing Calculator
+              {t.calcTitle}
             </h2>
           </div>
           <button
             type="button"
             onClick={onClose}
-            aria-label="Tutup kalkulator"
+            aria-label={t.calcCloseLabel}
             className="-mr-1.5 -mt-1.5 flex size-10 shrink-0 items-center justify-center rounded-full text-navy-400 transition-colors hover:bg-ivory-200 hover:text-navy-700"
           >
             <svg viewBox="0 0 20 20" className="size-5">
@@ -126,54 +130,50 @@ export function AiCalculator({
         </div>
 
         <p className="mt-3 text-[0.875rem] leading-relaxed text-navy-500">
-          Isi tiga maklumat ringkas untuk anggaran awal. Ini bukan kelulusan
-          pembiayaan.
+          {t.calcIntro}
         </p>
 
         <div className="mt-6 space-y-4">
           <CalcField
             id="calc-income"
-            label="Pendapatan Kasar Bulanan (RM)"
+            label={t.calcIncome}
             value={income}
             onChange={setIncome}
-            placeholder="Contoh: 5000"
+            placeholder={t.calcIncomePlaceholder}
             inputRef={firstFieldRef}
           />
           <CalcField
             id="calc-commitments"
-            label="Komitmen Bulanan Sedia Ada (RM)"
+            label={t.calcCommitments}
             value={commitments}
             onChange={setCommitments}
-            placeholder="Contoh: 800 (kereta, PTPTN, kad kredit)"
+            placeholder={t.calcCommitmentsPlaceholder}
           />
           <CalcField
             id="calc-age"
-            label="Umur Anda"
+            label={t.calcAge}
             value={age}
             onChange={setAge}
-            placeholder="Contoh: 32"
+            placeholder={t.calcAgePlaceholder}
           />
         </div>
 
         {submitted && !ready ? (
           <p className="mt-4 text-[0.8125rem] font-medium text-danger">
-            Masukkan pendapatan bulanan dan umur antara 18 hingga 65 untuk
-            mendapatkan anggaran.
+            {t.calcInvalid}
           </p>
         ) : null}
 
         {result ? (
-          <div className="mt-6 rounded-express border border-champagne-200 bg-champagne-50 p-5">
+          <div className="mt-6 rounded-express border border-champagne-200 bg-champagne-50 p-5 shadow-express">
             {result.overCommitted ? (
               <p className="text-[0.9375rem] font-semibold leading-relaxed text-navy-900">
-                Berdasarkan angka ini, komitmen sedia ada anda sudah menggunakan
-                sebahagian besar pendapatan. Consultant kami boleh bantu lihat
-                pilihan yang ada.
+                {t.calcOverCommitted}
               </p>
             ) : (
               <>
-                <p className="text-[0.6875rem] font-bold tracking-[0.14em] text-champagne-700">
-                  ANGGARAN PEMBIAYAAN
+                <p className="text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-champagne-700">
+                  {t.calcResultLabel}
                 </p>
                 <p className="mt-2 font-display text-[1.5rem] leading-tight text-navy-900 sm:text-[1.75rem]">
                   {formatRM(result.lowerFinancing)} &ndash;{" "}
@@ -181,35 +181,33 @@ export function AiCalculator({
                 </p>
                 <dl className="mt-4 space-y-1.5 text-[0.8125rem] text-navy-600">
                   <div className="flex justify-between gap-4">
-                    <dt>Anggaran ansuran bulanan</dt>
+                    <dt>{t.calcInstalment}</dt>
                     <dd className="font-semibold text-navy-900">
                       {formatRM(result.indicativeInstalment)}
                     </dd>
                   </div>
                   <div className="flex justify-between gap-4">
-                    <dt>Tempoh</dt>
+                    <dt>{t.calcTenure}</dt>
                     <dd className="font-semibold text-navy-900">
-                      {result.effectiveTenureYears} tahun
-                      {result.tenureWasCapped ? " (had umur 70)" : ""}
+                      {result.effectiveTenureYears} {t.calcYears}
+                      {result.tenureWasCapped ? ` (${t.calcAgeCapped})` : ""}
                     </dd>
                   </div>
                   <div className="flex justify-between gap-4">
-                    <dt>Sasaran anda ({financingTarget})</dt>
+                    <dt>{t.calcTargetLabel(financingTarget)}</dt>
                     <dd className="font-semibold text-navy-900">
                       {result.budgetAssessment === "comfortable"
-                        ? "Selesa"
+                        ? t.calcComfortable
                         : result.budgetAssessment === "within"
-                          ? "Dalam julat"
-                          : "Agak ketat"}
+                          ? t.calcWithin
+                          : t.calcStretched}
                     </dd>
                   </div>
                 </dl>
               </>
             )}
             <p className="mt-4 border-t border-champagne-200 pt-3 text-[0.75rem] leading-relaxed text-navy-500">
-              Anggaran sahaja, berdasarkan kadar indikatif {INDICATIVE_RATE}%
-              setahun, margin 90% dan tempoh {TENURE_YEARS} tahun. Bukan
-              kelulusan pembiayaan. Keputusan sebenar ditentukan oleh bank.
+              {t.calcDisclaimer(INDICATIVE_RATE, TENURE_YEARS)}
             </p>
           </div>
         ) : null}
@@ -218,16 +216,16 @@ export function AiCalculator({
           <button
             type="button"
             onClick={() => setSubmitted(true)}
-            className="champagne-face h-[3.25rem] flex-1 rounded-control text-[0.9375rem] font-semibold text-white transition-[filter] hover:brightness-105 active:brightness-95"
+            className="champagne-face h-14 flex-1 rounded-control text-[0.9375rem] font-bold text-navy-950 shadow-champagne transition-[filter,transform] duration-200 hover:brightness-110 active:translate-y-px"
           >
-            {result ? "Kira Semula" : "Kira Anggaran Saya"}
+            {result ? t.calcRerun : t.calcRun}
           </button>
           <button
             type="button"
             onClick={onClose}
-            className="h-[3.25rem] rounded-control border border-navy-200 px-6 text-[0.9375rem] font-semibold text-navy-700 transition-colors hover:bg-ivory-100 sm:flex-none"
+            className="h-14 rounded-control border-[1.5px] border-navy-200 px-6 text-[0.9375rem] font-bold text-navy-700 transition-colors duration-200 hover:bg-ivory-100 sm:flex-none"
           >
-            {result ? "Selesai — Teruskan" : "Tutup"}
+            {result ? t.calcDone : t.calcClose}
           </button>
         </div>
       </div>
@@ -254,7 +252,7 @@ function CalcField({
     <div>
       <label
         htmlFor={id}
-        className="mb-2 block text-[0.8125rem] font-semibold tracking-wide text-navy-800"
+        className="mb-2 block text-[0.8125rem] font-bold tracking-wide text-navy-800"
       >
         {label}
       </label>
@@ -266,7 +264,7 @@ function CalcField({
         value={value}
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value.replace(/[^0-9]/g, ""))}
-        className="h-[3.25rem] w-full rounded-control border border-navy-200 bg-white px-4 text-[0.9375rem] text-navy-900 placeholder:text-navy-300 focus:border-champagne-400 focus:outline-none focus:ring-2 focus:ring-champagne-400/50"
+        className="h-14 w-full rounded-control border-[1.5px] border-navy-200 bg-white px-4 text-[0.9375rem] font-medium text-navy-900 transition-colors duration-200 placeholder:font-normal placeholder:text-navy-400 hover:border-navy-300 focus:border-champagne-500 focus:outline-none focus:ring-4 focus:ring-champagne-400/25"
       />
     </div>
   );

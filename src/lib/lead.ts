@@ -52,65 +52,88 @@ export const DIRECT_SOURCE = "DIRECT";
    Field options
    -------------------------------------------------------------------------- */
 
-export const HOUSE_TYPES = [
-  { value: "1 Tingkat", label: "1 Tingkat", icon: "\u{1F3E0}" },
-  { value: "2 Tingkat", label: "2 Tingkat", icon: "\u{1F3E1}" },
-  { value: "Belum Pasti", label: "Belum Pasti", icon: "?" },
+/**
+ * Option values are canonical Malay and never translate; only the label a
+ * customer reads changes with the language. See src/lib/i18n.ts.
+ */
+export type Option = { value: string; ms: string; en: string };
+
+/** Which photo stands in for each home type on the selection tiles. */
+export const HOUSE_TYPES: (Option & { photo?: string })[] = [
+  {
+    value: "1 Tingkat",
+    ms: "1 Tingkat",
+    en: "Single Storey",
+    photo: "/images/homes/home-01.jpg",
+  },
+  {
+    value: "2 Tingkat",
+    ms: "2 Tingkat",
+    en: "Double Storey",
+    photo: "/images/homes/home-02.jpg",
+  },
+  { value: "Belum Pasti", ms: "Belum Pasti", en: "Not Sure Yet" },
 ];
 
-export const BEDROOM_OPTIONS = [
-  "1 Bilik",
-  "2 Bilik",
-  "3 Bilik",
-  "4 Bilik",
-  "5 Bilik",
-  "6 Bilik",
-  "7 Bilik",
-  "8 Bilik",
-  "Belum Pasti",
+const UNSURE: Option = { value: "Belum Pasti", ms: "Belum Pasti", en: "Not sure yet" };
+
+export const BEDROOM_OPTIONS: Option[] = [
+  ...[1, 2, 3, 4, 5, 6, 7, 8].map((n) => ({
+    value: `${n} Bilik`,
+    ms: `${n} Bilik`,
+    en: `${n} Bedroom${n === 1 ? "" : "s"}`,
+  })),
+  UNSURE,
 ];
 
-export const BATHROOM_OPTIONS = ["1", "2", "3", "4", "Belum Pasti"];
-
-export const FINANCING_TARGETS = [
-  "Below RM200K",
-  "RM200K – RM400K",
-  "RM400K – RM600K",
-  "RM600K – RM800K",
-  "Belum Pasti",
+export const BATHROOM_OPTIONS: Option[] = [
+  ...["1", "2", "3", "4"].map((n) => ({ value: n, ms: n, en: n })),
+  UNSURE,
 ];
 
-export const CONSULTATION_MODES = [
+export const FINANCING_TARGETS: Option[] = [
+  { value: "Below RM200K", ms: "Bawah RM200K", en: "Below RM200K" },
+  { value: "RM200K \u2013 RM400K", ms: "RM200K \u2013 RM400K", en: "RM200K \u2013 RM400K" },
+  { value: "RM400K \u2013 RM600K", ms: "RM400K \u2013 RM600K", en: "RM400K \u2013 RM600K" },
+  { value: "RM600K \u2013 RM800K", ms: "RM600K \u2013 RM800K", en: "RM600K \u2013 RM800K" },
+  UNSURE,
+];
+
+export const CONSULTATION_MODES: (Option & { note: { ms: string; en: string } })[] = [
   {
     value: "Phone Call",
-    label: "Phone Call",
-    icon: "\u{1F4DE}",
-    note: "Kami hubungi anda",
+    ms: "Panggilan",
+    en: "Phone Call",
+    note: { ms: "Kami hubungi anda", en: "We call you" },
   },
   {
     value: "Zoom / Online",
-    label: "Zoom / Online",
-    icon: "\u{1F4BB}",
-    note: "Sesi atas talian",
+    ms: "Zoom / Online",
+    en: "Zoom / Online",
+    note: { ms: "Sesi atas talian", en: "An online session" },
   },
   {
     value: "Meet-Up",
-    label: "Meet-Up",
-    icon: "\u{1F91D}",
-    note: "Jumpa secara fizikal",
+    ms: "Jumpa",
+    en: "Meet-Up",
+    note: { ms: "Jumpa secara fizikal", en: "Meet in person" },
   },
 ];
 
-export const HOME_NUMBERS = [
-  "Rumah Pertama Saya",
-  "Rumah Kedua Saya",
-  "Rumah Ketiga Saya",
-  "Rumah Keempat atau Seterusnya",
+export const HOME_NUMBERS: Option[] = [
+  { value: "Rumah Pertama Saya", ms: "Rumah Pertama Saya", en: "First Home" },
+  { value: "Rumah Kedua Saya", ms: "Rumah Kedua Saya", en: "Second Home" },
+  { value: "Rumah Ketiga Saya", ms: "Rumah Ketiga Saya", en: "Third Home" },
+  {
+    value: "Rumah Keempat atau Seterusnya",
+    ms: "Rumah Keempat atau Seterusnya",
+    en: "Fourth Home or Beyond",
+  },
 ];
 
 /**
- * Defaults chosen so the fastest possible path — open, tap tiles, type
- * contact, submit — still produces a usable lead. Anything pre-filled here is
+ * Defaults chosen so the fastest possible path - open, tap tiles, type
+ * contact, submit - still produces a usable lead. Anything pre-filled here is
  * the most common answer, not a guess we need the customer to correct.
  */
 export const LEAD_DEFAULTS = {
@@ -121,12 +144,12 @@ export const LEAD_DEFAULTS = {
   house_type: "",
   bedrooms: "4 Bilik",
   bathrooms: "2",
-  financing_target: "RM200K – RM400K",
+  financing_target: "RM200K \u2013 RM400K",
   consultation_preference: "",
   customer_name: "",
   phone: "",
   email: "",
-  home_number: HOME_NUMBERS[0],
+  home_number: HOME_NUMBERS[0].value,
 };
 
 /* --------------------------------------------------------------------------
