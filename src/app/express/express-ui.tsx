@@ -115,18 +115,26 @@ export function Label({
   children: ReactNode;
   optional?: boolean;
 }) {
+  /* The "Pilihan" badge is a sibling of the <label>, not a child of it. The
+     form backend derives its column titles from label text, so nesting the
+     badge would export a column called "Kawasan / AreaPilihan". */
   return (
-    <label
-      htmlFor={htmlFor}
-      className="mb-2 flex items-baseline gap-2 text-[0.8125rem] font-semibold tracking-wide text-navy-800"
-    >
-      {children}
+    <div className="mb-2 flex items-baseline gap-2">
+      <label
+        htmlFor={htmlFor}
+        className="text-[0.8125rem] font-semibold tracking-wide text-navy-800"
+      >
+        {children}
+      </label>
       {optional ? (
-        <span className="text-[0.6875rem] font-medium uppercase tracking-[0.1em] text-navy-300">
+        <span
+          aria-hidden
+          className="text-[0.6875rem] font-medium uppercase tracking-[0.1em] text-navy-300"
+        >
           Pilihan
         </span>
       ) : null}
-    </label>
+    </div>
   );
 }
 
