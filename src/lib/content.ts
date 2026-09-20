@@ -110,11 +110,18 @@ export const FINANCIAL_INSTITUTIONS = [
 /**
  * The origin social previews resolve against. Open Graph needs absolute URLs,
  * so if this points somewhere that is not actually serving the site, every
- * WhatsApp and Facebook share renders without its image. Set
- * NEXT_PUBLIC_SITE_URL when the custom domain goes live.
+ * WhatsApp and Facebook share renders without its image.
+ *
+ * `URL` is set by Netlify at build time to the site's own primary address, so
+ * the day a custom domain is made primary the previews and the sitemap follow
+ * it with no code change and no window where they point at the wrong host.
+ * `NEXT_PUBLIC_SITE_URL` overrides it when a build needs to be pinned; the
+ * literal is only the local-development fallback.
  */
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://mkhomesv1.netlify.app";
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  process.env.URL ??
+  "https://mkhomesv1.netlify.app";
 
 export const EXPRESS_CONTACT = {
   /** e.g. "60128889999" for +60 12-888 9999. Empty disables the handoff. */
