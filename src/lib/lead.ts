@@ -1,3 +1,5 @@
+import type { Lang } from "./i18n";
+
 /* --------------------------------------------------------------------------
    Express lead — data model and attribution.
 
@@ -54,80 +56,137 @@ export const DIRECT_SOURCE = "DIRECT";
 
 /**
  * Option values are canonical Malay and never translate; only the label a
- * customer reads changes with the language. See src/lib/i18n.ts.
+ * customer reads changes with the language. Labels are keyed by `Lang`, so
+ * adding a language fails the build until every option has been translated
+ * rather than silently falling back to Malay. See src/lib/i18n.ts.
  */
-export type Option = { value: string; ms: string; en: string };
+export type Option = { value: string } & Record<Lang, string>;
 
 /** Which photo stands in for each home type on the selection tiles. */
-export const HOUSE_TYPES: (Option & { photo?: string })[] = [
+export const HOUSE_TYPES: Option[] = [
+  { value: "1 Tingkat", ms: "1 Tingkat", en: "Single Storey", zh: "\u5355\u5c42", iba: "1 Tingkat" },
+  { value: "2 Tingkat", ms: "2 Tingkat", en: "Double Storey", zh: "\u53cc\u5c42", iba: "2 Tingkat" },
   {
-    value: "1 Tingkat",
-    ms: "1 Tingkat",
-    en: "Single Storey",
-    photo: "/images/homes/home-01.jpg",
+    value: "Belum Pasti",
+    ms: "Belum Pasti",
+    en: "Not Sure Yet",
+    zh: "\u8fd8\u4e0d\u786e\u5b9a",
+    iba: "Apin Tentu",
   },
-  {
-    value: "2 Tingkat",
-    ms: "2 Tingkat",
-    en: "Double Storey",
-    photo: "/images/homes/home-02.jpg",
-  },
-  { value: "Belum Pasti", ms: "Belum Pasti", en: "Not Sure Yet" },
 ];
 
-const UNSURE: Option = { value: "Belum Pasti", ms: "Belum Pasti", en: "Not sure yet" };
+const UNSURE: Option = {
+  value: "Belum Pasti",
+  ms: "Belum Pasti",
+  en: "Not sure yet",
+  zh: "\u8fd8\u4e0d\u786e\u5b9a",
+  iba: "Apin tentu",
+};
 
 export const BEDROOM_OPTIONS: Option[] = [
   ...[1, 2, 3, 4, 5, 6, 7, 8].map((n) => ({
     value: `${n} Bilik`,
     ms: `${n} Bilik`,
     en: `${n} Bedroom${n === 1 ? "" : "s"}`,
+    zh: `${n} \u95f4\u623f`,
+    iba: `${n} Bilik`,
   })),
   UNSURE,
 ];
 
 export const BATHROOM_OPTIONS: Option[] = [
-  ...["1", "2", "3", "4"].map((n) => ({ value: n, ms: n, en: n })),
+  ...["1", "2", "3", "4"].map((n) => ({ value: n, ms: n, en: n, zh: n, iba: n })),
   UNSURE,
 ];
 
 export const FINANCING_TARGETS: Option[] = [
-  { value: "Below RM200K", ms: "Bawah RM200K", en: "Below RM200K" },
-  { value: "RM200K \u2013 RM400K", ms: "RM200K \u2013 RM400K", en: "RM200K \u2013 RM400K" },
-  { value: "RM400K \u2013 RM600K", ms: "RM400K \u2013 RM600K", en: "RM400K \u2013 RM600K" },
-  { value: "RM600K \u2013 RM800K", ms: "RM600K \u2013 RM800K", en: "RM600K \u2013 RM800K" },
+  {
+    value: "Below RM200K",
+    ms: "Bawah RM200K",
+    en: "Below RM200K",
+    zh: "RM200K \u4ee5\u4e0b",
+    iba: "Baruh ari RM200K",
+  },
+  ...["RM200K \u2013 RM400K", "RM400K \u2013 RM600K", "RM600K \u2013 RM800K"].map((band) => ({
+    value: band,
+    ms: band,
+    en: band,
+    zh: band,
+    iba: band,
+  })),
   UNSURE,
 ];
 
-export const CONSULTATION_MODES: (Option & { note: { ms: string; en: string } })[] = [
+export const CONSULTATION_MODES: (Option & { note: Record<Lang, string> })[] = [
   {
     value: "Phone Call",
     ms: "Panggilan",
     en: "Phone Call",
-    note: { ms: "Kami hubungi anda", en: "We call you" },
+    zh: "\u7535\u8bdd",
+    iba: "Telefon",
+    note: {
+      ms: "Kami hubungi anda",
+      en: "We call you",
+      zh: "\u6211\u4eec\u81f4\u7535\u7ed9\u60a8",
+      iba: "Kami ngabas nuan",
+    },
   },
   {
     value: "Zoom / Online",
     ms: "Zoom / Online",
     en: "Zoom / Online",
-    note: { ms: "Sesi atas talian", en: "An online session" },
+    zh: "Zoom / \u7ebf\u4e0a",
+    iba: "Zoom / Online",
+    note: {
+      ms: "Sesi atas talian",
+      en: "An online session",
+      zh: "\u7ebf\u4e0a\u4f1a\u9762",
+      iba: "Berandau ba online",
+    },
   },
   {
     value: "Meet-Up",
     ms: "Jumpa",
     en: "Meet-Up",
-    note: { ms: "Jumpa secara fizikal", en: "Meet in person" },
+    zh: "\u9762\u8c08",
+    iba: "Betemu",
+    note: {
+      ms: "Jumpa secara fizikal",
+      en: "Meet in person",
+      zh: "\u5f53\u9762\u4f1a\u9762",
+      iba: "Betemu ba mua",
+    },
   },
 ];
 
 export const HOME_NUMBERS: Option[] = [
-  { value: "Rumah Pertama Saya", ms: "Rumah Pertama Saya", en: "First Home" },
-  { value: "Rumah Kedua Saya", ms: "Rumah Kedua Saya", en: "Second Home" },
-  { value: "Rumah Ketiga Saya", ms: "Rumah Ketiga Saya", en: "Third Home" },
+  {
+    value: "Rumah Pertama Saya",
+    ms: "Rumah Pertama Saya",
+    en: "First Home",
+    zh: "\u7b2c\u4e00\u5957\u623f",
+    iba: "Rumah Keterubah Aku",
+  },
+  {
+    value: "Rumah Kedua Saya",
+    ms: "Rumah Kedua Saya",
+    en: "Second Home",
+    zh: "\u7b2c\u4e8c\u5957\u623f",
+    iba: "Rumah Kedua Aku",
+  },
+  {
+    value: "Rumah Ketiga Saya",
+    ms: "Rumah Ketiga Saya",
+    en: "Third Home",
+    zh: "\u7b2c\u4e09\u5957\u623f",
+    iba: "Rumah Ketiga Aku",
+  },
   {
     value: "Rumah Keempat atau Seterusnya",
     ms: "Rumah Keempat atau Seterusnya",
     en: "Fourth Home or Beyond",
+    zh: "\u7b2c\u56db\u5957\u6216\u4ee5\u4e0a",
+    iba: "Rumah Keempat tauka Lebih",
   },
 ];
 

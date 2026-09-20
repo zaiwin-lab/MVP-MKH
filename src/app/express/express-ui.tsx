@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { COPY, LANGS, type Lang } from "@/lib/i18n";
+import type { Option } from "@/lib/lead";
 import { useExTheme } from "@/lib/ex-theme";
 
 /* --------------------------------------------------------------------------
@@ -219,9 +220,11 @@ export function LangToggle({
             onClick={() => onChange(entry.code)}
             aria-pressed={active}
             title={entry.full}
-            className={`min-h-9 rounded-full px-3 py-2 text-[0.75rem] font-bold tracking-wide transition-colors duration-200 ${
-              active ? "gold-chrome text-navy-950" : "ex-soft hover:opacity-80"
-            }`}
+            className={`min-h-9 rounded-full px-2.5 py-2 font-bold tracking-wide transition-colors duration-200 sm:px-3 ${
+              /* A Han character at the Latin size reads smaller and denser
+                 than the letters beside it, so it gets a step up. */
+              entry.code === "zh" ? "text-[0.9375rem] leading-none" : "text-[0.75rem]"
+            } ${active ? "gold-chrome text-navy-950" : "ex-soft hover:opacity-80"}`}
           >
             {entry.label}
           </button>
@@ -368,7 +371,7 @@ export function Select({
   name: string;
   value: string;
   onChange: (value: string) => void;
-  options: { value: string; ms: string; en: string }[];
+  options: Option[];
   lang: Lang;
 }) {
   return (
@@ -606,9 +609,9 @@ export function LangPills({
             type="button"
             onClick={() => onChange(entry.code)}
             aria-pressed={active}
-            className={`min-h-9 rounded-full px-4 py-2 text-[0.75rem] font-bold tracking-wide transition-colors duration-200 ${
-              active ? "gold-chrome text-navy-950" : "ex-chip ex-soft hover:opacity-80"
-            }`}
+            className={`min-h-9 rounded-full px-4 py-2 font-bold tracking-wide transition-colors duration-200 ${
+              entry.code === "zh" ? "text-[0.9375rem] leading-none" : "text-[0.75rem]"
+            } ${active ? "gold-chrome text-navy-950" : "ex-chip ex-soft hover:opacity-80"}`}
           >
             {entry.label}
           </button>
@@ -632,6 +635,102 @@ export function FieldError({ id, children }: { id: string; children: ReactNode }
       </svg>
       {children}
     </p>
+  );
+}
+
+/* --------------------------------------------------------------------------
+   Service bubbles and the signature
+   -------------------------------------------------------------------------- */
+
+/**
+ * Builds a WhatsApp deep link carrying a staff-ready brief, so the consultant
+ * opens the chat already knowing who this is and what they asked for. Returns
+ * null when no number is configured: a chat button that goes nowhere costs
+ * more than no button at all.
+ */
+export function whatsappLink(number: string, message: string) {
+  const digits = number.replace(/\D/g, "");
+  if (!digits) return null;
+  return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
+}
+
+/**
+ * Two reachable actions, pinned to the bottom corners: the calculator on the
+ * left and WhatsApp on the right. They sit clear of the submit button, which
+ * spans the column between them.
+ */
+export function ServiceBubbles({
+  lang,
+  onCalculator,
+  whatsappHref,
+}: {
+  lang: Lang;
+  onCalculator: () => void;
+  whatsappHref: string | null;
+}) {
+  const t = COPY[lang];
+  return (
+    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-(--z-stickybar) px-3 pb-3 sm:px-5 sm:pb-5">
+      <div className="mx-auto flex max-w-6xl items-end justify-between gap-3">
+        <button
+          type="button"
+          onClick={onCalculator}
+          className="chrome-panel ex-ink pointer-events-auto inline-flex h-12 items-center gap-2 rounded-full pl-3 pr-4 text-[0.8125rem] font-bold shadow-lg transition-transform duration-200 hover:-translate-y-0.5"
+        >
+          <span className="ex-accent-wash ex-accent flex size-8 items-center justify-center rounded-full">
+            <Icon name="spark" className="size-4" />
+          </span>
+          <span className="hidden sm:inline">{t.bubbleCalc}</span>
+        </button>
+
+        {whatsappHref ? (
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="pointer-events-auto inline-flex h-12 items-center gap-2 rounded-full bg-[#25d366] pl-3 pr-4 text-[0.8125rem] font-bold text-[#04301a] shadow-lg transition-transform duration-200 hover:-translate-y-0.5"
+          >
+            <span className="flex size-8 items-center justify-center rounded-full bg-white/25">
+              <svg viewBox="0 0 24 24" className="size-[1.125rem]" aria-hidden>
+                <path
+                  d="M12.03 3.2A8.78 8.78 0 003.4 11.9c0 1.54.41 3.04 1.18 4.36L3.3 20.7l4.56-1.24a8.74 8.74 0 004.17 1.06h.01a8.78 8.78 0 008.76-8.7 8.78 8.78 0 00-8.77-8.62z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M9.1 7.9c.2-.02.4-.02.58-.01.19.01.44-.7.84.64l.55 1.35c.07.17.12.37.01.57-.11.2-.17.32-.33.5-.16.17-.34.39-.15.71.19.32.85 1.4 1.83 2.27 1.26 1.12 2.32 1.47 2.65 1.63.33.17.52.14.71-.08.19-.23.82-.95 1.04-1.28.22-.33.44-.27.73-.16.3.11 1.87.88 2.19 1.04"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </span>
+            <span className="hidden sm:inline">{t.bubbleWhatsApp}</span>
+          </a>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+/** The KOBIS mark, with a highlight that travels across it on hover. */
+export function KobisSignature({ lang, href }: { lang: Lang; href: string }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="ex-dim group relative isolate inline-flex overflow-hidden rounded-full px-3 py-1.5 text-[0.75rem] font-semibold transition-colors duration-200 hover:text-[var(--ex-accent)]"
+    >
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-y-0 -left-1/3 -z-10 w-1/3 -skew-x-12 bg-[var(--ex-accent)]/25 opacity-0 transition-all duration-700 [transition-timing-function:var(--ease-out-quart)] group-hover:left-[110%] group-hover:opacity-100"
+      />
+      {COPY[lang].kobisSignature}
+    </a>
   );
 }
 

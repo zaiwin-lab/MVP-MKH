@@ -1,17 +1,40 @@
 import type { Metadata } from "next";
+import { SITE_URL } from "@/lib/content";
 import { THEME_BOOTSTRAP } from "@/lib/ex-theme";
 import { ExpressJourney } from "./express-journey";
 
+const OG_TITLE = "My Kenyalang Homes \u2014 Express Journey";
+const OG_DESCRIPTION =
+  "Jom Kita Mulakan! Daftar dalam 2 minit. Percuma, ringkas, dipandu. Tiada dokumen diperlukan sekarang.";
+
 export const metadata: Metadata = {
-  title: "Express Journey — Jom Kita Mulakan!",
-  description:
-    "Daftar dalam 2 minit. Kongsikan tanah, pilihan rumah dan sasaran pembiayaan anda — team My Kenyalang Homes akan guide langkah seterusnya.",
+  metadataBase: new URL(SITE_URL),
+  title: "Express Journey \u2014 Jom Kita Mulakan!",
+  description: OG_DESCRIPTION,
+  alternates: { canonical: "/express/" },
   openGraph: {
-    title: "My Kenyalang Homes — Express Journey",
-    description:
-      "Jom Kita Mulakan! Perjalanan membina rumah impian anda. Percuma, ringkas, dipandu.",
+    title: OG_TITLE,
+    description: OG_DESCRIPTION,
+    url: "/express/",
+    siteName: "My Kenyalang Homes",
     type: "website",
     locale: "ms_MY",
+    /* This is the card a customer sees when the link is pasted into WhatsApp
+       or Facebook, which is where most of this traffic starts. */
+    images: [
+      {
+        url: "/og-express.jpg",
+        width: 1200,
+        height: 630,
+        alt: "My Kenyalang Homes Express Journey \u2014 Jom Kita Mulakan!",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: OG_TITLE,
+    description: OG_DESCRIPTION,
+    images: ["/og-express.jpg"],
   },
   /* An ad landing page has no business in search results competing with the
      main site, and its ?ref= variants must never be indexed as duplicates. */

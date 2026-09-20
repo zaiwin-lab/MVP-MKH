@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { SARAWAK_DIVISIONS } from "@/lib/content";
+import { EXPRESS_CONTACT, SARAWAK_DIVISIONS } from "@/lib/content";
 import { COPY, DEFAULT_LANG, type Lang } from "@/lib/i18n";
 import {
   BATHROOM_OPTIONS,
@@ -16,6 +16,7 @@ import {
   readAttribution,
   recordLanding,
   type Lead,
+  type Option,
 } from "@/lib/lead";
 import { FORM_NAME, HONEYPOT_FIELD, submitLead } from "@/lib/submit-lead";
 import { AiCalculator } from "./ai-calculator";
@@ -31,15 +32,18 @@ import {
   STEP_IDS,
   BentoCard,
   Eyebrow,
+  KobisSignature,
   LangPills,
   PillBadge,
   PreviewCard,
   SectionDivider,
   SectionHeading,
+  ServiceBubbles,
   StepCard,
   Select,
   TextInput,
   ThemeToggle,
+  whatsappLink,
 } from "./express-ui";
 
 type Values = typeof LEAD_DEFAULTS;
@@ -54,10 +58,13 @@ const PHONE_PATTERN = /^[+\d][\d\s()-]{7,}$/;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 /** Sarawak divisions are place names, so they read the same in both languages. */
-const DIVISION_OPTIONS = SARAWAK_DIVISIONS.map((name) => ({
+/** Sarawak divisions are place names: the same string in every language. */
+const DIVISION_OPTIONS: Option[] = SARAWAK_DIVISIONS.map((name) => ({
   value: name,
   ms: name,
   en: name,
+  zh: name,
+  iba: name,
 }));
 
 const SECTION_ICONS = ["land", "1 Tingkat", "wallet", "guide", "user"];
@@ -197,6 +204,27 @@ export function ExpressJourney() {
 
   const done = status === "done";
 
+  /* The consultant should open the chat already knowing who this is. Only
+     answered fields go in: a brief padded with "Belum Pasti" is noise. */
+  const waDetails = [
+    `${t.fieldName}: ${values.customer_name.trim() || "-"}`,
+    `${t.fieldPhone}: ${values.phone.trim() || "-"}`,
+    `${t.fieldDivision}: ${values.division}`,
+    values.area.trim() ? `${t.fieldArea}: ${values.area.trim()}` : "",
+    values.land_size.trim() ? `${t.fieldLandSize}: ${values.land_size.trim()}` : "",
+    values.house_type ? `${t.fieldHouseType}: ${values.house_type}` : "",
+    `${t.fieldBedrooms}: ${values.bedrooms}`,
+    `${t.fieldFinancing}: ${values.financing_target}`,
+    values.consultation_preference
+      ? `${t.guideLegend}: ${values.consultation_preference}`
+      : "",
+    values.remark.trim() ? `${t.fieldRemark}: ${values.remark.trim()}` : "",
+  ].filter(Boolean);
+  /* The blank line is built in rather than filtered: joining the details
+     first keeps `filter(Boolean)` from eating the separator. */
+  const waBrief = `${t.waIntro(leadId || "-")}\n\n${waDetails.join("\n")}`;
+  const waHref = whatsappLink(EXPRESS_CONTACT.whatsapp, waBrief);
+
   return (
     <div className="express-root express-ground relative isolate min-h-dvh">
       <span aria-hidden className="express-grain pointer-events-none fixed inset-0 -z-10" />
@@ -209,7 +237,12 @@ export function ExpressJourney() {
       />
 
       {done ? (
-        <SuccessPanel leadId={leadId} name={values.customer_name.trim()} lang={lang} />
+        <SuccessPanel
+          leadId={leadId}
+          name={values.customer_name.trim()}
+          lang={lang}
+          waHref={waHref}
+        />
       ) : (
         <>
           <Hero lang={lang} />
@@ -278,6 +311,12 @@ export function ExpressJourney() {
       )}
 
       <ExpressFooter lang={lang} onLang={setLang} />
+
+      <ServiceBubbles
+        lang={lang}
+        onCalculator={() => setCalcOpen(true)}
+        whatsappHref={waHref}
+      />
 
       {/* Outside the <form>: nested forms are invalid HTML. */}
       <AiCalculator
@@ -488,7 +527,7 @@ function ExpressFooter({
   const t = COPY[lang];
   return (
     <footer className="ex-border border-t">
-      <div className="shell max-w-6xl py-10">
+      <div className="shell max-w-6xl pb-24 pt-10">
         <div className="flex flex-col items-center gap-8 text-center lg:flex-row lg:items-start lg:justify-between lg:text-left">
           <div className="flex items-center gap-3">
             <span className="leading-none">
@@ -508,12 +547,17 @@ function ExpressFooter({
             <LangPills lang={lang} onChange={onLang} />
           </div>
 
-          <p className="ex-dim max-w-[38ch] text-pretty text-[0.75rem] leading-relaxed">
-            {t.footerNote}
-            <span className="mt-1.5 block">
+          <div className="max-w-[38ch]">
+            <p className="ex-dim text-pretty text-[0.75rem] leading-relaxed">
+              {t.footerNote}
+            </p>
+            <p className="ex-dim mt-1.5 text-[0.75rem]">
               &copy; {new Date().getFullYear()} My Kenyalang Homes. {t.footerRights}
-            </span>
-          </p>
+            </p>
+            <p className="-ml-3 mt-1">
+              <KobisSignature lang={lang} href={EXPRESS_CONTACT.kobisUrl} />
+            </p>
+          </div>
         </div>
       </div>
     </footer>
@@ -934,10 +978,12 @@ function SuccessPanel({
   leadId,
   name,
   lang,
+  waHref,
 }: {
   leadId: string;
   name: string;
   lang: Lang;
+  waHref: string | null;
 }) {
   const t = COPY[lang];
   const firstName = name.split(/\s+/)[0] ?? "";
@@ -980,6 +1026,26 @@ function SuccessPanel({
           </li>
         ))}
       </ol>
+
+      {waHref ? (
+        <div className="chrome-panel mt-10 flex flex-col gap-4 rounded-express-lg p-6 sm:flex-row sm:items-center sm:gap-6 sm:p-7">
+          <div className="min-w-0 flex-1">
+            <h2 className="ex-ink display-md text-[1.125rem]">{t.waHandoffTitle}</h2>
+            <p className="ex-soft mt-2 text-pretty text-[0.9375rem] leading-relaxed">
+              {t.waHandoffBody}
+            </p>
+          </div>
+          <a
+            href={waHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-14 shrink-0 items-center justify-center gap-2 rounded-control bg-[#25d366] px-6 text-[0.9375rem] font-bold text-[#04301a] transition-transform duration-200 hover:-translate-y-0.5"
+          >
+            {t.waHandoffCta}
+            <Icon name="arrow" className="size-4" />
+          </a>
+        </div>
+      ) : null}
 
       <p className="ex-dim mt-10 max-w-[60ch] text-pretty text-[0.875rem] leading-relaxed">
         {t.successFooter}

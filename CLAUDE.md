@@ -100,10 +100,21 @@ steps or gates to it; every extra interaction costs conversions.
 - The AI calculator is optional, never blocks submission, and calls the real
   DSR model in `src/lib/eligibility.ts`. It must keep saying it is an estimate,
   not an approval.
-- **Copy lives in `src/lib/i18n.ts`**, in Bahasa Malaysia and English. Only
-  labels translate; the option `value` a customer picks is canonical Malay and
-  is what reaches the CRM. Translating stored values would split every report
-  in two. Adding a language means adding a key to `COPY`, nothing else.
+- **Copy lives in `src/lib/i18n.ts`**, in English, Bahasa Malaysia, Chinese
+  and Iban. Only labels translate; the option `value` a customer picks is
+  canonical Malay and is what reaches the CRM. Translating stored values would
+  split every report in two. Option labels are typed `Record<Lang, string>`,
+  so adding a language fails the build until every option is translated rather
+  than silently falling back.
+  **The Iban and Chinese copy has not been native-reviewed.** Have a speaker
+  read it before it carries ad spend.
+- **`EXPRESS_CONTACT.whatsapp` in `src/lib/content.ts` is empty by default.**
+  While it is empty the WhatsApp bubble and the post-submission handoff do not
+  render at all: a chat button that goes nowhere costs more than no button.
+  Digits only, full international form.
+- **`SITE_URL` is what Open Graph resolves against.** Point it at a host that
+  actually serves the site or every WhatsApp and Facebook share loses its
+  image. Override with `NEXT_PUBLIC_SITE_URL` when the custom domain lands.
 - Error text uses the `ex-danger` class, which carries a light red on the dark
   theme and a dark one on bright; the single `danger` token fails on both.
 - The calculator models a **joint application**: incomes and commitments are
