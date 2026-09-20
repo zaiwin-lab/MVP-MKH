@@ -138,23 +138,6 @@ export function Icon({
    Frames and rules
    -------------------------------------------------------------------------- */
 
-/**
- * Drafting-style corner marks. Four short L-shapes rather than a full border,
- * so a panel reads as framed without gaining a second outline.
- */
-export function CornerMarks() {
-  const shared =
-    "corner-mark pointer-events-none absolute size-3.5 sm:size-4";
-  return (
-    <span aria-hidden>
-      <span className={`${shared} left-2.5 top-2.5 border-l border-t`} />
-      <span className={`${shared} right-2.5 top-2.5 border-r border-t`} />
-      <span className={`${shared} bottom-2.5 left-2.5 border-b border-l`} />
-      <span className={`${shared} bottom-2.5 right-2.5 border-b border-r`} />
-    </span>
-  );
-}
-
 /** A hairline with a lit node at its centre, used between sections. */
 export function SectionDivider() {
   return (
@@ -194,7 +177,7 @@ export function ProgressRail({
                 aria-hidden
                 className={`block h-1 rounded-full transition-all duration-500 [transition-timing-function:var(--ease-out-expo)] ${
                   reached
-                    ? "bg-champagne-400 shadow-[0_0_10px_rgb(194_151_66_/_0.5)]"
+                    ? "bg-amber-400 shadow-[0_0_12px_rgb(239_169_63_/_0.55)]"
                     : "ex-chip"
                 }`}
               />
@@ -300,18 +283,13 @@ export function SectionHeading({
 
 export function Panel({
   children,
-  framed = true,
   className = "",
 }: {
   children: ReactNode;
-  framed?: boolean;
   className?: string;
 }) {
   return (
-    <div
-      className={`chrome-panel relative rounded-express-lg p-5 sm:p-7 ${className}`}
-    >
-      {framed ? <CornerMarks /> : null}
+    <div className={`chrome-panel rounded-express-lg p-5 sm:p-7 ${className}`}>
       {children}
     </div>
   );
@@ -336,7 +314,7 @@ export function Label({
 
 /* Tap targets are 56px throughout: this journey is mostly thumbs. */
 const CONTROL =
-  "chrome-field ex-ink h-14 w-full rounded-control px-4 text-[1rem] font-medium transition-all duration-200 [transition-timing-function:var(--ease-out-quart)] focus:border-champagne-300 focus:outline-none focus:ring-4 focus:ring-champagne-300/25";
+  "chrome-field ex-ink h-14 w-full rounded-control px-4 text-[1rem] font-medium transition-all duration-200 [transition-timing-function:var(--ease-out-quart)] focus:border-amber-400 focus:outline-none focus:ring-4 focus:ring-amber-400/25";
 
 export function TextInput({
   id,
@@ -449,7 +427,7 @@ export function ChoiceTile({
 }) {
   return (
     <label
-      className={`group relative flex cursor-pointer flex-col items-center justify-start gap-2 rounded-express px-2 py-4 text-center transition-all duration-300 [transition-timing-function:var(--ease-out-quart)] has-[:focus-visible]:ring-4 has-[:focus-visible]:ring-champagne-300/35 sm:px-3 sm:py-5 ${
+      className={`group relative flex cursor-pointer flex-col items-center justify-start gap-2 rounded-express px-2 py-4 text-center transition-all duration-300 [transition-timing-function:var(--ease-out-quart)] has-[:focus-visible]:ring-4 has-[:focus-visible]:ring-amber-400/35 sm:px-3 sm:py-5 ${
         checked ? "chrome-panel-lit" : "chrome-panel"
       }`}
     >
@@ -474,7 +452,7 @@ export function ChoiceTile({
       <span
         aria-hidden
         className={`flex size-12 items-center justify-center rounded-2xl transition-all duration-300 sm:size-14 ${
-          checked ? "ex-accent-wash ex-accent" : "ex-chip ex-soft"
+          checked ? "ex-accent-wash ex-accent" : "ex-chip ex-accent opacity-80 group-hover:opacity-100"
         }`}
       >
         <Icon name={value} className="size-6 sm:size-7" />
@@ -508,7 +486,7 @@ export function Eyebrow({ children }: { children: ReactNode }) {
 export function PillBadge({ children }: { children: ReactNode }) {
   return (
     <p className="ex-accent ex-border inline-flex items-center gap-2.5 rounded-full border px-4 py-2 text-[0.6875rem] font-bold uppercase tracking-[0.16em] sm:text-[0.75rem]">
-      <span aria-hidden className="size-1.5 rounded-full bg-champagne-400" />
+      <span aria-hidden className="size-1.5 rounded-full bg-amber-400" />
       {children}
     </p>
   );

@@ -54,16 +54,28 @@
      warmth of the full site. It is kept as its own scale so neither can drift
      into the other, and so the module stays liftable into a future platform.
      ========================================================================== */
-  --color-navy-950: #050f1b;
-  --color-navy-900: #0b2035;
-  --color-navy-800: #102b46;
-  --color-navy-700: #173857;
-  --color-navy-600: #234a6f;
-  --color-navy-500: #35618b;
-  --color-navy-400: #5b83aa;
-  --color-navy-300: #90aec9;
-  --color-navy-200: #c3d4e3;
-  --color-navy-100: #e2ebf3;
+  --color-navy-950: #061426;
+  --color-navy-900: #0a1c38;
+  --color-navy-800: #102a4e;
+  --color-navy-700: #173b68;
+  --color-navy-600: #21508a;
+  --color-navy-500: #3068a8;
+  --color-navy-400: #5a8cc4;
+  --color-navy-300: #90b3d8;
+  --color-navy-200: #c2d7ee;
+  --color-navy-100: #e1ecf8;
+
+  /* Amber, matching the Meeting Agent reference. Warmer than the champagne
+     it replaces, and the same family as the gold action, so the accent and
+     the button read as one material instead of two. */
+  --color-amber-100: #fdf0d8;
+  --color-amber-200: #f9dca8;
+  --color-amber-300: #f5c477;
+  --color-amber-400: #efa93f;
+  --color-amber-500: #e08c1e;
+  --color-amber-600: #bf7010;
+  --color-amber-700: #94560c;
+  --color-amber-800: #6d3f09;
 
   --color-champagne-700: #7d5a17;
   --color-champagne-600: #92691b;
@@ -225,44 +237,44 @@
   color-scheme: dark;
 
   --ex-ink: #ffffff;
-  --ex-ink-soft: #cfdced;
-  --ex-ink-dim: #9db4cc;
-  --ex-accent: #e0c288;
-  --ex-accent-dim: #c9a465;
+  --ex-ink-soft: #c6d9f0;
+  --ex-ink-dim: #93aecd;
+  --ex-accent: var(--color-amber-400);
+  --ex-accent-dim: var(--color-amber-500);
 
-  --ex-base: var(--color-navy-950);
-  --ex-glow-1: rgb(26 125 232 / 0.32);
-  --ex-glow-2: rgb(194 151 66 / 0.2);
-  --ex-glow-3: rgb(26 125 232 / 0.16);
-  --ex-ramp: #0a1c30;
-  --ex-grain: 0.22;
+  --ex-base: #08182e;
+  /* Three lights over the ramp: blue at the top left, amber at the top right
+     where the action sits, and a violet cast underneath. The violet is what
+     keeps a deep navy from going flat and grey at the fold. */
+  --ex-glow-1: rgb(37 130 230 / 0.34);
+  --ex-glow-2: rgb(239 169 63 / 0.17);
+  --ex-glow-3: rgb(118 86 220 / 0.2);
+  --ex-ramp: #0d2448;
+  --ex-grain: 0.2;
 
-  --ex-panel-a: rgb(255 255 255 / 0.095);
-  --ex-panel-b: rgb(255 255 255 / 0.035);
-  --ex-panel-c: rgb(255 255 255 / 0.015);
-  --ex-border: rgb(255 255 255 / 0.1);
-  --ex-border-strong: rgb(255 255 255 / 0.2);
-  --ex-highlight: rgb(255 255 255 / 0.18);
-  --ex-underline: rgb(0 0 0 / 0.3);
-  --ex-shadow-near: rgb(0 0 0 / 0.28);
-  --ex-shadow-far: rgb(0 0 0 / 0.75);
+  --ex-panel-a: rgb(255 255 255 / 0.085);
+  --ex-panel-b: rgb(255 255 255 / 0.032);
+  --ex-panel-c: rgb(255 255 255 / 0.014);
+  --ex-border: rgb(255 255 255 / 0.11);
+  --ex-border-strong: rgb(255 255 255 / 0.22);
+  --ex-highlight: rgb(255 255 255 / 0.17);
+  --ex-underline: rgb(0 0 0 / 0.28);
+  --ex-shadow-near: rgb(0 0 0 / 0.3);
+  --ex-shadow-far: rgb(0 0 0 / 0.7);
 
-  --ex-field: rgb(3 10 20 / 0.55);
+  --ex-field: rgb(4 13 26 / 0.6);
   --ex-field-inset: rgb(0 0 0 / 0.5);
   --ex-rule: rgb(255 255 255 / 0.16);
   --ex-chip: rgb(255 255 255 / 0.07);
 
-  --ex-lit-a: rgb(217 184 119 / 0.2);
-  --ex-lit-b: rgb(217 184 119 / 0.07);
-  --ex-lit-border: rgb(217 184 119 / 0.55);
+  --ex-lit-a: rgb(239 169 63 / 0.2);
+  --ex-lit-b: rgb(239 169 63 / 0.07);
+  --ex-lit-border: rgb(239 169 63 / 0.55);
   --ex-lit-ink: #ffffff;
 
   --ex-danger: var(--color-danger-300);
 
-  /* Sections alternate between two grounds so the page has rhythm instead of
-     one continuous field of colour. `deep` is the page base, `raised` is a
-     step toward the light in either theme. */
-  --ex-band-raised: #0d2137;
+  --ex-band-raised: #0c2142;
   --ex-band-raised-border: rgb(255 255 255 / 0.07);
 }
 
@@ -276,13 +288,13 @@
   /* Measured, not guessed: the previous dim and accent sat at 3.4-4.4:1
      against the pale ground, which 12px body text does not get away with. */
   --ex-ink-dim: #2f577e;
-  --ex-accent: #7a560f;
-  --ex-accent-dim: #96702a;
+  --ex-accent: var(--color-amber-700);
+  --ex-accent-dim: var(--color-amber-600);
 
   --ex-base: #eef3f9;
   --ex-glow-1: rgb(26 125 232 / 0.16);
-  --ex-glow-2: rgb(194 151 66 / 0.14);
-  --ex-glow-3: rgb(26 125 232 / 0.1);
+  --ex-glow-2: rgb(239 169 63 / 0.16);
+  --ex-glow-3: rgb(118 86 220 / 0.1);
   --ex-ramp: #f7fafd;
   --ex-grain: 0.1;
 
@@ -301,9 +313,9 @@
   --ex-rule: rgb(11 32 53 / 0.14);
   --ex-chip: rgb(11 32 53 / 0.05);
 
-  --ex-lit-a: rgb(194 151 66 / 0.16);
-  --ex-lit-b: rgb(194 151 66 / 0.06);
-  --ex-lit-border: rgb(138 99 20 / 0.5);
+  --ex-lit-a: rgb(239 169 63 / 0.18);
+  --ex-lit-b: rgb(239 169 63 / 0.07);
+  --ex-lit-border: rgb(148 86 12 / 0.45);
   --ex-lit-ink: #08182b;
 
   --ex-danger: #a3121a;
@@ -361,7 +373,7 @@
   box-shadow:
     inset 0 1px 0 var(--ex-highlight),
     0 2px 10px var(--ex-shadow-near),
-    0 20px 44px -22px rgb(167 122 32 / 0.45);
+    0 20px 44px -22px rgb(191 112 16 / 0.42);
 }
 
 @utility chrome-field {
@@ -382,15 +394,15 @@
     ),
     linear-gradient(
       180deg,
-      var(--color-champagne-300) 0%,
-      var(--color-champagne-400) 46%,
-      var(--color-champagne-600) 100%
+      var(--color-amber-300) 0%,
+      var(--color-amber-400) 46%,
+      var(--color-amber-600) 100%
     );
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.5),
-    inset 0 -2px 4px rgb(93 66 12 / 0.45),
+    inset 0 -2px 4px rgb(109 63 9 / 0.45),
     0 2px 10px rgb(0 0 0 / 0.2),
-    0 18px 40px -16px rgb(194 151 66 / 0.55);
+    0 18px 40px -16px rgb(239 169 63 / 0.5);
 }
 
 @keyframes chrome-sweep {
@@ -424,21 +436,10 @@
 @utility chrome-node {
   background-image: radial-gradient(
     circle,
-    var(--color-champagne-400) 0%,
-    var(--color-champagne-400) 40%,
+    var(--color-amber-400) 0%,
+    var(--color-amber-400) 40%,
     transparent 70%
   );
-}
-
-/* Corner brackets, drawn with two gradients per corner so the frame reads as
-   drafting marks rather than a full box. Sits on a wrapper, not the panel. */
-@utility chrome-corners {
-  position: relative;
-}
-
-@utility corner-mark {
-  border-color: var(--ex-accent-dim);
-  opacity: 0.55;
 }
 
 /* --- Semantic text ------------------------------------------------------ */

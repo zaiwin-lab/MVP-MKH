@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { HornbillMark } from "@/components/brand";
 import { SARAWAK_DIVISIONS } from "@/lib/content";
 import { COPY, DEFAULT_LANG, type Lang } from "@/lib/i18n";
 import {
@@ -311,9 +310,6 @@ function StickyHeader({
     <header className="ex-border sticky top-0 z-(--z-sticky) border-b bg-[var(--ex-base)]/80 backdrop-blur-xl">
       <div className="shell max-w-6xl py-3">
         <div className="flex items-center gap-3">
-          <span className="chrome-panel flex size-10 shrink-0 items-center justify-center rounded-xl sm:size-11">
-            <HornbillMark tone="light" className="h-6 w-auto sm:h-7" />
-          </span>
           <span className="min-w-0 leading-none">
             <span className="ex-ink block truncate font-express text-[1rem] font-extrabold tracking-[-0.02em] sm:text-[1.125rem]">
               My Kenyalang Homes
@@ -495,9 +491,6 @@ function ExpressFooter({
       <div className="shell max-w-6xl py-10">
         <div className="flex flex-col items-center gap-8 text-center lg:flex-row lg:items-start lg:justify-between lg:text-left">
           <div className="flex items-center gap-3">
-            <span className="chrome-panel flex size-10 shrink-0 items-center justify-center rounded-xl">
-              <HornbillMark tone="light" className="h-6 w-auto" />
-            </span>
             <span className="leading-none">
               <span className="ex-ink block font-express text-[1rem] font-extrabold tracking-[-0.02em]">
                 My Kenyalang Homes
@@ -865,7 +858,7 @@ function AboutSection({
                 onChange={(event) => setConsent(event.target.checked)}
                 aria-invalid={Boolean(errors.consent) || undefined}
                 aria-describedby={errors.consent ? "consent-error" : undefined}
-                className="mt-px size-6 shrink-0 accent-champagne-400"
+                className="mt-px size-6 shrink-0 accent-amber-400"
               />
               <span className="ex-soft text-[0.875rem] leading-relaxed">
                 {t.consentText}

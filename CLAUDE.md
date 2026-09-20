@@ -75,6 +75,12 @@ steps or gates to it; every extra interaction costs conversions.
   ground and reads as heavy; one notch lighter and larger is easier to read
   and no less premium. Fields do not carry an "optional" badge: section 01
   says once that everything in it is optional.
+- **Amber is the accent, not champagne**, and the gold action is the same
+  family, so the two read as one material. The ground is a royal navy lit by
+  three sources: blue top-left, amber top-right where the action sits, and a
+  violet cast underneath that stops a deep navy going flat and grey.
+- **No logo mark in this header.** The wordmark alone is the identity here;
+  don't reintroduce `HornbillMark` on this page.
 - **No photographs on this page.** It runs on drawn icons in boxed panels;
   `ICONS` in `express-ui.tsx` is the set, keyed by the option value it belongs
   to. Do not reintroduce imagery here.

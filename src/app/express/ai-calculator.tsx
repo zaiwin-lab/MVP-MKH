@@ -239,7 +239,7 @@ export function AiCalculator({
                 id="calc-tenure"
                 value={tenure}
                 onChange={(event) => setTenure(Number(event.target.value))}
-                className="chrome-field ex-ink h-14 w-full cursor-pointer appearance-none rounded-control px-4 pr-12 text-[1rem] font-medium transition-colors duration-200 focus:border-champagne-300 focus:outline-none focus:ring-4 focus:ring-champagne-300/25"
+                className="chrome-field ex-ink h-14 w-full cursor-pointer appearance-none rounded-control px-4 pr-12 text-[1rem] font-medium transition-colors duration-200 focus:border-amber-400 focus:outline-none focus:ring-4 focus:ring-amber-400/25"
               >
                 {TENURE_CHOICES.map((years) => (
                   <option key={years} value={years}>
@@ -383,7 +383,7 @@ function CalcField({
         value={value}
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value.replace(/[^0-9]/g, ""))}
-        className="chrome-field ex-ink h-14 w-full rounded-control px-4 text-[1rem] font-medium transition-colors duration-200 focus:border-champagne-300 focus:outline-none focus:ring-4 focus:ring-champagne-300/25"
+        className="chrome-field ex-ink h-14 w-full rounded-control px-4 text-[1rem] font-medium transition-colors duration-200 focus:border-amber-400 focus:outline-none focus:ring-4 focus:ring-amber-400/25"
       />
     </div>
   );
