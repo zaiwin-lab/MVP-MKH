@@ -48,7 +48,6 @@ type Copy = {
   fieldLandSizePlaceholder: string;
   fieldRemark: string;
   fieldRemarkPlaceholder: string;
-  optional: string;
 
   homeTitle: string;
   homeSupport: string;
@@ -118,6 +117,22 @@ type Copy = {
   calcStretched: string;
   calcOverCommitted: string;
   calcDisclaimer: (rate: number, years: number) => string;
+  calcTenureLabel: string;
+  calcTenureYears: (n: number) => string;
+  calcJointToggle: string;
+  calcJointNote: string;
+  calcSingle: string;
+  calcJoint: string;
+  calcSpouseIncome: string;
+  calcSpouseCommitments: string;
+  calcSpouseAge: string;
+  calcSpouseAgePlaceholder: string;
+  calcCappedByAge: (years: number) => string;
+  calcCappedByProduct: (years: number) => string;
+  calcJointBasis: (income: string) => string;
+  themeLabel: string;
+  themeDark: string;
+  themeBright: string;
   calcRun: string;
   calcRerun: string;
   calcClose: string;
@@ -177,7 +192,6 @@ const ms: Copy = {
   fieldLandSizePlaceholder: "Contoh: 0.5 acre / 8 points / 3,000 sq ft",
   fieldRemark: "Catatan / Remark",
   fieldRemarkPlaceholder: "Apa-apa maklumat tambahan",
-  optional: "Pilihan",
 
   homeTitle: "Rumah Pilihan Anda",
   homeSupport: "Beri kami gambaran ringkas rumah impian anda.",
@@ -191,7 +205,7 @@ const ms: Copy = {
   calcKicker: "Pilihan · Semak dalam 60 saat",
   calcPrompt: "Nak tahu anggaran kelayakan anda?",
   calcBody: "Cuba AI Financing Calculator untuk anggaran awal.",
-  calcCta: "Cuba AI",
+  calcCta: "Cuba AI Calculator",
 
   guideTitle: "Bagaimana Anda Mahu Kami Guide?",
   guideSupport: "Pilih kaedah konsultasi yang paling sesuai untuk anda.",
@@ -237,7 +251,7 @@ const ms: Copy = {
 
   calcTitle: "AI Financing Calculator",
   calcIntro:
-    "Isi tiga maklumat ringkas untuk anggaran awal. Ini bukan kelulusan pembiayaan.",
+    "Isi maklumat ringkas untuk anggaran awal. Ini bukan kelulusan pembiayaan.",
   calcIncome: "Pendapatan Kasar Bulanan (RM)",
   calcIncomePlaceholder: "Contoh: 5000",
   calcCommitments: "Komitmen Bulanan Sedia Ada (RM)",
@@ -258,7 +272,25 @@ const ms: Copy = {
   calcOverCommitted:
     "Berdasarkan angka ini, komitmen sedia ada anda sudah menggunakan sebahagian besar pendapatan. Consultant kami boleh bantu lihat pilihan yang ada.",
   calcDisclaimer: (rate, years) =>
-    `Anggaran sahaja, berdasarkan kadar indikatif ${rate}% setahun, margin 90% dan tempoh ${years} tahun. Bukan kelulusan pembiayaan. Keputusan sebenar ditentukan oleh bank.`,
+    `Anggaran sahaja, berdasarkan kadar indikatif ${rate}% setahun, margin pembiayaan 90% dan tempoh ${years} tahun, dengan DSR 55-65% yang biasa digunakan bank. Bukan kelulusan pembiayaan. Keputusan sebenar ditentukan oleh bank.`,
+  calcTenureLabel: "Tempoh Pembiayaan Dipilih",
+  calcTenureYears: (n) => `${n} tahun`,
+  calcJointToggle: "Pemohon",
+  calcJointNote:
+    "Pembiayaan bersama menggabungkan pendapatan dan komitmen anda berdua. Tempoh dikira ikut pemohon yang lebih berumur.",
+  calcSingle: "Sendiri",
+  calcJoint: "Bersama Pasangan",
+  calcSpouseIncome: "Pendapatan Kasar Pasangan (RM)",
+  calcSpouseCommitments: "Komitmen Bulanan Pasangan (RM)",
+  calcSpouseAge: "Umur Pasangan",
+  calcSpouseAgePlaceholder: "Contoh: 30",
+  calcCappedByAge: (years) =>
+    `dihadkan kepada ${years} tahun oleh had umur 70`,
+  calcCappedByProduct: (years) => `maksimum ${years} tahun`,
+  calcJointBasis: (income) => `Berdasarkan pendapatan bersama ${income}`,
+  themeLabel: "Tema paparan",
+  themeDark: "Gelap",
+  themeBright: "Cerah",
   calcRun: "Kira Anggaran Saya",
   calcRerun: "Kira Semula",
   calcClose: "Tutup",
@@ -319,7 +351,6 @@ const en: Copy = {
   fieldLandSizePlaceholder: "e.g. 0.5 acre / 8 points / 3,000 sq ft",
   fieldRemark: "Remark",
   fieldRemarkPlaceholder: "Anything else we should know",
-  optional: "Optional",
 
   homeTitle: "Your Preferred Home",
   homeSupport: "Give us a quick picture of the home you have in mind.",
@@ -333,7 +364,7 @@ const en: Copy = {
   calcKicker: "Optional · Check in 60 seconds",
   calcPrompt: "Want an idea of what you qualify for?",
   calcBody: "Try the AI Financing Calculator for an initial estimate.",
-  calcCta: "Try AI",
+  calcCta: "Try AI Calculator",
 
   guideTitle: "How Would You Like Us To Guide You?",
   guideSupport: "Choose the way that suits you best.",
@@ -379,7 +410,7 @@ const en: Copy = {
 
   calcTitle: "AI Financing Calculator",
   calcIntro:
-    "Three quick details for an initial estimate. This is not a financing approval.",
+    "A few quick details for an initial estimate. This is not a financing approval.",
   calcIncome: "Gross Monthly Income (RM)",
   calcIncomePlaceholder: "e.g. 5000",
   calcCommitments: "Existing Monthly Commitments (RM)",
@@ -400,7 +431,24 @@ const en: Copy = {
   calcOverCommitted:
     "On these figures your existing commitments already take up most of your income. Our consultant can help you look at the options.",
   calcDisclaimer: (rate, years) =>
-    `An estimate only, based on an indicative ${rate}% per year, a 90% margin of finance and a ${years} year tenure. Not a financing approval. The bank makes the actual decision.`,
+    `An estimate only, based on an indicative ${rate}% per year, a 90% margin of finance and a ${years} year tenure, against the 55-65% debt service ratio banks typically apply. Not a financing approval. The bank makes the actual decision.`,
+  calcTenureLabel: "Preferred Financing Tenure",
+  calcTenureYears: (n) => `${n} years`,
+  calcJointToggle: "Applicant",
+  calcJointNote:
+    "A joint application pools both incomes and both commitments. The tenure is set by whichever of you is older.",
+  calcSingle: "Just Me",
+  calcJoint: "With Spouse",
+  calcSpouseIncome: "Spouse Gross Monthly Income (RM)",
+  calcSpouseCommitments: "Spouse Monthly Commitments (RM)",
+  calcSpouseAge: "Spouse Age",
+  calcSpouseAgePlaceholder: "e.g. 30",
+  calcCappedByAge: (years) => `capped at ${years} years by the age-70 limit`,
+  calcCappedByProduct: (years) => `${years} years maximum`,
+  calcJointBasis: (income) => `Based on a combined income of ${income}`,
+  themeLabel: "Display theme",
+  themeDark: "Dark",
+  themeBright: "Bright",
   calcRun: "Calculate My Estimate",
   calcRerun: "Recalculate",
   calcClose: "Close",

@@ -30,9 +30,11 @@ import {
   PrimaryButton,
   ProgressRail,
   STEP_IDS,
+  SectionDivider,
   SectionHeading,
   Select,
   TextInput,
+  ThemeToggle,
 } from "./express-ui";
 
 type Values = typeof LEAD_DEFAULTS;
@@ -216,7 +218,7 @@ export function ExpressJourney() {
               netlify-honeypot={HONEYPOT_FIELD}
               onSubmit={handleSubmit}
               noValidate
-              className="space-y-12 sm:space-y-16"
+              className="space-y-10 sm:space-y-14"
             >
               {/* Present in the exported HTML so the form backend detects every
                   column; the real values are attached at submit time. */}
@@ -239,14 +241,18 @@ export function ExpressJourney() {
               </p>
 
               <LandSection values={values} set={set} lang={lang} />
+              <SectionDivider />
               <HomeSection values={values} set={set} lang={lang} />
+              <SectionDivider />
               <FinancingSection
                 values={values}
                 set={set}
                 lang={lang}
                 onOpenCalculator={() => setCalcOpen(true)}
               />
+              <SectionDivider />
               <GuideSection values={values} set={set} lang={lang} />
+              <SectionDivider />
               <AboutSection
                 values={values}
                 set={set}
@@ -294,15 +300,16 @@ function StickyHeader({
   onLang: (next: Lang) => void;
 }) {
   return (
-    <header className="sticky top-0 z-(--z-sticky) border-b border-white/8 bg-navy-950/70 backdrop-blur-xl">
+    <header className="ex-border sticky top-0 z-(--z-sticky) border-b bg-[var(--ex-base)]/75 backdrop-blur-xl">
       <div className="shell max-w-5xl py-3 sm:py-3.5">
         <div className="flex items-center gap-2.5">
           <HornbillMark tone="light" className="h-7 w-auto shrink-0 sm:h-8" />
-          <span className="truncate font-display text-[0.9375rem] font-bold tracking-tight text-white sm:text-[1.0625rem]">
+          <span className="ex-ink truncate font-display text-[0.9375rem] font-bold tracking-tight sm:text-[1.0625rem]">
             My Kenyalang Homes
           </span>
           <span className="ml-auto" />
           <LangToggle lang={lang} onChange={onLang} />
+          <ThemeToggle lang={lang} />
         </div>
         {showRail ? (
           <div className="mt-3 sm:mt-3.5">
@@ -319,18 +326,18 @@ function Hero({ lang }: { lang: Lang }) {
   return (
     <section className="relative overflow-hidden">
       <div className="shell relative max-w-5xl pb-14 pt-12 sm:pb-20 sm:pt-16">
-        <p className="rise text-[0.6875rem] font-bold uppercase tracking-[0.2em] text-navy-200">
+        <p className="rise ex-soft text-[0.75rem] font-semibold uppercase tracking-[0.2em]">
           {t.brandPartners}
         </p>
-        <p className="rise mt-4 inline-flex items-center gap-2 rounded-full border border-champagne-300/30 bg-champagne-300/10 px-3.5 py-1.5 text-[0.625rem] font-bold uppercase tracking-[0.16em] text-champagne-200 [animation-delay:60ms]">
+        <p className="rise ex-accent ex-accent-wash mt-4 inline-flex items-center gap-2 rounded-full border border-champagne-400/35 px-3.5 py-1.5 text-[0.6875rem] font-bold uppercase tracking-[0.16em] [animation-delay:60ms]">
           <span aria-hidden className="size-1.5 rounded-full bg-champagne-300" />
           {t.expressBadge}
         </p>
-        <h1 className="rise mt-6 max-w-[18ch] text-balance font-display text-[2.5rem] font-bold leading-[1.02] tracking-[-0.03em] text-white [animation-delay:120ms] sm:text-[4rem]">
+        <h1 className="rise ex-ink mt-6 max-w-[18ch] text-balance font-display text-[2.5rem] font-bold leading-[1.02] tracking-[-0.03em] [animation-delay:120ms] sm:text-[4rem]">
           {t.heroTitle}
-          <span className="mt-1.5 block text-champagne-300">{t.heroTitleAccent}</span>
+          <span className="ex-accent mt-1.5 block">{t.heroTitleAccent}</span>
         </h1>
-        <p className="rise mt-6 max-w-[56ch] text-pretty text-[0.9375rem] leading-[1.7] text-navy-100 [animation-delay:180ms] sm:text-[1.0625rem]">
+        <p className="rise ex-soft mt-6 max-w-[56ch] text-pretty text-[1.0625rem] leading-[1.7] [animation-delay:180ms] sm:text-[1.125rem]">
           {t.heroBody}
         </p>
 
@@ -346,9 +353,9 @@ function Hero({ lang }: { lang: Lang }) {
             {t.trust.map((item) => (
               <li
                 key={item}
-                className="flex items-center gap-1.5 text-[0.75rem] font-bold uppercase tracking-[0.1em] text-navy-100"
+                className="ex-soft flex items-center gap-1.5 text-[0.8125rem] font-semibold uppercase tracking-[0.1em]"
               >
-                <Icon name="check" className="size-3.5 text-champagne-300" />
+                <Icon name="check" className="ex-accent size-4" />
                 {item}
               </li>
             ))}
@@ -360,12 +367,12 @@ function Hero({ lang }: { lang: Lang }) {
           {t.statValues.map((value, i) => (
             <div
               key={t.statLabels[i]}
-              className="chrome-panel rounded-express px-3 py-4 text-center sm:py-5"
+              className="chrome-panel relative rounded-express px-3 py-5 text-center sm:py-6"
             >
-              <dt className="text-[0.5625rem] font-bold uppercase tracking-[0.1em] text-navy-200 sm:text-[0.625rem]">
+              <dt className="ex-dim text-[0.625rem] font-semibold uppercase tracking-[0.1em] sm:text-[0.6875rem]">
                 {t.statLabels[i]}
               </dt>
-              <dd className="mt-1.5 font-display text-[1.25rem] font-bold text-champagne-200 sm:text-[1.625rem]">
+              <dd className="ex-accent mt-2 font-display text-[1.375rem] font-bold sm:text-[1.75rem]">
                 {value}
               </dd>
             </div>
@@ -380,22 +387,22 @@ function Reasons({ lang }: { lang: Lang }) {
   const t = COPY[lang];
   return (
     <section className="shell max-w-5xl py-6 sm:py-10">
-      <h2 className="text-balance font-display text-[1.5rem] font-bold leading-tight tracking-[-0.02em] text-white sm:text-[2rem]">
+      <h2 className="ex-ink text-balance font-display text-[1.625rem] font-bold leading-tight tracking-[-0.02em] sm:text-[2.125rem]">
         {t.reasonsTitle}
       </h2>
       <ol className="mt-6 grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
         {t.reasons.map((reason, i) => (
-          <li key={reason.title} className="chrome-panel rounded-express p-4 sm:p-5">
+          <li key={reason.title} className="chrome-panel relative rounded-express p-5 sm:p-6">
             <span
               aria-hidden
-              className="font-display text-[1.25rem] font-bold leading-none tabular-nums text-champagne-300"
+              className="ex-accent font-display text-[1.375rem] font-bold leading-none tabular-nums"
             >
               {String(i + 1).padStart(2, "0")}
             </span>
-            <h3 className="mt-3 font-display text-[1rem] font-bold leading-snug text-white">
+            <h3 className="ex-ink mt-3 font-display text-[1.0625rem] font-bold leading-snug">
               {reason.title}
             </h3>
-            <p className="mt-1.5 text-pretty text-[0.8125rem] leading-relaxed text-navy-200">
+            <p className="ex-soft mt-2 text-pretty text-[0.875rem] leading-relaxed">
               {reason.body}
             </p>
           </li>
@@ -408,13 +415,13 @@ function Reasons({ lang }: { lang: Lang }) {
 function ExpressFooter({ lang }: { lang: Lang }) {
   const t = COPY[lang];
   return (
-    <footer className="border-t border-white/8">
+    <footer className="ex-border border-t">
       <div className="shell max-w-5xl py-10 text-center">
         <HornbillMark tone="light" className="mx-auto h-8 w-auto opacity-70" />
-        <p className="mt-4 text-[0.75rem] font-bold uppercase tracking-[0.14em] text-navy-100">
+        <p className="ex-soft mt-4 text-[0.8125rem] font-semibold uppercase tracking-[0.14em]">
           {t.brandPartners}
         </p>
-        <p className="mx-auto mt-3 max-w-[60ch] text-pretty text-[0.75rem] leading-relaxed text-navy-200">
+        <p className="ex-dim mx-auto mt-3 max-w-[60ch] text-pretty text-[0.8125rem] leading-relaxed">
           {t.footerNote}
         </p>
       </div>
@@ -453,7 +460,7 @@ function LandSection({ values, set, lang }: SectionProps) {
       <Panel>
         <div className="grid gap-5 sm:grid-cols-2">
           <div>
-            <Label htmlFor="division" optional={t.optional}>
+            <Label htmlFor="division">
               {t.fieldDivision}
             </Label>
             <Select
@@ -466,7 +473,7 @@ function LandSection({ values, set, lang }: SectionProps) {
             />
           </div>
           <div>
-            <Label htmlFor="area" optional={t.optional}>
+            <Label htmlFor="area">
               {t.fieldArea}
             </Label>
             <TextInput
@@ -478,7 +485,7 @@ function LandSection({ values, set, lang }: SectionProps) {
             />
           </div>
           <div>
-            <Label htmlFor="land_size" optional={t.optional}>
+            <Label htmlFor="land_size">
               {t.fieldLandSize}
             </Label>
             <TextInput
@@ -490,7 +497,7 @@ function LandSection({ values, set, lang }: SectionProps) {
             />
           </div>
           <div>
-            <Label htmlFor="remark" optional={t.optional}>
+            <Label htmlFor="remark">
               {t.fieldRemark}
             </Label>
             <TextInput
@@ -519,7 +526,7 @@ function HomeSection({ values, set, lang }: SectionProps) {
       />
       <Panel>
         <fieldset>
-          <legend className="mb-3 text-[0.8125rem] font-bold tracking-wide text-white">
+          <legend className="ex-ink mb-3 text-[0.875rem] font-semibold tracking-wide">
             {t.fieldHouseType}
           </legend>
           <div className="grid grid-cols-3 gap-2.5 sm:gap-4">
@@ -592,22 +599,22 @@ function FinancingSection({
 
         {/* Optional, and visibly so. Inside the panel but below a rule, so it
             reads as an aside to the field rather than a step of its own. */}
-        <div className="mt-6 border-t border-white/8 pt-6">
+        <div className="ex-border mt-6 border-t pt-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-5">
             <span
               aria-hidden
-              className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-champagne-300/14 text-champagne-200"
+              className="ex-accent-wash ex-accent flex size-11 shrink-0 items-center justify-center rounded-2xl"
             >
               <Icon name="spark" className="size-5" />
             </span>
             <div className="min-w-0 flex-1">
-              <p className="text-[0.625rem] font-bold uppercase tracking-[0.14em] text-champagne-300">
+              <p className="ex-accent text-[0.6875rem] font-semibold uppercase tracking-[0.14em]">
                 {t.calcKicker}
               </p>
-              <p className="mt-1.5 font-display text-[1.0625rem] font-bold leading-snug text-white">
+              <p className="ex-ink mt-1.5 font-display text-[1.125rem] font-bold leading-snug">
                 {t.calcPrompt}
               </p>
-              <p className="mt-1 text-[0.8125rem] leading-relaxed text-navy-200">
+              <p className="ex-soft mt-1 text-[0.875rem] leading-relaxed">
                 {t.calcBody}
               </p>
             </div>
@@ -748,7 +755,7 @@ function AboutSection({
             className={`rounded-control border p-4 transition-colors duration-200 ${
               errors.consent
                 ? "border-danger-400 bg-danger-400/10"
-                : "border-white/10 bg-white/4"
+                : "ex-border ex-chip"
             }`}
           >
             <label className="flex cursor-pointer items-start gap-3">
@@ -760,9 +767,9 @@ function AboutSection({
                 onChange={(event) => setConsent(event.target.checked)}
                 aria-invalid={Boolean(errors.consent) || undefined}
                 aria-describedby={errors.consent ? "consent-error" : undefined}
-                className="mt-px size-6 shrink-0 accent-champagne-300"
+                className="mt-px size-6 shrink-0 accent-champagne-400"
               />
-              <span className="text-[0.8125rem] leading-relaxed text-navy-100">
+              <span className="ex-soft text-[0.875rem] leading-relaxed">
                 {t.consentText}
               </span>
             </label>
@@ -788,14 +795,14 @@ function FinalCta({
   const t = COPY[lang];
   return (
     <div className="text-center">
-      <p className="inline-flex items-center gap-2 text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-champagne-300">
+      <p className="ex-accent inline-flex items-center gap-2 text-[0.75rem] font-semibold uppercase tracking-[0.16em]">
         <Icon name="check" className="size-3.5" />
         {t.ctaKicker}
       </p>
-      <p className="mx-auto mt-3 max-w-sm text-[0.9375rem] leading-relaxed text-navy-100">
+      <p className="ex-soft mx-auto mt-3 max-w-sm text-[1rem] leading-relaxed">
         {t.ctaBody}
         <br />
-        <span className="text-navy-200">{t.ctaNoDocs}</span>
+        <span className="ex-dim">{t.ctaNoDocs}</span>
       </p>
 
       <PrimaryButton
@@ -809,7 +816,7 @@ function FinalCta({
 
       <div aria-live="polite" className="min-h-6">
         {errorCount > 0 ? (
-          <p className="mt-3.5 text-[0.8125rem] font-semibold text-danger-300">
+          <p className="ex-danger mt-3.5 text-[0.875rem] font-semibold">
             {t.errorCount(errorCount)}
           </p>
         ) : null}
@@ -844,22 +851,22 @@ function SuccessPanel({
         <Icon name="check" className="size-8 sm:size-9" />
       </div>
 
-      <p className="rise mt-7 text-[0.6875rem] font-bold uppercase tracking-[0.2em] text-champagne-300 [animation-delay:60ms]">
+      <p className="rise ex-accent mt-7 text-[0.75rem] font-semibold uppercase tracking-[0.2em] [animation-delay:60ms]">
         {t.successKicker}
       </p>
-      <h1 className="rise mt-4 max-w-[16ch] text-balance font-display text-[2.25rem] font-bold leading-[1.04] tracking-[-0.03em] text-white [animation-delay:120ms] sm:text-[3.25rem]">
+      <h1 className="rise ex-ink mt-4 max-w-[16ch] text-balance font-display text-[2.25rem] font-bold leading-[1.04] tracking-[-0.03em] [animation-delay:120ms] sm:text-[3.25rem]">
         {t.successTitle(firstName)}
       </h1>
-      <p className="rise mt-4 max-w-lg text-[1.0625rem] leading-relaxed text-navy-100 [animation-delay:180ms]">
+      <p className="rise ex-soft mt-4 max-w-lg text-[1.125rem] leading-relaxed [animation-delay:180ms]">
         {t.successBody}
       </p>
 
       {leadId ? (
-        <div className="rise chrome-panel mt-8 inline-flex flex-col rounded-express px-6 py-4 [animation-delay:240ms]">
-          <span className="text-[0.625rem] font-bold uppercase tracking-[0.16em] text-navy-200">
+        <div className="rise chrome-panel relative mt-8 inline-flex flex-col rounded-express px-7 py-5 [animation-delay:240ms]">
+          <span className="ex-dim text-[0.6875rem] font-semibold uppercase tracking-[0.16em]">
             {t.referenceLabel}
           </span>
-          <span className="mt-1 font-display text-[1.625rem] font-bold tracking-wide text-champagne-200">
+          <span className="ex-accent mt-1.5 font-display text-[1.75rem] font-bold tracking-wide">
             {leadId}
           </span>
         </div>
@@ -867,18 +874,18 @@ function SuccessPanel({
 
       <ol className="mt-12 grid gap-3 sm:grid-cols-2 sm:gap-4">
         {t.nextSteps.map((step, index) => (
-          <li key={step} className="chrome-panel flex gap-3.5 rounded-express p-4 sm:p-5">
-            <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-champagne-300/18 font-display text-[0.75rem] font-bold tabular-nums text-champagne-200">
+          <li key={step} className="chrome-panel relative flex gap-3.5 rounded-express p-5 sm:p-6">
+            <span className="ex-accent-wash ex-accent flex size-7 shrink-0 items-center justify-center rounded-full font-display text-[0.75rem] font-bold tabular-nums">
               {String(index + 1).padStart(2, "0")}
             </span>
-            <span className="text-pretty text-[0.875rem] leading-relaxed text-navy-100">
+            <span className="ex-soft text-pretty text-[0.9375rem] leading-relaxed">
               {step}
             </span>
           </li>
         ))}
       </ol>
 
-      <p className="mt-10 max-w-[60ch] text-pretty text-[0.8125rem] leading-relaxed text-navy-200">
+      <p className="ex-dim mt-10 max-w-[60ch] text-pretty text-[0.875rem] leading-relaxed">
         {t.successFooter}
       </p>
     </main>

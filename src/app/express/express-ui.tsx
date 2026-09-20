@@ -2,20 +2,26 @@
 
 import type { ReactNode } from "react";
 import { COPY, LANGS, type Lang } from "@/lib/i18n";
+import { useExTheme } from "@/lib/ex-theme";
 
 /* --------------------------------------------------------------------------
-   Express UI primitives — dark chrome register.
+   Express UI primitives.
 
-   Local to /express rather than added to src/components/ui: this module runs
-   drenched navy with glass panels, where the main portal runs light. Nothing
-   here is shared with it.
+   Colour comes from the semantic `ex-*` classes in globals.css, never from
+   Tailwind palette utilities: those are fixed at build time and would pin the
+   component to one theme. Anything that must flip between dark and bright
+   reads a custom property instead.
+
+   Type is set one notch lighter and one notch larger than a dark UI first
+   suggests. Bold small text on a dark ground blooms and reads as heavy, so
+   labels are 14px semibold rather than 13px bold.
    -------------------------------------------------------------------------- */
 
 export const STEP_IDS = ["tanah", "rumah", "finance", "guide", "done"] as const;
 
 /* --------------------------------------------------------------------------
-   Icons. Drawn at 24x24 on a 1.7px stroke so they hold their weight against
-   the glass without turning into blobs at tile size.
+   Icons, drawn at 24x24 on a 1.7px stroke so they hold their weight at tile
+   size without turning into blobs.
    -------------------------------------------------------------------------- */
 
 const STROKE = {
@@ -83,9 +89,10 @@ export const ICONS: Record<string, ReactNode> = {
     </>
   ),
   guide: (
-    <>
-      <path d="M12 3.2l2.5 5.3 5.8.8-4.2 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.2-4 5.8-.8z" {...STROKE} />
-    </>
+    <path
+      d="M12 3.2l2.5 5.3 5.8.8-4.2 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.2-4 5.8-.8z"
+      {...STROKE}
+    />
   ),
   user: (
     <>
@@ -101,6 +108,16 @@ export const ICONS: Record<string, ReactNode> = {
     </>
   ),
   arrow: <path d="M4 12h15M13.5 6.5L20 12l-6.5 5.5" {...STROKE} strokeWidth={2} />,
+  moon: <path d="M20 14.2A8.4 8.4 0 019.8 4 8.4 8.4 0 1020 14.2z" {...STROKE} />,
+  sun: (
+    <>
+      <circle cx="12" cy="12" r="4.2" {...STROKE} />
+      <path
+        d="M12 2.6v2.2M12 19.2v2.2M4.4 12H2.2M21.8 12h-2.2M6.3 6.3L4.8 4.8M19.2 19.2l-1.5-1.5M6.3 17.7l-1.5 1.5M19.2 4.8l-1.5 1.5"
+        {...STROKE}
+      />
+    </>
+  ),
 };
 
 export function Icon({
@@ -114,6 +131,42 @@ export function Icon({
     <svg viewBox="0 0 24 24" aria-hidden className={className}>
       {ICONS[name]}
     </svg>
+  );
+}
+
+/* --------------------------------------------------------------------------
+   Frames and rules
+   -------------------------------------------------------------------------- */
+
+/**
+ * Drafting-style corner marks. Four short L-shapes rather than a full border,
+ * so a panel reads as framed without gaining a second outline.
+ */
+export function CornerMarks() {
+  const shared =
+    "corner-mark pointer-events-none absolute size-3.5 sm:size-4";
+  return (
+    <span aria-hidden>
+      <span className={`${shared} left-2.5 top-2.5 border-l border-t`} />
+      <span className={`${shared} right-2.5 top-2.5 border-r border-t`} />
+      <span className={`${shared} bottom-2.5 left-2.5 border-b border-l`} />
+      <span className={`${shared} bottom-2.5 right-2.5 border-b border-r`} />
+    </span>
+  );
+}
+
+/** A hairline with a lit node at its centre, used between sections. */
+export function SectionDivider() {
+  return (
+    <div aria-hidden className="flex items-center justify-center py-2">
+      <span className="chrome-rule h-px flex-1" />
+      <span className="mx-3 flex items-center gap-1.5">
+        <span className="chrome-node size-1 rounded-full opacity-70" />
+        <span className="chrome-node size-1.5 rounded-full" />
+        <span className="chrome-node size-1 rounded-full opacity-70" />
+      </span>
+      <span className="chrome-rule h-px flex-1" />
+    </div>
   );
 }
 
@@ -141,17 +194,13 @@ export function ProgressRail({
                 aria-hidden
                 className={`block h-1 rounded-full transition-all duration-500 [transition-timing-function:var(--ease-out-expo)] ${
                   reached
-                    ? "bg-champagne-300 shadow-[0_0_10px_rgb(217_184_119_/_0.55)]"
-                    : "bg-white/14"
+                    ? "bg-champagne-400 shadow-[0_0_10px_rgb(194_151_66_/_0.5)]"
+                    : "ex-chip"
                 }`}
               />
               <span
-                className={`mt-2 block truncate text-[0.625rem] font-bold uppercase tracking-[0.08em] transition-colors duration-500 sm:text-[0.6875rem] sm:tracking-[0.12em] ${
-                  current
-                    ? "text-white"
-                    : reached
-                      ? "text-champagne-200"
-                      : "text-navy-300"
+                className={`mt-2 block truncate text-[0.6875rem] font-semibold uppercase tracking-[0.1em] transition-colors duration-500 sm:text-[0.75rem] ${
+                  current ? "ex-ink" : reached ? "ex-accent" : "ex-dim"
                 }`}
               >
                 {label}
@@ -176,7 +225,7 @@ export function LangToggle({
     <div
       role="group"
       aria-label={COPY[lang].langLabel}
-      className="flex shrink-0 items-center rounded-full border border-white/12 bg-white/6 p-0.5 backdrop-blur-md"
+      className="ex-border ex-chip flex shrink-0 items-center rounded-full border p-0.5 backdrop-blur-md"
     >
       {LANGS.map((entry) => {
         const active = entry.code === lang;
@@ -187,10 +236,8 @@ export function LangToggle({
             onClick={() => onChange(entry.code)}
             aria-pressed={active}
             title={entry.full}
-            className={`min-h-9 rounded-full px-3 py-2 text-[0.6875rem] font-bold tracking-wide transition-colors duration-200 ${
-              active
-                ? "gold-chrome text-navy-950"
-                : "text-navy-200 hover:text-white"
+            className={`min-h-9 rounded-full px-3 py-2 text-[0.75rem] font-bold tracking-wide transition-colors duration-200 ${
+              active ? "gold-chrome text-navy-950" : "ex-soft hover:opacity-80"
             }`}
           >
             {entry.label}
@@ -198,6 +245,24 @@ export function LangToggle({
         );
       })}
     </div>
+  );
+}
+
+/** Dark or bright. Reads the attribute on <html>, which an inline script set. */
+export function ThemeToggle({ lang }: { lang: Lang }) {
+  const t = COPY[lang];
+  const [theme, setTheme] = useExTheme();
+  const next = theme === "dark" ? "bright" : "dark";
+  return (
+    <button
+      type="button"
+      onClick={() => setTheme(next)}
+      aria-label={`${t.themeLabel}: ${theme === "dark" ? t.themeDark : t.themeBright}`}
+      title={next === "bright" ? t.themeBright : t.themeDark}
+      className="ex-border ex-chip ex-soft flex size-10 shrink-0 items-center justify-center rounded-full border backdrop-blur-md transition-colors duration-200 hover:opacity-80"
+    >
+      <Icon name={theme === "dark" ? "sun" : "moon"} className="size-[1.125rem]" />
+    </button>
   );
 }
 
@@ -215,18 +280,18 @@ export function SectionHeading({
   return (
     <header className="mb-5 sm:mb-7">
       <div className="flex items-center gap-3">
-        <span className="chrome-panel flex size-10 shrink-0 items-center justify-center rounded-2xl text-champagne-200 sm:size-11">
-          <Icon name={icon} className="size-5 sm:size-[1.375rem]" />
+        <span className="chrome-panel ex-accent flex size-11 shrink-0 items-center justify-center rounded-2xl sm:size-12">
+          <Icon name={icon} className="size-[1.375rem] sm:size-6" />
         </span>
-        <span className="text-[0.6875rem] font-bold tabular-nums tracking-[0.18em] text-champagne-300">
+        <span className="ex-accent text-[0.75rem] font-bold tabular-nums tracking-[0.18em]">
           {index}
         </span>
         <span aria-hidden className="chrome-rule h-px flex-1" />
       </div>
-      <h2 className="mt-4 text-balance font-display text-[1.625rem] font-bold leading-[1.1] tracking-[-0.02em] text-white sm:text-[2.125rem]">
+      <h2 className="ex-ink mt-4 text-balance font-display text-[1.75rem] font-bold leading-[1.1] tracking-[-0.02em] sm:text-[2.25rem]">
         {title}
       </h2>
-      <p className="mt-2.5 max-w-[60ch] text-pretty text-[0.9375rem] leading-relaxed text-navy-200 sm:text-base">
+      <p className="ex-soft mt-2.5 max-w-[62ch] text-pretty text-[1rem] leading-relaxed sm:text-[1.0625rem]">
         {support}
       </p>
     </header>
@@ -235,15 +300,18 @@ export function SectionHeading({
 
 export function Panel({
   children,
+  framed = true,
   className = "",
 }: {
   children: ReactNode;
+  framed?: boolean;
   className?: string;
 }) {
   return (
     <div
-      className={`chrome-panel rounded-express-lg p-5 sm:p-7 ${className}`}
+      className={`chrome-panel relative rounded-express-lg p-5 sm:p-7 ${className}`}
     >
+      {framed ? <CornerMarks /> : null}
       {children}
     </div>
   );
@@ -252,38 +320,23 @@ export function Panel({
 export function Label({
   htmlFor,
   children,
-  optional,
 }: {
   htmlFor?: string;
   children: ReactNode;
-  optional?: string;
 }) {
-  /* The optional badge is a sibling of the <label>, not a child of it. The
-     form backend derives its export column titles from label text, so nesting
-     the badge would export a column called "Kawasan / AreaPilihan". */
   return (
-    <div className="mb-2 flex items-baseline gap-2">
-      <label
-        htmlFor={htmlFor}
-        className="text-[0.8125rem] font-bold tracking-wide text-white"
-      >
-        {children}
-      </label>
-      {optional ? (
-        <span
-          aria-hidden
-          className="rounded-full border border-white/10 px-2 py-0.5 text-[0.625rem] font-bold uppercase tracking-[0.08em] text-navy-200"
-        >
-          {optional}
-        </span>
-      ) : null}
-    </div>
+    <label
+      htmlFor={htmlFor}
+      className="ex-ink mb-2 block text-[0.875rem] font-semibold tracking-wide"
+    >
+      {children}
+    </label>
   );
 }
 
 /* Tap targets are 56px throughout: this journey is mostly thumbs. */
 const CONTROL =
-  "chrome-field h-14 w-full rounded-control px-4 text-[0.9375rem] font-medium text-white transition-all duration-200 [transition-timing-function:var(--ease-out-quart)] placeholder:font-normal placeholder:text-navy-300 hover:border-white/20 focus:border-champagne-300 focus:outline-none focus:ring-4 focus:ring-champagne-300/25";
+  "chrome-field ex-ink h-14 w-full rounded-control px-4 text-[1rem] font-medium transition-all duration-200 [transition-timing-function:var(--ease-out-quart)] focus:border-champagne-300 focus:outline-none focus:ring-4 focus:ring-champagne-300/25";
 
 export function TextInput({
   id,
@@ -320,7 +373,7 @@ export function TextInput({
       aria-invalid={invalid || undefined}
       aria-describedby={describedBy}
       onChange={(event) => onChange(event.target.value)}
-      className={`${CONTROL} ${invalid ? "border-danger-300! focus:ring-danger-300/25!" : ""}`}
+      className={`${CONTROL} ${invalid ? "border-danger-400!" : ""}`}
     />
   );
 }
@@ -350,16 +403,14 @@ export function Select({
         className={`${CONTROL} cursor-pointer appearance-none pr-12`}
       >
         {options.map((option) => (
-          /* The native menu paints on the OS surface, so its colours are set
-             here rather than inherited from the dark field. */
-          <option key={option.value} value={option.value} className="bg-navy-900 text-white">
+          <option key={option.value} value={option.value}>
             {option[lang]}
           </option>
         ))}
       </select>
       <span
         aria-hidden
-        className="pointer-events-none absolute right-3 top-1/2 flex size-7 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-white/6 text-champagne-200"
+        className="ex-accent ex-border pointer-events-none absolute right-3 top-1/2 flex size-7 -translate-y-1/2 items-center justify-center rounded-full border"
       >
         <svg viewBox="0 0 20 20" className="size-4">
           <path
@@ -399,7 +450,7 @@ export function ChoiceTile({
   return (
     <label
       className={`group relative flex cursor-pointer flex-col items-center justify-start gap-2 rounded-express px-2 py-4 text-center transition-all duration-300 [transition-timing-function:var(--ease-out-quart)] has-[:focus-visible]:ring-4 has-[:focus-visible]:ring-champagne-300/35 sm:px-3 sm:py-5 ${
-        checked ? "chrome-panel-lit" : "chrome-panel hover:border-white/20"
+        checked ? "chrome-panel-lit" : "chrome-panel"
       }`}
     >
       <input
@@ -423,34 +474,27 @@ export function ChoiceTile({
       <span
         aria-hidden
         className={`flex size-12 items-center justify-center rounded-2xl transition-all duration-300 sm:size-14 ${
-          checked
-            ? "bg-champagne-300/18 text-champagne-200"
-            : "bg-white/6 text-navy-100 group-hover:text-white"
+          checked ? "ex-accent-wash ex-accent" : "ex-chip ex-soft"
         }`}
       >
         <Icon name={value} className="size-6 sm:size-7" />
       </span>
       <span
-        className={`text-[0.8125rem] font-bold leading-tight sm:text-sm ${
-          checked ? "text-white" : "text-navy-100"
+        className={`text-[0.875rem] font-semibold leading-tight sm:text-[0.9375rem] ${
+          checked ? "ex-ink" : "ex-soft"
         }`}
       >
         {label}
       </span>
-      {note ? (
-        <span className="text-[0.6875rem] leading-tight text-navy-200">{note}</span>
-      ) : null}
+      {note ? <span className="ex-dim text-[0.75rem] leading-tight">{note}</span> : null}
     </label>
   );
 }
 
 export function FieldError({ id, children }: { id: string; children: ReactNode }) {
   return (
-    <p
-      id={id}
-      className="mt-2 flex items-start gap-1.5 text-[0.8125rem] font-semibold text-danger-300"
-    >
-      <svg aria-hidden viewBox="0 0 16 16" className="mt-px size-4 shrink-0">
+    <p id={id} className="ex-danger mt-2 flex items-start gap-1.5 text-[0.875rem] font-semibold">
+      <svg aria-hidden viewBox="0 0 16 16" className="mt-0.5 size-4 shrink-0">
         <circle cx="8" cy="8" r="6.6" fill="none" stroke="currentColor" strokeWidth="1.6" />
         <path
           d="M8 4.8v3.6M8 11v.1"

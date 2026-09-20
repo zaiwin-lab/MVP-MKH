@@ -20,12 +20,26 @@ const MAX_AGE_AT_MATURITY = 70;
 /** Typical margin of finance — the applicant funds the remainder. */
 const MARGIN_OF_FINANCE = 0.9;
 
+/** Longest tenure offered. Banks here go to 35; this product stops at 30. */
+export const MAX_TENURE_YEARS = 30;
+
 export type EligibilityInput = {
   monthlyIncome: number;
   existingCommitments: number;
   age: number;
   preferredBudget: number;
   financingPeriodYears: number;
+  /**
+   * A joint application with a spouse or co-applicant. Incomes and
+   * commitments are pooled, which is what lifts the affordable range; the
+   * tenure is then governed by whichever applicant is older, because the
+   * age-at-maturity cap has to hold for both of them.
+   */
+  joint?: {
+    monthlyIncome: number;
+    existingCommitments: number;
+    age: number;
+  };
 };
 
 export type EligibilityResult = {
@@ -50,6 +64,16 @@ export type EligibilityResult = {
   budgetAssessment: "comfortable" | "within" | "stretched";
   /** Commitments already exceed what income can service. */
   overCommitted: boolean;
+  /** Pooled gross monthly income used for the assessment. */
+  householdIncome: number;
+  /** Pooled monthly commitments used for the assessment. */
+  householdCommitments: number;
+  /** The age the tenure cap was applied to: the older applicant on a joint. */
+  governingAge: number;
+  /** True when a co-applicant's figures were included. */
+  isJoint: boolean;
+  /** Why the tenure came out shorter than asked for, when it did. */
+  tenureCapReason: "none" | "age" | "product";
 };
 
 /**
@@ -76,13 +100,35 @@ export function monthlyInstalment(
 export function calculateEligibility(
   input: EligibilityInput,
 ): EligibilityResult {
-  const { monthlyIncome, existingCommitments, age, preferredBudget } = input;
+  const { preferredBudget, joint } = input;
 
-  const headroomYears = Math.max(0, MAX_AGE_AT_MATURITY - age);
+  /* A joint application is assessed on the pooled position: both incomes and
+     both sets of commitments. This is what banks here do, and it is why a
+     couple qualifies for more than either of them would alone. */
+  const isJoint = Boolean(joint && joint.monthlyIncome > 0);
+  const monthlyIncome = input.monthlyIncome + (isJoint ? joint!.monthlyIncome : 0);
+  const existingCommitments =
+    input.existingCommitments + (isJoint ? joint!.existingCommitments : 0);
+
+  /* The age-at-maturity cap has to hold for both borrowers, so the older one
+     governs the tenure. Taking the younger would quote a term no bank would
+     actually write. */
+  const governingAge =
+    isJoint && joint!.age > 0 ? Math.max(input.age, joint!.age) : input.age;
+
+  const ageHeadroomYears = Math.max(0, MAX_AGE_AT_MATURITY - governingAge);
+  const requestedYears = Math.max(0, input.financingPeriodYears);
   const effectiveTenureYears = Math.max(
     0,
-    Math.min(input.financingPeriodYears, headroomYears),
+    Math.min(requestedYears, MAX_TENURE_YEARS, ageHeadroomYears),
   );
+  const tenureCapReason: EligibilityResult["tenureCapReason"] =
+    effectiveTenureYears >= requestedYears
+      ? "none"
+      : ageHeadroomYears < Math.min(requestedYears, MAX_TENURE_YEARS)
+        ? "age"
+        : "product";
+
   const months = effectiveTenureYears * 12;
   const monthlyRate = INDICATIVE_RATE / 100 / 12;
 
@@ -121,7 +167,12 @@ export function calculateEligibility(
 
   return {
     effectiveTenureYears,
-    tenureWasCapped: effectiveTenureYears < input.financingPeriodYears,
+    tenureWasCapped: tenureCapReason !== "none",
+    tenureCapReason,
+    householdIncome: monthlyIncome,
+    householdCommitments: existingCommitments,
+    governingAge,
+    isJoint,
     lowerFinancing,
     upperFinancing,
     lowerPropertyValue,

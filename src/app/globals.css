@@ -203,96 +203,163 @@
 }
 
 /* ==========================================================================
-   Express portal — dark chrome register
+   Express portal — two themes, one system
 
-   The Express journey is drenched navy, not light. Its premium read comes
-   from three things layered in this order: an ambient gradient ground, a
-   glass panel over it, and a hairline specular highlight along the panel's
-   top edge. That top highlight is what makes a surface look like polished
-   metal rather than a flat grey box, and it is the cheapest of the three.
+   Every themed value is a custom property declared on `.express-root`. The
+   classes below read those properties, so a descendant resolves them from
+   whichever theme the root is carrying. Nothing here chains one custom
+   property through another at :root: a property is substituted where it is
+   declared, so a chained token would freeze at the dark value and the light
+   theme would silently do nothing.
+
+   The premium read comes from three layers in order: an ambient ground, a
+   panel over it, and a hairline highlight along the panel's top edge. That
+   highlight is what makes a surface look like polished metal.
    ========================================================================== */
 
-/* The page ground. Two coloured lights over a vertical ramp, plus a fine
-   grain: large dark gradients band badly on 8-bit displays and the noise is
-   what stops it, not decoration. */
+.express-root,
+[data-ex-theme="dark"] .express-root {
+  color-scheme: dark;
+
+  --ex-ink: #ffffff;
+  --ex-ink-soft: #cfdced;
+  --ex-ink-dim: #9db4cc;
+  --ex-accent: #e0c288;
+  --ex-accent-dim: #c9a465;
+
+  --ex-base: var(--color-navy-950);
+  --ex-glow-1: rgb(26 125 232 / 0.32);
+  --ex-glow-2: rgb(194 151 66 / 0.2);
+  --ex-glow-3: rgb(26 125 232 / 0.16);
+  --ex-ramp: #0a1c30;
+  --ex-grain: 0.22;
+
+  --ex-panel-a: rgb(255 255 255 / 0.095);
+  --ex-panel-b: rgb(255 255 255 / 0.035);
+  --ex-panel-c: rgb(255 255 255 / 0.015);
+  --ex-border: rgb(255 255 255 / 0.1);
+  --ex-border-strong: rgb(255 255 255 / 0.2);
+  --ex-highlight: rgb(255 255 255 / 0.18);
+  --ex-underline: rgb(0 0 0 / 0.3);
+  --ex-shadow-near: rgb(0 0 0 / 0.28);
+  --ex-shadow-far: rgb(0 0 0 / 0.75);
+
+  --ex-field: rgb(3 10 20 / 0.55);
+  --ex-field-inset: rgb(0 0 0 / 0.5);
+  --ex-rule: rgb(255 255 255 / 0.16);
+  --ex-chip: rgb(255 255 255 / 0.07);
+
+  --ex-lit-a: rgb(217 184 119 / 0.2);
+  --ex-lit-b: rgb(217 184 119 / 0.07);
+  --ex-lit-border: rgb(217 184 119 / 0.55);
+  --ex-lit-ink: #ffffff;
+
+  --ex-danger: var(--color-danger-300);
+}
+
+/* Bright. A cool blue-white, never a warm cream: the ground carries the same
+   two coloured lights as the dark theme, just at a fraction of the strength. */
+[data-ex-theme="light"] .express-root {
+  color-scheme: light;
+
+  --ex-ink: #08182b;
+  --ex-ink-soft: #294f76;
+  /* Measured, not guessed: the previous dim and accent sat at 3.4-4.4:1
+     against the pale ground, which 12px body text does not get away with. */
+  --ex-ink-dim: #2f577e;
+  --ex-accent: #7a560f;
+  --ex-accent-dim: #96702a;
+
+  --ex-base: #eef3f9;
+  --ex-glow-1: rgb(26 125 232 / 0.16);
+  --ex-glow-2: rgb(194 151 66 / 0.14);
+  --ex-glow-3: rgb(26 125 232 / 0.1);
+  --ex-ramp: #f7fafd;
+  --ex-grain: 0.1;
+
+  --ex-panel-a: rgb(255 255 255 / 0.95);
+  --ex-panel-b: rgb(255 255 255 / 0.88);
+  --ex-panel-c: rgb(255 255 255 / 0.84);
+  --ex-border: rgb(11 32 53 / 0.1);
+  --ex-border-strong: rgb(11 32 53 / 0.22);
+  --ex-highlight: rgb(255 255 255 / 0.9);
+  --ex-underline: rgb(11 32 53 / 0.05);
+  --ex-shadow-near: rgb(11 32 53 / 0.06);
+  --ex-shadow-far: rgb(11 32 53 / 0.18);
+
+  --ex-field: #ffffff;
+  --ex-field-inset: rgb(11 32 53 / 0.07);
+  --ex-rule: rgb(11 32 53 / 0.14);
+  --ex-chip: rgb(11 32 53 / 0.05);
+
+  --ex-lit-a: rgb(194 151 66 / 0.16);
+  --ex-lit-b: rgb(194 151 66 / 0.06);
+  --ex-lit-border: rgb(138 99 20 / 0.5);
+  --ex-lit-ink: #08182b;
+
+  --ex-danger: #a3121a;
+}
+
+/* --- Ground ------------------------------------------------------------- */
+
 @utility express-ground {
-  background-color: var(--color-navy-950);
+  background-color: var(--ex-base);
   background-image:
-    radial-gradient(
-      68rem 42rem at 12% -12%,
-      rgb(26 125 232 / 0.32),
-      transparent 64%
-    ),
-    radial-gradient(
-      52rem 34rem at 92% 4%,
-      rgb(194 151 66 / 0.2),
-      transparent 62%
-    ),
-    radial-gradient(
-      60rem 40rem at 50% 108%,
-      rgb(26 125 232 / 0.16),
-      transparent 66%
-    ),
-    linear-gradient(
-      180deg,
-      var(--color-navy-950) 0%,
-      #0a1c30 46%,
-      var(--color-navy-950) 100%
-    );
+    radial-gradient(68rem 42rem at 12% -12%, var(--ex-glow-1), transparent 64%),
+    radial-gradient(52rem 34rem at 92% 4%, var(--ex-glow-2), transparent 62%),
+    radial-gradient(60rem 40rem at 50% 108%, var(--ex-glow-3), transparent 66%),
+    linear-gradient(180deg, var(--ex-base) 0%, var(--ex-ramp) 46%, var(--ex-base) 100%);
   background-attachment: fixed, fixed, fixed, scroll;
 }
 
-/* Fine grain, laid over the ground to kill gradient banding. */
+/* Fine grain over the ground. Not decoration: a gradient this large bands
+   visibly on 8-bit displays, and the noise is what breaks the bands up. */
 @utility express-grain {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
   mix-blend-mode: overlay;
-  opacity: 0.22;
+  opacity: var(--ex-grain);
 }
 
-/* A glass panel with a lit top edge and a dark base. The inset highlight is
-   the chrome; the outer shadow keeps it off the ground. */
+/* --- Surfaces ----------------------------------------------------------- */
+
 @utility chrome-panel {
   background-image: linear-gradient(
     180deg,
-    rgb(255 255 255 / 0.095) 0%,
-    rgb(255 255 255 / 0.035) 42%,
-    rgb(255 255 255 / 0.015) 100%
+    var(--ex-panel-a) 0%,
+    var(--ex-panel-b) 42%,
+    var(--ex-panel-c) 100%
   );
-  border: 1px solid rgb(255 255 255 / 0.09);
+  border: 1px solid var(--ex-border);
   box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.18),
-    inset 0 -1px 0 rgb(0 0 0 / 0.3),
-    0 2px 8px rgb(0 0 0 / 0.28),
-    0 24px 56px -28px rgb(0 0 0 / 0.75);
+    inset 0 1px 0 var(--ex-highlight),
+    inset 0 -1px 0 var(--ex-underline),
+    0 2px 8px var(--ex-shadow-near),
+    0 24px 56px -28px var(--ex-shadow-far);
   backdrop-filter: blur(14px);
 }
 
-/* The same material, one step brighter, for a panel that is selected. */
 @utility chrome-panel-lit {
   background-image: linear-gradient(
     180deg,
-    rgb(217 184 119 / 0.2) 0%,
-    rgb(217 184 119 / 0.07) 60%,
-    rgb(217 184 119 / 0.04) 100%
+    var(--ex-lit-a) 0%,
+    var(--ex-lit-b) 60%,
+    var(--ex-lit-b) 100%
   );
-  border: 1px solid rgb(217 184 119 / 0.55);
+  border: 1px solid var(--ex-lit-border);
   box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.22),
-    0 2px 10px rgb(0 0 0 / 0.3),
-    0 20px 44px -22px rgb(167 122 32 / 0.6);
+    inset 0 1px 0 var(--ex-highlight),
+    0 2px 10px var(--ex-shadow-near),
+    0 20px 44px -22px rgb(167 122 32 / 0.45);
 }
 
-/* Form controls. Darker than the panel they sit in, so a field reads as a
-   recess rather than another raised surface. */
 @utility chrome-field {
-  background-color: rgb(3 10 20 / 0.55);
-  border: 1px solid rgb(255 255 255 / 0.12);
-  box-shadow:
-    inset 0 1px 2px rgb(0 0 0 / 0.5),
-    inset 0 -1px 0 rgb(255 255 255 / 0.05);
+  background-color: var(--ex-field);
+  border: 1px solid var(--ex-border);
+  box-shadow: inset 0 1px 2px var(--ex-field-inset);
 }
 
-/* The primary action: polished gold with a specular band across the top. */
+/* --- The primary action ------------------------------------------------- */
+
 @utility gold-chrome {
   background-image:
     linear-gradient(
@@ -310,12 +377,10 @@
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.5),
     inset 0 -2px 4px rgb(93 66 12 / 0.45),
-    0 2px 10px rgb(0 0 0 / 0.35),
+    0 2px 10px rgb(0 0 0 / 0.2),
     0 18px 40px -16px rgb(194 151 66 / 0.55);
 }
 
-/* A slow highlight travelling across the primary button. One sweep every
-   five seconds: present enough to catch the eye, rare enough not to nag. */
 @keyframes chrome-sweep {
   0% {
     transform: translateX(-120%) skewX(-18deg);
@@ -330,19 +395,84 @@
   animation: chrome-sweep 5s var(--ease-out-quart) infinite;
 }
 
-/* Hairline rule that fades at both ends, for section separations. */
+/* --- Rules and frames --------------------------------------------------- */
+
+/* Hairline that fades at both ends. */
 @utility chrome-rule {
   background-image: linear-gradient(
     90deg,
     transparent,
-    rgb(255 255 255 / 0.16) 18%,
-    rgb(255 255 255 / 0.16) 82%,
+    var(--ex-rule) 18%,
+    var(--ex-rule) 82%,
     transparent
   );
 }
 
-/* Entrance for the hero and the section headings. Defined here rather than
-   inline so the reduced-motion block below can neutralise every use at once. */
+/* A section divider with a lit node at its centre. */
+@utility chrome-node {
+  background-image: radial-gradient(
+    circle,
+    var(--color-champagne-400) 0%,
+    var(--color-champagne-400) 40%,
+    transparent 70%
+  );
+}
+
+/* Corner brackets, drawn with two gradients per corner so the frame reads as
+   drafting marks rather than a full box. Sits on a wrapper, not the panel. */
+@utility chrome-corners {
+  position: relative;
+}
+
+@utility corner-mark {
+  border-color: var(--ex-accent-dim);
+  opacity: 0.55;
+}
+
+/* --- Semantic text ------------------------------------------------------ */
+
+.ex-ink {
+  color: var(--ex-ink);
+}
+.ex-soft {
+  color: var(--ex-ink-soft);
+}
+.ex-dim {
+  color: var(--ex-ink-dim);
+}
+.ex-accent {
+  color: var(--ex-accent);
+}
+.ex-danger {
+  color: var(--ex-danger);
+}
+.ex-border {
+  border-color: var(--ex-border);
+}
+.ex-border-strong {
+  border-color: var(--ex-border-strong);
+}
+.ex-chip {
+  background-color: var(--ex-chip);
+}
+.ex-accent-wash {
+  background-color: color-mix(in srgb, var(--ex-accent) 14%, transparent);
+}
+
+/* Native select menus paint on the OS surface, not the page, so their colours
+   are set here rather than inherited from the field. */
+.express-root option {
+  background-color: var(--ex-base);
+  color: var(--ex-ink);
+}
+
+.express-root ::placeholder {
+  color: var(--ex-ink-dim);
+  opacity: 1;
+}
+
+/* --- Motion ------------------------------------------------------------- */
+
 @keyframes express-rise {
   from {
     opacity: 0;
@@ -369,6 +499,10 @@
 /* Respect the user's reduced-motion preference throughout. */
 body:has(.express-root) {
   background-color: var(--color-navy-950);
+}
+
+[data-ex-theme="light"] body:has(.express-root) {
+  background-color: #eef3f9;
 }
 
 @media (prefers-reduced-motion: reduce) {

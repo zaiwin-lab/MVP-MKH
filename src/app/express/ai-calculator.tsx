@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
   INDICATIVE_RATE,
+  MAX_TENURE_YEARS,
   calculateEligibility,
   formatRM,
 } from "@/lib/eligibility";
@@ -10,16 +11,15 @@ import { COPY, type Lang } from "@/lib/i18n";
 import { PrimaryButton } from "./express-ui";
 
 /* --------------------------------------------------------------------------
-   Optional 60-second financing estimate.
+   Optional financing estimate.
 
-   Three deliberate constraints:
-     1. It never blocks the journey. It is a dialog over the page; closing it
-        leaves the form exactly as it was.
+   Three constraints hold whatever else changes here:
+     1. It never blocks the journey. Closing it leaves the form as it was.
      2. The numbers are real. This calls the same DSR model the main portal
-        uses — no invented "AI approval", because a customer who is told they
-        qualify and is later refused has been misled by us, not by a bank.
+        uses. A customer told they qualify and later refused has been misled
+        by us, not by a bank, so nothing here is invented.
      3. It lives outside the <form>. Nested forms are invalid HTML and would
-        break the lead submission.
+        break lead submission.
    -------------------------------------------------------------------------- */
 
 /** Midpoint of the selected financing band, used to assess their target DSR. */
@@ -31,7 +31,8 @@ const TARGET_BUDGET: Record<string, number> = {
   "Belum Pasti": 300_000,
 };
 
-const TENURE_YEARS = 30;
+const DEFAULT_TENURE = MAX_TENURE_YEARS;
+const TENURE_CHOICES = [10, 15, 20, 25, 30].filter((y) => y <= MAX_TENURE_YEARS);
 
 export function AiCalculator({
   open,
@@ -48,6 +49,11 @@ export function AiCalculator({
   const [income, setIncome] = useState("");
   const [commitments, setCommitments] = useState("");
   const [age, setAge] = useState("");
+  const [tenure, setTenure] = useState(DEFAULT_TENURE);
+  const [isJoint, setIsJoint] = useState(false);
+  const [spouseIncome, setSpouseIncome] = useState("");
+  const [spouseCommitments, setSpouseCommitments] = useState("");
+  const [spouseAge, setSpouseAge] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const firstFieldRef = useRef<HTMLInputElement>(null);
 
@@ -72,7 +78,6 @@ export function AiCalculator({
   if (!open) return null;
 
   const incomeValue = Number(income) || 0;
-  const commitmentsValue = Number(commitments) || 0;
   const ageValue = Number(age) || 0;
   const ready = incomeValue > 0 && ageValue >= 18 && ageValue <= 65;
 
@@ -80,10 +85,17 @@ export function AiCalculator({
     submitted && ready
       ? calculateEligibility({
           monthlyIncome: incomeValue,
-          existingCommitments: commitmentsValue,
+          existingCommitments: Number(commitments) || 0,
           age: ageValue,
           preferredBudget: TARGET_BUDGET[financingTarget] ?? 300_000,
-          financingPeriodYears: TENURE_YEARS,
+          financingPeriodYears: tenure,
+          joint: isJoint
+            ? {
+                monthlyIncome: Number(spouseIncome) || 0,
+                existingCommitments: Number(spouseCommitments) || 0,
+                age: Number(spouseAge) || 0,
+              }
+            : undefined,
         })
       : null;
 
@@ -102,12 +114,12 @@ export function AiCalculator({
       >
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-champagne-300">
+            <p className="ex-accent text-[0.6875rem] font-semibold uppercase tracking-[0.16em]">
               {t.calcKicker}
             </p>
             <h2
               id="ai-calc-title"
-              className="mt-1.5 font-display text-[1.5rem] font-bold leading-tight text-white"
+              className="ex-ink mt-1.5 font-display text-[1.5rem] font-bold leading-tight"
             >
               {t.calcTitle}
             </h2>
@@ -116,7 +128,7 @@ export function AiCalculator({
             type="button"
             onClick={onClose}
             aria-label={t.calcCloseLabel}
-            className="-mr-1.5 -mt-1.5 flex size-10 shrink-0 items-center justify-center rounded-full border border-white/10 text-navy-200 transition-colors hover:bg-white/10 hover:text-white"
+            className="ex-soft ex-border -mr-1.5 -mt-1.5 flex size-10 shrink-0 items-center justify-center rounded-full border transition-colors hover:bg-white/10"
           >
             <svg viewBox="0 0 20 20" className="size-5">
               <path
@@ -130,11 +142,42 @@ export function AiCalculator({
           </button>
         </div>
 
-        <p className="mt-3 text-[0.875rem] leading-relaxed text-navy-200">
-          {t.calcIntro}
-        </p>
+        <p className="ex-soft mt-3 text-[0.9375rem] leading-relaxed">{t.calcIntro}</p>
 
-        <div className="mt-6 space-y-4">
+        {/* Single or joint. A joint application changes what the numbers mean,
+            so it is the first thing asked, not a checkbox at the bottom. */}
+        <div className="mt-6">
+          <p className="ex-ink mb-2 text-[0.875rem] font-semibold tracking-wide">
+            {t.calcJointToggle}
+          </p>
+          <div role="group" className="grid grid-cols-2 gap-2.5">
+            {[
+              { value: false, label: t.calcSingle },
+              { value: true, label: t.calcJoint },
+            ].map((option) => (
+              <button
+                key={String(option.value)}
+                type="button"
+                aria-pressed={isJoint === option.value}
+                onClick={() => setIsJoint(option.value)}
+                className={`h-12 rounded-control text-[0.875rem] font-semibold transition-all duration-200 ${
+                  isJoint === option.value
+                    ? "chrome-panel-lit ex-ink"
+                    : "chrome-field ex-soft hover:ex-border-strong"
+                }`}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+          {isJoint ? (
+            <p className="ex-dim mt-2.5 text-[0.8125rem] leading-relaxed">
+              {t.calcJointNote}
+            </p>
+          ) : null}
+        </div>
+
+        <div className="mt-5 space-y-4">
           <CalcField
             id="calc-income"
             label={t.calcIncome}
@@ -157,46 +200,122 @@ export function AiCalculator({
             onChange={setAge}
             placeholder={t.calcAgePlaceholder}
           />
+
+          {isJoint ? (
+            <div className="ex-border space-y-4 rounded-express border border-dashed p-4">
+              <CalcField
+                id="calc-spouse-income"
+                label={t.calcSpouseIncome}
+                value={spouseIncome}
+                onChange={setSpouseIncome}
+                placeholder={t.calcIncomePlaceholder}
+              />
+              <CalcField
+                id="calc-spouse-commitments"
+                label={t.calcSpouseCommitments}
+                value={spouseCommitments}
+                onChange={setSpouseCommitments}
+                placeholder={t.calcCommitmentsPlaceholder}
+              />
+              <CalcField
+                id="calc-spouse-age"
+                label={t.calcSpouseAge}
+                value={spouseAge}
+                onChange={setSpouseAge}
+                placeholder={t.calcSpouseAgePlaceholder}
+              />
+            </div>
+          ) : null}
+
+          <div>
+            <label
+              htmlFor="calc-tenure"
+              className="ex-ink mb-2 block text-[0.875rem] font-semibold tracking-wide"
+            >
+              {t.calcTenureLabel}
+            </label>
+            <div className="relative">
+              <select
+                id="calc-tenure"
+                value={tenure}
+                onChange={(event) => setTenure(Number(event.target.value))}
+                className="chrome-field ex-ink h-14 w-full cursor-pointer appearance-none rounded-control px-4 pr-12 text-[1rem] font-medium transition-colors duration-200 focus:border-champagne-300 focus:outline-none focus:ring-4 focus:ring-champagne-300/25"
+              >
+                {TENURE_CHOICES.map((years) => (
+                  <option key={years} value={years}>
+                    {t.calcTenureYears(years)}
+                  </option>
+                ))}
+              </select>
+              <span
+                aria-hidden
+                className="ex-accent ex-border pointer-events-none absolute right-3 top-1/2 flex size-7 -translate-y-1/2 items-center justify-center rounded-full border"
+              >
+                <svg viewBox="0 0 20 20" className="size-4">
+                  <path
+                    d="M5.5 8l4.5 4.5L14.5 8"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.9"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
+            </div>
+          </div>
         </div>
 
         {submitted && !ready ? (
-          <p className="mt-4 text-[0.8125rem] font-semibold text-danger-300">
-            {t.calcInvalid}
-          </p>
+          <p className="ex-danger mt-4 text-[0.875rem] font-semibold">{t.calcInvalid}</p>
         ) : null}
 
         {result ? (
           <div className="chrome-panel-lit mt-6 rounded-express p-5">
             {result.overCommitted ? (
-              <p className="text-[0.9375rem] font-semibold leading-relaxed text-white">
+              <p className="ex-ink text-[0.9375rem] font-semibold leading-relaxed">
                 {t.calcOverCommitted}
               </p>
             ) : (
               <>
-                <p className="text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-champagne-700">
+                <p className="ex-accent text-[0.6875rem] font-semibold uppercase tracking-[0.14em]">
                   {t.calcResultLabel}
                 </p>
-                <p className="mt-2 font-display text-[1.75rem] font-bold leading-tight text-champagne-200 sm:text-[2rem]">
+                <p className="ex-accent mt-2 font-display text-[1.75rem] font-bold leading-tight sm:text-[2rem]">
                   {formatRM(result.lowerFinancing)} &ndash;{" "}
                   {formatRM(result.upperFinancing)}
                 </p>
-                <dl className="mt-4 space-y-1.5 text-[0.8125rem] text-navy-200">
+                {result.isJoint ? (
+                  <p className="ex-dim mt-1.5 text-[0.8125rem]">
+                    {t.calcJointBasis(formatRM(result.householdIncome))}
+                  </p>
+                ) : null}
+                <dl className="ex-soft mt-4 space-y-2 text-[0.875rem]">
                   <div className="flex justify-between gap-4">
                     <dt>{t.calcInstalment}</dt>
-                    <dd className="font-bold text-white">
+                    <dd className="ex-ink font-bold">
                       {formatRM(result.indicativeInstalment)}
                     </dd>
                   </div>
                   <div className="flex justify-between gap-4">
                     <dt>{t.calcTenure}</dt>
-                    <dd className="font-bold text-white">
+                    <dd className="ex-ink text-right font-bold">
                       {result.effectiveTenureYears} {t.calcYears}
-                      {result.tenureWasCapped ? ` (${t.calcAgeCapped})` : ""}
+                      {result.tenureCapReason === "age" ? (
+                        <span className="ex-dim block text-[0.75rem] font-normal">
+                          {t.calcCappedByAge(result.effectiveTenureYears)}
+                        </span>
+                      ) : null}
+                      {result.tenureCapReason === "product" ? (
+                        <span className="ex-dim block text-[0.75rem] font-normal">
+                          {t.calcCappedByProduct(MAX_TENURE_YEARS)}
+                        </span>
+                      ) : null}
                     </dd>
                   </div>
                   <div className="flex justify-between gap-4">
                     <dt>{t.calcTargetLabel(financingTarget)}</dt>
-                    <dd className="font-bold text-white">
+                    <dd className="ex-ink font-bold">
                       {result.budgetAssessment === "comfortable"
                         ? t.calcComfortable
                         : result.budgetAssessment === "within"
@@ -207,8 +326,8 @@ export function AiCalculator({
                 </dl>
               </>
             )}
-            <p className="mt-4 border-t border-white/12 pt-3 text-[0.75rem] leading-relaxed text-navy-200">
-              {t.calcDisclaimer(INDICATIVE_RATE, TENURE_YEARS)}
+            <p className="ex-dim ex-border mt-4 border-t pt-3 text-[0.75rem] leading-relaxed">
+              {t.calcDisclaimer(INDICATIVE_RATE, result.effectiveTenureYears)}
             </p>
           </div>
         ) : null}
@@ -223,7 +342,7 @@ export function AiCalculator({
           <button
             type="button"
             onClick={onClose}
-            className="h-14 rounded-control border border-white/14 px-6 text-[0.9375rem] font-bold text-navy-100 transition-colors duration-200 hover:bg-white/8 hover:text-white sm:flex-none"
+            className="ex-soft ex-border h-14 rounded-control border px-6 text-[0.9375rem] font-semibold transition-colors duration-200 hover:bg-white/8 sm:flex-none"
           >
             {result ? t.calcDone : t.calcClose}
           </button>
@@ -252,7 +371,7 @@ function CalcField({
     <div>
       <label
         htmlFor={id}
-        className="mb-2 block text-[0.8125rem] font-bold tracking-wide text-white"
+        className="ex-ink mb-2 block text-[0.875rem] font-semibold tracking-wide"
       >
         {label}
       </label>
@@ -264,7 +383,7 @@ function CalcField({
         value={value}
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value.replace(/[^0-9]/g, ""))}
-        className="chrome-field h-14 w-full rounded-control px-4 text-[0.9375rem] font-medium text-white transition-colors duration-200 placeholder:font-normal placeholder:text-navy-300 hover:border-white/20 focus:border-champagne-300 focus:outline-none focus:ring-4 focus:ring-champagne-300/25"
+        className="chrome-field ex-ink h-14 w-full rounded-control px-4 text-[1rem] font-medium transition-colors duration-200 focus:border-champagne-300 focus:outline-none focus:ring-4 focus:ring-champagne-300/25"
       />
     </div>
   );

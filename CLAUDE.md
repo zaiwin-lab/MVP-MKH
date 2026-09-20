@@ -49,12 +49,25 @@ ahead of the full platform. **Its scope is fixed** — capture the lead, capture
 the introducer, and tell the customer what happens next. Do not add fields,
 steps or gates to it; every extra interaction costs conversions.
 
-- It has its own brand register: **drenched navy with gold chrome**, not the
-  portal's light forest-and-parchment. Keep the two apart. The premium read
-  comes from three layers in order: `express-ground` (ambient gradient plus
-  grain, which is what stops a large dark gradient banding), `chrome-panel`
-  (glass), and the hairline `inset 0 1px 0` highlight along each panel's top
-  edge. That highlight is what makes a surface look like polished metal.
+- **Two themes, dark and bright**, from one system. Every themed value is an
+  `--ex-*` custom property declared on `.express-root`; the `ex-ink`,
+  `ex-soft`, `ex-dim`, `ex-accent`, `ex-border` and `ex-chip` classes read
+  them. **Never style this page with Tailwind palette utilities** such as
+  `text-white` or `border-white/10`: those are fixed at build time and pin the
+  component to one theme. Never chain one custom property through another at
+  `:root` either, for the reason the font note above gives.
+  The theme lives in `data-ex-theme` on `<html>`, set before paint by
+  `THEME_BOOTSTRAP` so a bright-theme visitor gets no dark flash; React reads
+  it back through `useExTheme`, never with `useEffect` + `setState`.
+- The premium read comes from three layers in order: `express-ground` (ambient
+  gradient plus grain, which is what stops a large dark gradient banding),
+  `chrome-panel` (glass), and the hairline `inset 0 1px 0` highlight along
+  each panel's top edge. That highlight is what makes a surface look like
+  polished metal.
+- Labels are 14px semibold, not 13px bold. Small bold text blooms on a dark
+  ground and reads as heavy; one notch lighter and larger is easier to read
+  and no less premium. Fields do not carry an "optional" badge: section 01
+  says once that everything in it is optional.
 - **No photographs on this page.** It runs on drawn icons in boxed panels;
   `ICONS` in `express-ui.tsx` is the set, keyed by the option value it belongs
   to. Do not reintroduce imagery here.
@@ -78,9 +91,15 @@ steps or gates to it; every extra interaction costs conversions.
   labels translate; the option `value` a customer picks is canonical Malay and
   is what reaches the CRM. Translating stored values would split every report
   in two. Adding a language means adding a key to `COPY`, nothing else.
-- Error text uses `danger-300`/`danger-400`, not `danger`: the light-ground
-  red drops under 4.5:1 on near-black glass.
+- Error text uses the `ex-danger` class, which carries a light red on the dark
+  theme and a dark one on bright; the single `danger` token fails on both.
+- The calculator models a **joint application**: incomes and commitments are
+  pooled, and the tenure is governed by the **older** applicant, because the
+  age-70 cap has to hold for both borrowers. Tenure is capped at
+  `MAX_TENURE_YEARS` (30). Don't quote a term no bank would write.
 - **Audit contrast against rendered pixels, not computed styles.** Tailwind v4
   emits `oklab()` and `color-mix()`, which naive parsers read as near-black and
   which produce a page of phantom failures. Screenshot, take the modal pixel in
-  each text box as the ground and the glyph core as the ink.
+  each text box as the ground and the glyph core as the ink. Even then, small
+  text can read 0.5 low from antialiased edge pixels; confirm a marginal
+  failure against the computed colour before chasing it.
