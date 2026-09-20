@@ -41,3 +41,29 @@ The calculator is a real DSR estimate, not a mock, and its assumptions
 (4.3% indicative rate, 90% margin of finance, 55–65% DSR band, age-70 tenure
 cap) are stated to the user. Don't replace it with a fabricated "AI" result, and
 don't present preliminary assessments as approvals.
+
+## The Express portal (`/express`)
+
+A standalone, single-page lead journey for Facebook/WhatsApp traffic, launched
+ahead of the full platform. **Its scope is fixed** — capture the lead, capture
+the introducer, and tell the customer what happens next. Do not add fields,
+steps or gates to it; every extra interaction costs conversions.
+
+- It has its own brand register: `navy` / `champagne` / `ivory` tokens, not the
+  portal's `forest` / `gold` / `parchment`. Keep the two apart.
+- Everything it needs lives in `src/app/express/` plus `src/lib/lead.ts` and
+  `src/lib/submit-lead.ts`, so the module can lift into the full platform.
+- `src/lib/lead.ts` defines the `Lead` shape. **Those snake_case keys are the
+  CRM columns** — renaming one here means renaming a column downstream.
+- **Leads go to Netlify Forms** (form name `mkh-express-lead`). Read them in
+  the Netlify project's Forms tab; add email notifications or an outgoing
+  webhook to a CRM there, with no redeploy. To move to a real CRM, replace the
+  body of `submitLead()` — that is the only seam.
+- Only `customer_name`, `phone`, `email` and consent are required. Everything
+  in sections 01–04 is optional by design.
+- The introducer arrives as `?ref=AGT001`, is written to sessionStorage on
+  landing and read back at submit. The customer never sees or types it. No
+  parameter means `DIRECT`.
+- The AI calculator is optional, never blocks submission, and calls the real
+  DSR model in `src/lib/eligibility.ts`. It must keep saying it is an estimate,
+  not an approval.
