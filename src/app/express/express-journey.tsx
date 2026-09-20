@@ -21,12 +21,13 @@ import {
 import { FORM_NAME, HONEYPOT_FIELD, submitLead } from "@/lib/submit-lead";
 import { AiCalculator } from "./ai-calculator";
 import {
-  Card,
+  ChoiceTile,
   FieldError,
-  IconTile,
+  Icon,
   Label,
   LangToggle,
-  PhotoTile,
+  Panel,
+  PrimaryButton,
   ProgressRail,
   STEP_IDS,
   SectionHeading,
@@ -51,6 +52,8 @@ const DIVISION_OPTIONS = SARAWAK_DIVISIONS.map((name) => ({
   ms: name,
   en: name,
 }));
+
+const SECTION_ICONS = ["land", "1 Tingkat", "wallet", "guide", "user"];
 
 function validate(values: Values, consent: boolean, lang: Lang): Errors {
   const t = COPY[lang];
@@ -88,7 +91,7 @@ export function ExpressJourney() {
   }, [t.htmlLang]);
 
   /* Light the rail from whichever section is crossing the middle of the
-     viewport. Purely decorative: if the observer never fires, the rail stays
+     viewport. Purely decorative: if the observer never fires the rail stays
      on step one and nothing about the journey breaks. */
   useEffect(() => {
     if (status === "done") return;
@@ -188,7 +191,9 @@ export function ExpressJourney() {
   const done = status === "done";
 
   return (
-    <div className="min-h-dvh bg-ivory-100">
+    <div className="express-root express-ground relative isolate min-h-dvh">
+      <span aria-hidden className="express-grain pointer-events-none fixed inset-0 -z-10" />
+
       <StickyHeader
         activeStep={activeStep}
         showRail={!done}
@@ -211,7 +216,7 @@ export function ExpressJourney() {
               netlify-honeypot={HONEYPOT_FIELD}
               onSubmit={handleSubmit}
               noValidate
-              className="space-y-14 sm:space-y-20"
+              className="space-y-12 sm:space-y-16"
             >
               {/* Present in the exported HTML so the form backend detects every
                   column; the real values are attached at submit time. */}
@@ -289,11 +294,11 @@ function StickyHeader({
   onLang: (next: Lang) => void;
 }) {
   return (
-    <header className="sticky top-0 z-(--z-sticky) border-b border-navy-100 bg-ivory-100/92 backdrop-blur-md">
+    <header className="sticky top-0 z-(--z-sticky) border-b border-white/8 bg-navy-950/70 backdrop-blur-xl">
       <div className="shell max-w-5xl py-3 sm:py-3.5">
         <div className="flex items-center gap-2.5">
-          <HornbillMark tone="dark" className="h-7 w-auto shrink-0 sm:h-8" />
-          <span className="truncate font-display text-[0.9375rem] font-bold tracking-tight text-navy-900 sm:text-[1.0625rem]">
+          <HornbillMark tone="light" className="h-7 w-auto shrink-0 sm:h-8" />
+          <span className="truncate font-display text-[0.9375rem] font-bold tracking-tight text-white sm:text-[1.0625rem]">
             My Kenyalang Homes
           </span>
           <span className="ml-auto" />
@@ -312,91 +317,55 @@ function StickyHeader({
 function Hero({ lang }: { lang: Lang }) {
   const t = COPY[lang];
   return (
-    <section className="navy-depth relative overflow-hidden text-white">
-      {/* A single wide champagne glow behind the type, so the gradient reads
-          as light falling on a surface rather than a flat colour ramp. */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute -left-40 -top-40 size-[34rem] rounded-full bg-champagne-500/10 blur-3xl"
-      />
-      <div className="shell relative max-w-5xl py-12 sm:py-20">
-        <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
-          <div>
-            <p className="rise text-[0.6875rem] font-bold uppercase tracking-[0.2em] text-navy-300">
-              {t.brandPartners}
-            </p>
-            <p className="rise mt-4 inline-flex items-center gap-2 rounded-full border border-champagne-500/35 bg-champagne-500/12 px-3.5 py-1.5 text-[0.625rem] font-bold uppercase tracking-[0.16em] text-champagne-300 [animation-delay:60ms]">
-              <span aria-hidden className="size-1.5 rounded-full bg-champagne-400" />
-              {t.expressBadge}
-            </p>
-            <h1 className="rise mt-6 text-balance font-display text-[2.25rem] font-bold leading-[1.04] tracking-[-0.025em] text-white [animation-delay:120ms] sm:text-[3.25rem]">
-              {t.heroTitle}
-              <span className="mt-2 block text-champagne-300">{t.heroTitleAccent}</span>
-            </h1>
-            <p className="rise mt-6 max-w-[54ch] text-pretty text-[0.9375rem] leading-[1.7] text-navy-200 [animation-delay:180ms] sm:text-[1.0625rem]">
-              {t.heroBody}
-            </p>
-            <div className="rise mt-8 flex flex-wrap items-center gap-3 [animation-delay:240ms]">
-              <a
-                href="#section-tanah"
-                className="champagne-face inline-flex h-14 items-center gap-2 rounded-control px-7 text-[0.9375rem] font-bold text-navy-950 shadow-champagne transition-[filter,transform] duration-200 [transition-timing-function:var(--ease-out-quart)] hover:brightness-110 active:translate-y-px"
-              >
-                {t.heroCta}
-                <svg aria-hidden viewBox="0 0 20 20" className="size-4">
-                  <path
-                    d="M4 10h11M10.5 5.5L15 10l-4.5 4.5"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </a>
-              <ul className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                {t.trust.map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-center gap-1.5 text-[0.75rem] font-bold uppercase tracking-[0.1em] text-navy-100"
-                  >
-                    <svg aria-hidden viewBox="0 0 14 14" className="size-3.5 text-champagne-400">
-                      <path
-                        d="M2.5 7.3l3 3 6-6.6"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+    <section className="relative overflow-hidden">
+      <div className="shell relative max-w-5xl pb-14 pt-12 sm:pb-20 sm:pt-16">
+        <p className="rise text-[0.6875rem] font-bold uppercase tracking-[0.2em] text-navy-200">
+          {t.brandPartners}
+        </p>
+        <p className="rise mt-4 inline-flex items-center gap-2 rounded-full border border-champagne-300/30 bg-champagne-300/10 px-3.5 py-1.5 text-[0.625rem] font-bold uppercase tracking-[0.16em] text-champagne-200 [animation-delay:60ms]">
+          <span aria-hidden className="size-1.5 rounded-full bg-champagne-300" />
+          {t.expressBadge}
+        </p>
+        <h1 className="rise mt-6 max-w-[18ch] text-balance font-display text-[2.5rem] font-bold leading-[1.02] tracking-[-0.03em] text-white [animation-delay:120ms] sm:text-[4rem]">
+          {t.heroTitle}
+          <span className="mt-1.5 block text-champagne-300">{t.heroTitleAccent}</span>
+        </h1>
+        <p className="rise mt-6 max-w-[56ch] text-pretty text-[0.9375rem] leading-[1.7] text-navy-100 [animation-delay:180ms] sm:text-[1.0625rem]">
+          {t.heroBody}
+        </p>
 
-          <figure className="rise relative [animation-delay:300ms]">
-            <img
-              src="/images/homes/home-04.jpg"
-              alt={t.heroPhotoAlt}
-              width={800}
-              height={500}
-              fetchPriority="high"
-              decoding="async"
-              className="aspect-[4/3] w-full rounded-express-lg object-cover shadow-express-xl ring-1 ring-white/10 sm:aspect-[8/5]"
-            />
-          </figure>
+        <div className="rise mt-8 flex flex-wrap items-center gap-x-4 gap-y-3 [animation-delay:240ms]">
+          <PrimaryButton
+            onClick={() => document.getElementById("section-tanah")?.scrollIntoView({ behavior: "smooth" })}
+            className="inline-flex h-14 items-center gap-2 px-7 text-[0.9375rem]"
+          >
+            {t.heroCta}
+            <Icon name="arrow" className="size-4" />
+          </PrimaryButton>
+          <ul className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            {t.trust.map((item) => (
+              <li
+                key={item}
+                className="flex items-center gap-1.5 text-[0.75rem] font-bold uppercase tracking-[0.1em] text-navy-100"
+              >
+                <Icon name="check" className="size-3.5 text-champagne-300" />
+                {item}
+              </li>
+            ))}
+          </ul>
         </div>
 
-        {/* Three facts that answer the only objections an ad visitor has. */}
-        <dl className="rise mt-12 grid grid-cols-3 gap-px overflow-hidden rounded-express border border-white/10 bg-white/10 [animation-delay:360ms]">
+        {/* Three facts answering the only objections an ad visitor has. */}
+        <dl className="rise mt-12 grid grid-cols-3 gap-2.5 [animation-delay:300ms] sm:gap-4">
           {t.statValues.map((value, i) => (
-            <div key={t.statLabels[i]} className="bg-navy-900/60 px-3 py-4 text-center sm:py-5">
-              <dt className="text-[0.625rem] font-bold uppercase tracking-[0.1em] text-navy-300">
+            <div
+              key={t.statLabels[i]}
+              className="chrome-panel rounded-express px-3 py-4 text-center sm:py-5"
+            >
+              <dt className="text-[0.5625rem] font-bold uppercase tracking-[0.1em] text-navy-200 sm:text-[0.625rem]">
                 {t.statLabels[i]}
               </dt>
-              <dd className="mt-1.5 font-display text-[1.125rem] font-bold text-champagne-300 sm:text-[1.375rem]">
+              <dd className="mt-1.5 font-display text-[1.25rem] font-bold text-champagne-200 sm:text-[1.625rem]">
                 {value}
               </dd>
             </div>
@@ -410,32 +379,28 @@ function Hero({ lang }: { lang: Lang }) {
 function Reasons({ lang }: { lang: Lang }) {
   const t = COPY[lang];
   return (
-    <section className="border-b border-navy-100 bg-white">
-      <div className="shell max-w-5xl py-12 sm:py-16">
-        <h2 className="text-balance font-display text-[1.5rem] font-bold leading-tight tracking-tight text-navy-900 sm:text-[2rem]">
-          {t.reasonsTitle}
-        </h2>
-        <ol className="mt-8 grid gap-x-8 gap-y-7 sm:grid-cols-2 sm:gap-y-9 lg:grid-cols-4 lg:gap-x-7">
-          {t.reasons.map((reason, i) => (
-            <li key={reason.title} className="flex gap-4">
-              <span
-                aria-hidden
-                className="font-display text-[1.75rem] font-bold leading-none tabular-nums text-champagne-500"
-              >
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <div className="min-w-0">
-                <h3 className="font-display text-[1.0625rem] font-bold leading-snug text-navy-900">
-                  {reason.title}
-                </h3>
-                <p className="mt-1.5 text-pretty text-[0.875rem] leading-relaxed text-navy-600">
-                  {reason.body}
-                </p>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </div>
+    <section className="shell max-w-5xl py-6 sm:py-10">
+      <h2 className="text-balance font-display text-[1.5rem] font-bold leading-tight tracking-[-0.02em] text-white sm:text-[2rem]">
+        {t.reasonsTitle}
+      </h2>
+      <ol className="mt-6 grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
+        {t.reasons.map((reason, i) => (
+          <li key={reason.title} className="chrome-panel rounded-express p-4 sm:p-5">
+            <span
+              aria-hidden
+              className="font-display text-[1.25rem] font-bold leading-none tabular-nums text-champagne-300"
+            >
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <h3 className="mt-3 font-display text-[1rem] font-bold leading-snug text-white">
+              {reason.title}
+            </h3>
+            <p className="mt-1.5 text-pretty text-[0.8125rem] leading-relaxed text-navy-200">
+              {reason.body}
+            </p>
+          </li>
+        ))}
+      </ol>
     </section>
   );
 }
@@ -443,13 +408,13 @@ function Reasons({ lang }: { lang: Lang }) {
 function ExpressFooter({ lang }: { lang: Lang }) {
   const t = COPY[lang];
   return (
-    <footer className="border-t border-navy-100 bg-ivory-200">
+    <footer className="border-t border-white/8">
       <div className="shell max-w-5xl py-10 text-center">
-        <HornbillMark tone="dark" className="mx-auto h-8 w-auto opacity-60" />
-        <p className="mt-4 text-[0.75rem] font-bold uppercase tracking-[0.14em] text-navy-600">
+        <HornbillMark tone="light" className="mx-auto h-8 w-auto opacity-70" />
+        <p className="mt-4 text-[0.75rem] font-bold uppercase tracking-[0.14em] text-navy-100">
           {t.brandPartners}
         </p>
-        <p className="mx-auto mt-3 max-w-[60ch] text-pretty text-[0.75rem] leading-relaxed text-navy-500">
+        <p className="mx-auto mt-3 max-w-[60ch] text-pretty text-[0.75rem] leading-relaxed text-navy-200">
           {t.footerNote}
         </p>
       </div>
@@ -479,19 +444,13 @@ function LandSection({ values, set, lang }: SectionProps) {
   const t = COPY[lang];
   return (
     <Section id="tanah">
-      <SectionHeading index="01" title={t.landTitle} support={t.landSupport} />
-      <figure className="mb-5 overflow-hidden rounded-express shadow-express">
-        <img
-          src="/images/land/find-land.jpg"
-          alt={t.landPhotoAlt}
-          width={800}
-          height={500}
-          loading="lazy"
-          decoding="async"
-          className="h-36 w-full object-cover sm:h-44"
-        />
-      </figure>
-      <Card>
+      <SectionHeading
+        index="01"
+        icon={SECTION_ICONS[0]}
+        title={t.landTitle}
+        support={t.landSupport}
+      />
+      <Panel>
         <div className="grid gap-5 sm:grid-cols-2">
           <div>
             <Label htmlFor="division" optional={t.optional}>
@@ -543,7 +502,7 @@ function LandSection({ values, set, lang }: SectionProps) {
             />
           </div>
         </div>
-      </Card>
+      </Panel>
     </Section>
   );
 }
@@ -552,23 +511,26 @@ function HomeSection({ values, set, lang }: SectionProps) {
   const t = COPY[lang];
   return (
     <Section id="rumah">
-      <SectionHeading index="02" title={t.homeTitle} support={t.homeSupport} />
-      <Card>
+      <SectionHeading
+        index="02"
+        icon={SECTION_ICONS[1]}
+        title={t.homeTitle}
+        support={t.homeSupport}
+      />
+      <Panel>
         <fieldset>
-          <legend className="mb-3 text-[0.8125rem] font-bold tracking-wide text-navy-800">
+          <legend className="mb-3 text-[0.8125rem] font-bold tracking-wide text-white">
             {t.fieldHouseType}
           </legend>
           <div className="grid grid-cols-3 gap-2.5 sm:gap-4">
             {HOUSE_TYPES.map((type) => (
-              <PhotoTile
+              <ChoiceTile
                 key={type.value}
                 name="house_type"
                 value={type.value}
                 checked={values.house_type === type.value}
                 onChange={set("house_type")}
                 label={type[lang]}
-                photo={type.photo}
-                alt={type[lang]}
               />
             ))}
           </div>
@@ -597,7 +559,7 @@ function HomeSection({ values, set, lang }: SectionProps) {
             />
           </div>
         </div>
-      </Card>
+      </Panel>
     </Section>
   );
 }
@@ -611,8 +573,13 @@ function FinancingSection({
   const t = COPY[lang];
   return (
     <Section id="finance">
-      <SectionHeading index="03" title={t.financeTitle} support={t.financeSupport} />
-      <Card>
+      <SectionHeading
+        index="03"
+        icon={SECTION_ICONS[2]}
+        title={t.financeTitle}
+        support={t.financeSupport}
+      />
+      <Panel>
         <Label htmlFor="financing_target">{t.fieldFinancing}</Label>
         <Select
           id="financing_target"
@@ -622,54 +589,38 @@ function FinancingSection({
           options={FINANCING_TARGETS}
           lang={lang}
         />
-      </Card>
 
-      {/* Optional, and visibly so. It sits outside the card to read as an
-          aside rather than a step, and it never gates submission. */}
-      <div className="navy-depth relative mt-4 overflow-hidden rounded-express shadow-express-lg">
-        <span
-          aria-hidden
-          className="pointer-events-none absolute -right-16 -top-16 size-48 rounded-full bg-champagne-500/15 blur-2xl"
-        />
-        <div className="relative flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:gap-6 sm:p-7">
-          <div className="min-w-0 flex-1">
-            <p className="text-[0.625rem] font-bold uppercase tracking-[0.14em] text-champagne-400">
-              {t.calcKicker}
-            </p>
-            <p className="mt-2.5 font-display text-[1.125rem] font-bold leading-snug text-white sm:text-[1.25rem]">
-              {t.calcPrompt}
-            </p>
-            <p className="mt-1.5 text-[0.8125rem] leading-relaxed text-navy-200">
-              {t.calcBody}
-            </p>
+        {/* Optional, and visibly so. Inside the panel but below a rule, so it
+            reads as an aside to the field rather than a step of its own. */}
+        <div className="mt-6 border-t border-white/8 pt-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-5">
+            <span
+              aria-hidden
+              className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-champagne-300/14 text-champagne-200"
+            >
+              <Icon name="spark" className="size-5" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="text-[0.625rem] font-bold uppercase tracking-[0.14em] text-champagne-300">
+                {t.calcKicker}
+              </p>
+              <p className="mt-1.5 font-display text-[1.0625rem] font-bold leading-snug text-white">
+                {t.calcPrompt}
+              </p>
+              <p className="mt-1 text-[0.8125rem] leading-relaxed text-navy-200">
+                {t.calcBody}
+              </p>
+            </div>
+            <PrimaryButton
+              onClick={onOpenCalculator}
+              className="inline-flex h-12 shrink-0 items-center justify-center gap-2 px-5 text-[0.8125rem] uppercase tracking-[0.06em]"
+            >
+              <Icon name="spark" className="size-4" />
+              {t.calcCta}
+            </PrimaryButton>
           </div>
-          <button
-            type="button"
-            onClick={onOpenCalculator}
-            className="champagne-face inline-flex h-13 shrink-0 items-center justify-center gap-2 rounded-control px-6 py-3.5 text-[0.8125rem] font-bold uppercase tracking-[0.06em] text-navy-950 shadow-champagne transition-[filter,transform] duration-200 hover:brightness-110 active:translate-y-px"
-          >
-            <svg aria-hidden viewBox="0 0 20 20" className="size-4">
-              <rect
-                x="4"
-                y="2.5"
-                width="12"
-                height="15"
-                rx="2"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.7"
-              />
-              <path
-                d="M7 6.5h6M7 10h2M7 13.2h2M12 10v3.2"
-                stroke="currentColor"
-                strokeWidth="1.7"
-                strokeLinecap="round"
-              />
-            </svg>
-            {t.calcCta}
-          </button>
         </div>
-      </div>
+      </Panel>
     </Section>
   );
 }
@@ -678,13 +629,18 @@ function GuideSection({ values, set, lang }: SectionProps) {
   const t = COPY[lang];
   return (
     <Section id="guide">
-      <SectionHeading index="04" title={t.guideTitle} support={t.guideSupport} />
-      <Card>
+      <SectionHeading
+        index="04"
+        icon={SECTION_ICONS[3]}
+        title={t.guideTitle}
+        support={t.guideSupport}
+      />
+      <Panel>
         <fieldset>
           <legend className="sr-only">{t.guideLegend}</legend>
           <div className="grid grid-cols-3 gap-2.5 sm:gap-4">
             {CONSULTATION_MODES.map((mode) => (
-              <IconTile
+              <ChoiceTile
                 key={mode.value}
                 name="consultation_preference"
                 value={mode.value}
@@ -696,7 +652,7 @@ function GuideSection({ values, set, lang }: SectionProps) {
             ))}
           </div>
         </fieldset>
-      </Card>
+      </Panel>
     </Section>
   );
 }
@@ -716,8 +672,13 @@ function AboutSection({
   const t = COPY[lang];
   return (
     <Section id="done">
-      <SectionHeading index="05" title={t.aboutTitle} support={t.aboutSupport} />
-      <Card>
+      <SectionHeading
+        index="05"
+        icon={SECTION_ICONS[4]}
+        title={t.aboutTitle}
+        support={t.aboutSupport}
+      />
+      <Panel>
         <div className="space-y-5">
           <div>
             <Label htmlFor="customer_name">{t.fieldName}</Label>
@@ -784,8 +745,10 @@ function AboutSection({
           </div>
 
           <div
-            className={`rounded-control border-[1.5px] p-4 transition-colors duration-200 ${
-              errors.consent ? "border-danger bg-danger/5" : "border-navy-100 bg-ivory-100"
+            className={`rounded-control border p-4 transition-colors duration-200 ${
+              errors.consent
+                ? "border-danger-400 bg-danger-400/10"
+                : "border-white/10 bg-white/4"
             }`}
           >
             <label className="flex cursor-pointer items-start gap-3">
@@ -797,9 +760,9 @@ function AboutSection({
                 onChange={(event) => setConsent(event.target.checked)}
                 aria-invalid={Boolean(errors.consent) || undefined}
                 aria-describedby={errors.consent ? "consent-error" : undefined}
-                className="mt-px size-6 shrink-0 accent-champagne-500"
+                className="mt-px size-6 shrink-0 accent-champagne-300"
               />
-              <span className="text-[0.8125rem] leading-relaxed text-navy-700">
+              <span className="text-[0.8125rem] leading-relaxed text-navy-100">
                 {t.consentText}
               </span>
             </label>
@@ -808,7 +771,7 @@ function AboutSection({
             ) : null}
           </div>
         </div>
-      </Card>
+      </Panel>
     </Section>
   );
 }
@@ -825,53 +788,35 @@ function FinalCta({
   const t = COPY[lang];
   return (
     <div className="text-center">
-      <p className="inline-flex items-center gap-2 text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-champagne-700">
-        <svg aria-hidden viewBox="0 0 14 14" className="size-3.5">
-          <path
-            d="M2.5 7.3l3 3 6-6.6"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+      <p className="inline-flex items-center gap-2 text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-champagne-300">
+        <Icon name="check" className="size-3.5" />
         {t.ctaKicker}
       </p>
-      <p className="mx-auto mt-3 max-w-sm text-[0.9375rem] leading-relaxed text-navy-700">
+      <p className="mx-auto mt-3 max-w-sm text-[0.9375rem] leading-relaxed text-navy-100">
         {t.ctaBody}
         <br />
-        <span className="text-navy-500">{t.ctaNoDocs}</span>
+        <span className="text-navy-200">{t.ctaNoDocs}</span>
       </p>
 
-      <button
+      <PrimaryButton
         type="submit"
         disabled={status === "sending"}
-        className="champagne-face mt-7 inline-flex h-16 w-full items-center justify-center gap-2.5 rounded-control text-[0.9375rem] font-bold uppercase tracking-[0.05em] text-navy-950 shadow-champagne transition-[filter,transform] duration-200 [transition-timing-function:var(--ease-out-quart)] hover:brightness-110 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60 sm:h-[4.25rem] sm:text-[1.0625rem]"
+        className="mt-7 inline-flex h-16 w-full items-center justify-center gap-2.5 text-[0.9375rem] uppercase tracking-[0.05em] sm:h-[4.25rem] sm:text-[1.0625rem]"
       >
         {status === "sending" ? t.submitting : t.submit}
-        {status === "sending" ? null : (
-          <svg aria-hidden viewBox="0 0 20 20" className="size-[1.125rem]">
-            <path
-              d="M4 10h11M10.5 5.5L15 10l-4.5 4.5"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        )}
-      </button>
+        {status === "sending" ? null : <Icon name="arrow" className="size-[1.125rem]" />}
+      </PrimaryButton>
 
       <div aria-live="polite" className="min-h-6">
         {errorCount > 0 ? (
-          <p className="mt-3.5 text-[0.8125rem] font-semibold text-danger">
+          <p className="mt-3.5 text-[0.8125rem] font-semibold text-danger-300">
             {t.errorCount(errorCount)}
           </p>
         ) : null}
         {status === "error" ? (
-          <p className="mt-3.5 text-[0.8125rem] font-semibold text-danger">{t.sendFailed}</p>
+          <p className="mt-3.5 text-[0.8125rem] font-semibold text-danger-300">
+            {t.sendFailed}
+          </p>
         ) : null}
       </div>
     </div>
@@ -894,69 +839,48 @@ function SuccessPanel({
   const t = COPY[lang];
   const firstName = name.split(/\s+/)[0] ?? "";
   return (
-    <main id="main" className="relative isolate overflow-hidden bg-navy-950">
-      <img
-        src="/images/kuching-sunset.jpg"
-        alt={t.successPhotoAlt}
-        width={1600}
-        height={900}
-        decoding="async"
-        className="absolute inset-0 -z-20 size-full object-cover"
-      />
-      <span aria-hidden className="photo-scrim absolute inset-0 -z-10" />
-
-      <div className="shell max-w-5xl py-16 text-white sm:py-24">
-        <div className="rise flex size-16 items-center justify-center rounded-full border border-champagne-400/40 bg-champagne-500/20 backdrop-blur-sm sm:size-18">
-          <svg aria-hidden viewBox="0 0 24 24" className="size-8 text-champagne-300 sm:size-9">
-            <path
-              d="M4 12.5l5 5L20 6.5"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.4"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </div>
-
-        <p className="rise mt-7 text-[0.6875rem] font-bold uppercase tracking-[0.2em] text-champagne-300 [animation-delay:60ms]">
-          {t.successKicker}
-        </p>
-        <h1 className="rise mt-4 text-balance font-display text-[2.125rem] font-bold leading-[1.06] tracking-[-0.025em] text-white [animation-delay:120ms] sm:text-[3rem]">
-          {t.successTitle(firstName)}
-        </h1>
-        <p className="rise mt-4 max-w-lg text-[1.0625rem] leading-relaxed text-navy-100 [animation-delay:180ms]">
-          {t.successBody}
-        </p>
-
-        {leadId ? (
-          <div className="rise mt-8 inline-flex flex-col rounded-express border border-white/15 bg-navy-950/55 px-6 py-4 backdrop-blur-sm [animation-delay:240ms]">
-            <span className="text-[0.625rem] font-bold uppercase tracking-[0.16em] text-navy-200">
-              {t.referenceLabel}
-            </span>
-            <span className="mt-1 font-display text-[1.5rem] font-bold tracking-wide text-champagne-300">
-              {leadId}
-            </span>
-          </div>
-        ) : null}
-
-        <ol className="mt-12 space-y-5 border-t border-white/15 pt-10">
-          {t.nextSteps.map((step, index) => (
-            <li key={step} className="flex gap-4">
-              <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-champagne-500/20 font-display text-[0.75rem] font-bold tabular-nums text-champagne-300">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <span className="text-pretty text-[0.9375rem] leading-relaxed text-white/90">
-                {step}
-              </span>
-            </li>
-          ))}
-        </ol>
-
-        <p className="mt-12 max-w-[60ch] text-pretty border-t border-white/15 pt-8 text-[0.8125rem] leading-relaxed text-navy-200">
-          {t.successFooter}
-        </p>
+    <main id="main" className="shell max-w-5xl py-16 sm:py-24">
+      <div className="rise gold-chrome flex size-16 items-center justify-center rounded-2xl text-navy-950 sm:size-18">
+        <Icon name="check" className="size-8 sm:size-9" />
       </div>
+
+      <p className="rise mt-7 text-[0.6875rem] font-bold uppercase tracking-[0.2em] text-champagne-300 [animation-delay:60ms]">
+        {t.successKicker}
+      </p>
+      <h1 className="rise mt-4 max-w-[16ch] text-balance font-display text-[2.25rem] font-bold leading-[1.04] tracking-[-0.03em] text-white [animation-delay:120ms] sm:text-[3.25rem]">
+        {t.successTitle(firstName)}
+      </h1>
+      <p className="rise mt-4 max-w-lg text-[1.0625rem] leading-relaxed text-navy-100 [animation-delay:180ms]">
+        {t.successBody}
+      </p>
+
+      {leadId ? (
+        <div className="rise chrome-panel mt-8 inline-flex flex-col rounded-express px-6 py-4 [animation-delay:240ms]">
+          <span className="text-[0.625rem] font-bold uppercase tracking-[0.16em] text-navy-200">
+            {t.referenceLabel}
+          </span>
+          <span className="mt-1 font-display text-[1.625rem] font-bold tracking-wide text-champagne-200">
+            {leadId}
+          </span>
+        </div>
+      ) : null}
+
+      <ol className="mt-12 grid gap-3 sm:grid-cols-2 sm:gap-4">
+        {t.nextSteps.map((step, index) => (
+          <li key={step} className="chrome-panel flex gap-3.5 rounded-express p-4 sm:p-5">
+            <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-champagne-300/18 font-display text-[0.75rem] font-bold tabular-nums text-champagne-200">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span className="text-pretty text-[0.875rem] leading-relaxed text-navy-100">
+              {step}
+            </span>
+          </li>
+        ))}
+      </ol>
+
+      <p className="mt-10 max-w-[60ch] text-pretty text-[0.8125rem] leading-relaxed text-navy-200">
+        {t.successFooter}
+      </p>
     </main>
   );
 }

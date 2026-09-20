@@ -163,7 +163,7 @@ const ms: Copy = {
     },
   ],
 
-  steps: ["Tanah", "Rumah", "Pembiayaan", "Guide", "Selesai"],
+  steps: ["Tanah", "Rumah", "Bajet", "Guide", "Siap"],
   stepNav: "Langkah perjalanan",
   currentStep: "(langkah semasa)",
 
@@ -305,7 +305,7 @@ const en: Copy = {
     },
   ],
 
-  steps: ["Land", "Home", "Financing", "Guide", "Done"],
+  steps: ["Land", "Home", "Budget", "Guide", "Done"],
   stepNav: "Journey steps",
   currentStep: "(current step)",
 

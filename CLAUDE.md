@@ -49,8 +49,15 @@ ahead of the full platform. **Its scope is fixed** — capture the lead, capture
 the introducer, and tell the customer what happens next. Do not add fields,
 steps or gates to it; every extra interaction costs conversions.
 
-- It has its own brand register: `navy` / `champagne` / `ivory` tokens, not the
-  portal's `forest` / `gold` / `parchment`. Keep the two apart.
+- It has its own brand register: **drenched navy with gold chrome**, not the
+  portal's light forest-and-parchment. Keep the two apart. The premium read
+  comes from three layers in order: `express-ground` (ambient gradient plus
+  grain, which is what stops a large dark gradient banding), `chrome-panel`
+  (glass), and the hairline `inset 0 1px 0` highlight along each panel's top
+  edge. That highlight is what makes a surface look like polished metal.
+- **No photographs on this page.** It runs on drawn icons in boxed panels;
+  `ICONS` in `express-ui.tsx` is the set, keyed by the option value it belongs
+  to. Do not reintroduce imagery here.
 - Everything it needs lives in `src/app/express/` plus `src/lib/lead.ts` and
   `src/lib/submit-lead.ts`, so the module can lift into the full platform.
 - `src/lib/lead.ts` defines the `Lead` shape. **Those snake_case keys are the
@@ -71,8 +78,8 @@ steps or gates to it; every extra interaction costs conversions.
   labels translate; the option `value` a customer picks is canonical Malay and
   is what reaches the CRM. Translating stored values would split every report
   in two. Adding a language means adding a key to `COPY`, nothing else.
-- Photography comes from `public/images/` and carries the page. Preview any
-  replacement before shipping it; a wrong photo here misrepresents a home.
+- Error text uses `danger-300`/`danger-400`, not `danger`: the light-ground
+  red drops under 4.5:1 on near-black glass.
 - **Audit contrast against rendered pixels, not computed styles.** Tailwind v4
   emits `oklab()` and `color-mix()`, which naive parsers read as near-black and
   which produce a page of phantom failures. Screenshot, take the modal pixel in

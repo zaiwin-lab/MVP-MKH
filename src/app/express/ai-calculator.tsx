@@ -7,6 +7,7 @@ import {
   formatRM,
 } from "@/lib/eligibility";
 import { COPY, type Lang } from "@/lib/i18n";
+import { PrimaryButton } from "./express-ui";
 
 /* --------------------------------------------------------------------------
    Optional 60-second financing estimate.
@@ -88,7 +89,7 @@ export function AiCalculator({
 
   return (
     <div
-      className="fixed inset-0 z-(--z-modal) flex items-end justify-center bg-navy-950/70 p-0 backdrop-blur-sm sm:items-center sm:p-4"
+      className="fixed inset-0 z-(--z-modal) flex items-end justify-center bg-navy-950/85 p-0 backdrop-blur-md sm:items-center sm:p-4"
       onClick={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
@@ -97,16 +98,16 @@ export function AiCalculator({
         role="dialog"
         aria-modal="true"
         aria-labelledby="ai-calc-title"
-        className="max-h-[92dvh] w-full max-w-lg overflow-y-auto rounded-t-express-lg bg-white p-6 shadow-express-xl sm:rounded-express-lg sm:p-8"
+        className="chrome-panel express-ground max-h-[92dvh] w-full max-w-lg overflow-y-auto rounded-t-express-lg p-6 sm:rounded-express-lg sm:p-8"
       >
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-champagne-700">
+            <p className="text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-champagne-300">
               {t.calcKicker}
             </p>
             <h2
               id="ai-calc-title"
-              className="mt-1.5 font-display text-[1.375rem] font-bold leading-tight text-navy-900"
+              className="mt-1.5 font-display text-[1.5rem] font-bold leading-tight text-white"
             >
               {t.calcTitle}
             </h2>
@@ -115,21 +116,21 @@ export function AiCalculator({
             type="button"
             onClick={onClose}
             aria-label={t.calcCloseLabel}
-            className="-mr-1.5 -mt-1.5 flex size-10 shrink-0 items-center justify-center rounded-full text-navy-400 transition-colors hover:bg-ivory-200 hover:text-navy-700"
+            className="-mr-1.5 -mt-1.5 flex size-10 shrink-0 items-center justify-center rounded-full border border-white/10 text-navy-200 transition-colors hover:bg-white/10 hover:text-white"
           >
             <svg viewBox="0 0 20 20" className="size-5">
               <path
                 d="M5 5l10 10M15 5L5 15"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="1.75"
+                strokeWidth="1.9"
                 strokeLinecap="round"
               />
             </svg>
           </button>
         </div>
 
-        <p className="mt-3 text-[0.875rem] leading-relaxed text-navy-500">
+        <p className="mt-3 text-[0.875rem] leading-relaxed text-navy-200">
           {t.calcIntro}
         </p>
 
@@ -159,15 +160,15 @@ export function AiCalculator({
         </div>
 
         {submitted && !ready ? (
-          <p className="mt-4 text-[0.8125rem] font-medium text-danger">
+          <p className="mt-4 text-[0.8125rem] font-semibold text-danger-300">
             {t.calcInvalid}
           </p>
         ) : null}
 
         {result ? (
-          <div className="mt-6 rounded-express border border-champagne-200 bg-champagne-50 p-5 shadow-express">
+          <div className="chrome-panel-lit mt-6 rounded-express p-5">
             {result.overCommitted ? (
-              <p className="text-[0.9375rem] font-semibold leading-relaxed text-navy-900">
+              <p className="text-[0.9375rem] font-semibold leading-relaxed text-white">
                 {t.calcOverCommitted}
               </p>
             ) : (
@@ -175,27 +176,27 @@ export function AiCalculator({
                 <p className="text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-champagne-700">
                   {t.calcResultLabel}
                 </p>
-                <p className="mt-2 font-display text-[1.5rem] leading-tight text-navy-900 sm:text-[1.75rem]">
+                <p className="mt-2 font-display text-[1.75rem] font-bold leading-tight text-champagne-200 sm:text-[2rem]">
                   {formatRM(result.lowerFinancing)} &ndash;{" "}
                   {formatRM(result.upperFinancing)}
                 </p>
-                <dl className="mt-4 space-y-1.5 text-[0.8125rem] text-navy-600">
+                <dl className="mt-4 space-y-1.5 text-[0.8125rem] text-navy-200">
                   <div className="flex justify-between gap-4">
                     <dt>{t.calcInstalment}</dt>
-                    <dd className="font-semibold text-navy-900">
+                    <dd className="font-bold text-white">
                       {formatRM(result.indicativeInstalment)}
                     </dd>
                   </div>
                   <div className="flex justify-between gap-4">
                     <dt>{t.calcTenure}</dt>
-                    <dd className="font-semibold text-navy-900">
+                    <dd className="font-bold text-white">
                       {result.effectiveTenureYears} {t.calcYears}
                       {result.tenureWasCapped ? ` (${t.calcAgeCapped})` : ""}
                     </dd>
                   </div>
                   <div className="flex justify-between gap-4">
                     <dt>{t.calcTargetLabel(financingTarget)}</dt>
-                    <dd className="font-semibold text-navy-900">
+                    <dd className="font-bold text-white">
                       {result.budgetAssessment === "comfortable"
                         ? t.calcComfortable
                         : result.budgetAssessment === "within"
@@ -206,24 +207,23 @@ export function AiCalculator({
                 </dl>
               </>
             )}
-            <p className="mt-4 border-t border-champagne-200 pt-3 text-[0.75rem] leading-relaxed text-navy-500">
+            <p className="mt-4 border-t border-white/12 pt-3 text-[0.75rem] leading-relaxed text-navy-200">
               {t.calcDisclaimer(INDICATIVE_RATE, TENURE_YEARS)}
             </p>
           </div>
         ) : null}
 
         <div className="mt-6 flex flex-col gap-2.5 sm:flex-row-reverse">
-          <button
-            type="button"
+          <PrimaryButton
             onClick={() => setSubmitted(true)}
-            className="champagne-face h-14 flex-1 rounded-control text-[0.9375rem] font-bold text-navy-950 shadow-champagne transition-[filter,transform] duration-200 hover:brightness-110 active:translate-y-px"
+            className="h-14 flex-1 text-[0.9375rem]"
           >
             {result ? t.calcRerun : t.calcRun}
-          </button>
+          </PrimaryButton>
           <button
             type="button"
             onClick={onClose}
-            className="h-14 rounded-control border-[1.5px] border-navy-200 px-6 text-[0.9375rem] font-bold text-navy-700 transition-colors duration-200 hover:bg-ivory-100 sm:flex-none"
+            className="h-14 rounded-control border border-white/14 px-6 text-[0.9375rem] font-bold text-navy-100 transition-colors duration-200 hover:bg-white/8 hover:text-white sm:flex-none"
           >
             {result ? t.calcDone : t.calcClose}
           </button>
@@ -252,7 +252,7 @@ function CalcField({
     <div>
       <label
         htmlFor={id}
-        className="mb-2 block text-[0.8125rem] font-bold tracking-wide text-navy-800"
+        className="mb-2 block text-[0.8125rem] font-bold tracking-wide text-white"
       >
         {label}
       </label>
@@ -264,7 +264,7 @@ function CalcField({
         value={value}
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value.replace(/[^0-9]/g, ""))}
-        className="h-14 w-full rounded-control border-[1.5px] border-navy-200 bg-white px-4 text-[0.9375rem] font-medium text-navy-900 transition-colors duration-200 placeholder:font-normal placeholder:text-navy-400 hover:border-navy-300 focus:border-champagne-500 focus:outline-none focus:ring-4 focus:ring-champagne-400/25"
+        className="chrome-field h-14 w-full rounded-control px-4 text-[0.9375rem] font-medium text-white transition-colors duration-200 placeholder:font-normal placeholder:text-navy-300 hover:border-white/20 focus:border-champagne-300 focus:outline-none focus:ring-4 focus:ring-champagne-300/25"
       />
     </div>
   );

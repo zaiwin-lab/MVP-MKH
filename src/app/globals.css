@@ -83,6 +83,10 @@
   --color-success: #1f7a4d;
   --color-warning: #b8893f;
   --color-danger: #b4232a;
+  /* Error text on the Express portal sits on near-black glass, where the
+     light-ground danger red drops under 4.5:1. These are its dark-mode pair. */
+  --color-danger-300: #ff8f8f;
+  --color-danger-400: #ff6b6b;
   --color-info: #2c4c7d;
 
   /* --- Type --- */
@@ -198,39 +202,142 @@
   );
 }
 
-/* The Express primary action. Deliberately flatter than `gold-face` - the
-   brief calls for restraint, so this is a two-stop shade, not a sheen. */
-@utility champagne-face {
+/* ==========================================================================
+   Express portal — dark chrome register
+
+   The Express journey is drenched navy, not light. Its premium read comes
+   from three things layered in this order: an ambient gradient ground, a
+   glass panel over it, and a hairline specular highlight along the panel's
+   top edge. That top highlight is what makes a surface look like polished
+   metal rather than a flat grey box, and it is the cheapest of the three.
+   ========================================================================== */
+
+/* The page ground. Two coloured lights over a vertical ramp, plus a fine
+   grain: large dark gradients band badly on 8-bit displays and the noise is
+   what stops it, not decoration. */
+@utility express-ground {
+  background-color: var(--color-navy-950);
+  background-image:
+    radial-gradient(
+      68rem 42rem at 12% -12%,
+      rgb(26 125 232 / 0.32),
+      transparent 64%
+    ),
+    radial-gradient(
+      52rem 34rem at 92% 4%,
+      rgb(194 151 66 / 0.2),
+      transparent 62%
+    ),
+    radial-gradient(
+      60rem 40rem at 50% 108%,
+      rgb(26 125 232 / 0.16),
+      transparent 66%
+    ),
+    linear-gradient(
+      180deg,
+      var(--color-navy-950) 0%,
+      #0a1c30 46%,
+      var(--color-navy-950) 100%
+    );
+  background-attachment: fixed, fixed, fixed, scroll;
+}
+
+/* Fine grain, laid over the ground to kill gradient banding. */
+@utility express-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+  opacity: 0.22;
+}
+
+/* A glass panel with a lit top edge and a dark base. The inset highlight is
+   the chrome; the outer shadow keeps it off the ground. */
+@utility chrome-panel {
   background-image: linear-gradient(
     180deg,
-    var(--color-champagne-400) 0%,
-    var(--color-champagne-500) 100%
+    rgb(255 255 255 / 0.095) 0%,
+    rgb(255 255 255 / 0.035) 42%,
+    rgb(255 255 255 / 0.015) 100%
   );
+  border: 1px solid rgb(255 255 255 / 0.09);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.18),
+    inset 0 -1px 0 rgb(0 0 0 / 0.3),
+    0 2px 8px rgb(0 0 0 / 0.28),
+    0 24px 56px -28px rgb(0 0 0 / 0.75);
+  backdrop-filter: blur(14px);
 }
 
-/* The Express hero ground. Four stops rather than two: a flat navy panel
-   reads as a coloured box, while a slow shift through the scale reads as
-   depth behind the type. */
-@utility navy-depth {
+/* The same material, one step brighter, for a panel that is selected. */
+@utility chrome-panel-lit {
   background-image: linear-gradient(
-    160deg,
-    var(--color-navy-950) 0%,
-    var(--color-navy-900) 38%,
-    var(--color-navy-800) 68%,
-    var(--color-navy-700) 100%
+    180deg,
+    rgb(217 184 119 / 0.2) 0%,
+    rgb(217 184 119 / 0.07) 60%,
+    rgb(217 184 119 / 0.04) 100%
   );
+  border: 1px solid rgb(217 184 119 / 0.55);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.22),
+    0 2px 10px rgb(0 0 0 / 0.3),
+    0 20px 44px -22px rgb(167 122 32 / 0.6);
 }
 
-/* The success panel sets light type over a sunset photograph whose sky is
-   bright. The veil is therefore heaviest at the top, where the heading and
-   the reference number sit, and eases only slightly further down. Anything
-   lighter and the champagne kicker drops under 3:1 against cloud. */
-@utility photo-scrim {
+/* Form controls. Darker than the panel they sit in, so a field reads as a
+   recess rather than another raised surface. */
+@utility chrome-field {
+  background-color: rgb(3 10 20 / 0.55);
+  border: 1px solid rgb(255 255 255 / 0.12);
+  box-shadow:
+    inset 0 1px 2px rgb(0 0 0 / 0.5),
+    inset 0 -1px 0 rgb(255 255 255 / 0.05);
+}
+
+/* The primary action: polished gold with a specular band across the top. */
+@utility gold-chrome {
+  background-image:
+    linear-gradient(
+      180deg,
+      rgb(255 255 255 / 0.32) 0%,
+      rgb(255 255 255 / 0.06) 44%,
+      rgb(255 255 255 / 0) 52%
+    ),
+    linear-gradient(
+      180deg,
+      var(--color-champagne-300) 0%,
+      var(--color-champagne-400) 46%,
+      var(--color-champagne-600) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.5),
+    inset 0 -2px 4px rgb(93 66 12 / 0.45),
+    0 2px 10px rgb(0 0 0 / 0.35),
+    0 18px 40px -16px rgb(194 151 66 / 0.55);
+}
+
+/* A slow highlight travelling across the primary button. One sweep every
+   five seconds: present enough to catch the eye, rare enough not to nag. */
+@keyframes chrome-sweep {
+  0% {
+    transform: translateX(-120%) skewX(-18deg);
+  }
+  55%,
+  100% {
+    transform: translateX(320%) skewX(-18deg);
+  }
+}
+
+@utility sweep {
+  animation: chrome-sweep 5s var(--ease-out-quart) infinite;
+}
+
+/* Hairline rule that fades at both ends, for section separations. */
+@utility chrome-rule {
   background-image: linear-gradient(
-    to bottom,
-    rgb(5 15 27 / 0.82) 0%,
-    rgb(5 15 27 / 0.7) 45%,
-    rgb(5 15 27 / 0.8) 100%
+    90deg,
+    transparent,
+    rgb(255 255 255 / 0.16) 18%,
+    rgb(255 255 255 / 0.16) 82%,
+    transparent
   );
 }
 
@@ -260,6 +367,10 @@
 }
 
 /* Respect the user's reduced-motion preference throughout. */
+body:has(.express-root) {
+  background-color: var(--color-navy-950);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
