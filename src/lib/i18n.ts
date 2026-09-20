@@ -348,7 +348,7 @@ const ms: Copy = {
   calcCloseLabel: "Tutup kalkulator",
 
   footerNote:
-    "Maklumat yang anda kongsikan digunakan untuk menghubungi anda berkenaan pemilikan rumah dan pembiayaan sahaja.",
+    "Maklumat yang anda kongsikan digunakan untuk menghubungi anda berkenaan proses pemilikan rumah dan pembiayaan sahaja.",
   langLabel: "Pilih bahasa",
   bubbleCalc: "AI Calculator",
   bubbleWhatsApp: "WhatsApp",
@@ -536,7 +536,7 @@ const en: Copy = {
   calcCloseLabel: "Close calculator",
 
   footerNote:
-    "What you share is used only to contact you about home ownership and financing.",
+    "What you share is used only to contact you about home ownership and financing process.",
   langLabel: "Choose language",
   bubbleCalc: "AI Calculator",
   bubbleWhatsApp: "WhatsApp",
@@ -727,7 +727,7 @@ const zh: Copy = {
   calcCloseLabel: "\u5173\u95ed\u8ba1\u7b97\u5668",
 
   footerNote:
-    "\u60a8\u63d0\u4f9b\u7684\u8d44\u6599\u4ec5\u7528\u4e8e\u5c31\u8d2d\u623f\u4e0e\u8d37\u6b3e\u4e8b\u5b9c\u8054\u7edc\u60a8\u3002",
+    "\u60a8\u63d0\u4f9b\u7684\u8d44\u6599\u4ec5\u7528\u4e8e\u5c31\u8d2d\u623f\u4e0e\u8d37\u6b3e\u6d41\u7a0b\u4e8b\u5b9c\u8054\u7edc\u60a8\u3002",
   langLabel: "\u9009\u62e9\u8bed\u8a00",
   bubbleCalc: "AI \u8ba1\u7b97\u5668",
   bubbleWhatsApp: "WhatsApp",
@@ -920,7 +920,7 @@ const iba: Copy = {
   calcCloseLabel: "Tutup calculator",
 
   footerNote:
-    "Penerang ti dibagi nuan semina dikena kena ngabas nuan pasal pengempu rumah enggau pinjam.",
+    "Penerang ti dibagi nuan semina dikena kena ngabas nuan pasal jalai pengempu rumah enggau pinjam.",
   langLabel: "Pilih jaku",
   bubbleCalc: "AI Calculator",
   bubbleWhatsApp: "WhatsApp",

@@ -501,19 +501,16 @@ function ExpressFooter({
   return (
     <footer className="band-deep ex-border border-t">
       <div className={`shell max-w-6xl pt-12 ${clearBubble ? "pb-24" : "pb-12"}`}>
-        <div className="flex flex-col items-center gap-9 text-center lg:flex-row lg:items-start lg:justify-between lg:text-left">
+        {/* Three columns that each own one idea: who this is, what language
+            you read it in, and what happens to what you send. The credits sit
+            under the thing they belong to rather than all in one corner. */}
+        <div className="grid gap-10 text-center lg:grid-cols-3 lg:gap-8 lg:text-left">
           <div className="min-w-0">
             <p className="ex-ink font-express text-[1.125rem] font-extrabold tracking-[-0.03em]">
               My Kenyalang Homes
             </p>
             <p className="ex-dim mt-1.5 text-[0.6875rem] font-bold uppercase tracking-[0.14em]">
               {t.brandPartners}
-            </p>
-            <p className="ex-dim mt-5 text-[0.75rem]">
-              &copy; {new Date().getFullYear()} My Kenyalang Homes. {t.footerRights}
-            </p>
-            <p className="mt-1">
-              <KobisSignature lang={lang} href={EXPRESS_CONTACT.kobisUrl} />
             </p>
           </div>
 
@@ -522,11 +519,17 @@ function ExpressFooter({
               {t.footerLanguage}
             </span>
             <LangPills lang={lang} onChange={onLang} />
+            <KobisSignature lang={lang} href={EXPRESS_CONTACT.kobisUrl} />
           </div>
 
-          <p className="ex-dim max-w-[34ch] text-pretty text-[0.75rem] leading-relaxed">
-            {t.footerNote}
-          </p>
+          <div className="lg:text-right">
+            <p className="ex-dim mx-auto max-w-[34ch] text-pretty text-[0.75rem] leading-relaxed lg:ml-auto lg:mr-0">
+              {t.footerNote}
+            </p>
+            <p className="ex-dim mt-2.5 text-[0.75rem]">
+              &copy; {new Date().getFullYear()} My Kenyalang Homes. {t.footerRights}
+            </p>
+          </div>
         </div>
       </div>
     </footer>
