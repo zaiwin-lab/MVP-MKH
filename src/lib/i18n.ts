@@ -37,8 +37,12 @@ type Copy = {
   heroSecondary: string;
   heroProofs: { label: string; note: string }[];
   mockTitle: string;
-  mockRange: string;
-  mockRows: { label: string; value: string }[];
+  /** Row labels only. The figures come from src/lib/sample-estimate.ts. */
+  mockInstalment: string;
+  mockTenure: string;
+  mockType: string;
+  mockJointValue: string;
+  mockBasis: (income: string) => string;
   mockFoot: string;
 
   processEyebrow: string;
@@ -183,7 +187,7 @@ const ms: Copy = {
   statLabels: ["Masa diperlukan", "Dokumen sekarang", "Kos pendaftaran"],
   statValues: ["2 minit", "Tiada", "Percuma"],
 
-  poweredBy: "Dikuasakan oleh EG Megah Holdings",
+  poweredBy: "Dikuasakan oleh EG Megah Holdings & KOBIS Berhad",
   heroSecondary: "Lihat cara ia berfungsi",
   heroProofs: [
     { label: "Percuma sepenuhnya", note: "Tiada bayaran pendaftaran" },
@@ -191,13 +195,12 @@ const ms: Copy = {
     { label: "Tiada dokumen", note: "Belum perlu apa-apa sekarang" },
   ],
   mockTitle: "Anggaran Kelayakan",
-  mockRange: "RM586,011 \u2013 RM747,669",
-  mockRows: [
-    { label: "Ansuran bulanan", value: "RM3,300" },
-    { label: "Tempoh", value: "30 tahun" },
-    { label: "Jenis", value: "Bersama pasangan" },
-  ],
-  mockFoot: "Contoh anggaran. Cuba dengan angka anda sendiri.",
+  mockInstalment: "Ansuran bulanan",
+  mockTenure: "Tempoh",
+  mockType: "Jenis",
+  mockJointValue: "Bersama pasangan",
+  mockBasis: (income) => `Contoh: pendapatan bersama ${income} sebulan`,
+  mockFoot: "Anggaran contoh. Cuba dengan angka anda sendiri.",
 
 
   processEyebrow: "Proses",
@@ -373,7 +376,7 @@ const en: Copy = {
   statLabels: ["Time needed", "Documents now", "Registration cost"],
   statValues: ["2 minutes", "None", "Free"],
 
-  poweredBy: "Powered by EG Megah Holdings",
+  poweredBy: "Powered by EG Megah Holdings & KOBIS Berhad",
   heroSecondary: "See how it works",
   heroProofs: [
     { label: "Completely free", note: "No registration fee" },
@@ -381,12 +384,11 @@ const en: Copy = {
     { label: "No documents", note: "Nothing needed from you yet" },
   ],
   mockTitle: "Eligibility Estimate",
-  mockRange: "RM586,011 \u2013 RM747,669",
-  mockRows: [
-    { label: "Monthly instalment", value: "RM3,300" },
-    { label: "Tenure", value: "30 years" },
-    { label: "Type", value: "Joint with spouse" },
-  ],
+  mockInstalment: "Monthly instalment",
+  mockTenure: "Tenure",
+  mockType: "Type",
+  mockJointValue: "Joint with spouse",
+  mockBasis: (income) => `Example: a combined income of ${income} a month`,
   mockFoot: "An example. Try it with your own figures.",
 
 
@@ -566,7 +568,7 @@ const zh: Copy = {
   statLabels: ["\u6240\u9700\u65f6\u95f4", "\u73b0\u9700\u6587\u4ef6", "\u767b\u8bb0\u8d39\u7528"],
   statValues: ["2 \u5206\u949f", "\u65e0", "\u514d\u8d39"],
 
-  poweredBy: "\u7531 EG Megah Holdings \u652f\u6301",
+  poweredBy: "\u7531 EG Megah Holdings \u4e0e KOBIS Berhad \u652f\u6301",
   heroSecondary: "\u4e86\u89e3\u8fd0\u4f5c\u65b9\u5f0f",
   heroProofs: [
     { label: "\u5b8c\u5168\u514d\u8d39", note: "\u65e0\u9700\u767b\u8bb0\u8d39" },
@@ -574,12 +576,11 @@ const zh: Copy = {
     { label: "\u65e0\u9700\u6587\u4ef6", note: "\u73b0\u9636\u6bb5\u4e0d\u9700\u63d0\u4ea4\u4efb\u4f55\u8d44\u6599" },
   ],
   mockTitle: "\u8d37\u6b3e\u80fd\u529b\u4f30\u7b97",
-  mockRange: "RM586,011 \u2013 RM747,669",
-  mockRows: [
-    { label: "\u6bcf\u6708\u4f9b\u6b3e", value: "RM3,300" },
-    { label: "\u8d37\u6b3e\u5e74\u9650", value: "30 \u5e74" },
-    { label: "\u7c7b\u578b", value: "\u4e0e\u914d\u5076\u8054\u540d" },
-  ],
+  mockInstalment: "\u6bcf\u6708\u4f9b\u6b3e",
+  mockTenure: "\u8d37\u6b3e\u5e74\u9650",
+  mockType: "\u7c7b\u578b",
+  mockJointValue: "\u4e0e\u914d\u5076\u8054\u540d",
+  mockBasis: (income) => `\u793a\u4f8b\uff1a\u6bcf\u6708\u5408\u5e76\u6536\u5165 ${income}`,
   mockFoot: "\u6b64\u4e3a\u793a\u4f8b\u3002\u8bf7\u7528\u60a8\u81ea\u5df1\u7684\u6570\u5b57\u8bd5\u7b97\u3002",
 
 
@@ -759,7 +760,7 @@ const iba: Copy = {
   statLabels: ["Jam ti diguna", "Surat diatu", "Rega daftar"],
   statValues: ["2 minit", "Nadai", "Percuma"],
 
-  poweredBy: "Disukung EG Megah Holdings",
+  poweredBy: "Disukung EG Megah Holdings & KOBIS Berhad",
   heroSecondary: "Peda baka ni iya bejalai",
   heroProofs: [
     { label: "Percuma magang", note: "Nadai rega daftar" },
@@ -767,12 +768,11 @@ const iba: Copy = {
     { label: "Nadai surat", note: "Nadai utai diminta diatu" },
   ],
   mockTitle: "Anggar Pengelayak Pinjam",
-  mockRange: "RM586,011 \u2013 RM747,669",
-  mockRows: [
-    { label: "Bayar tiap bulan", value: "RM3,300" },
-    { label: "Lama pinjam", value: "30 taun" },
-    { label: "Jenis", value: "Enggau kaban bini/laki" },
-  ],
+  mockInstalment: "Bayar tiap bulan",
+  mockTenure: "Lama pinjam",
+  mockType: "Jenis",
+  mockJointValue: "Enggau kaban bini/laki",
+  mockBasis: (income) => `Chunto: pendapat sama ${income} sebulan`,
   mockFoot: "Tu chunto aja. Uji enggau nambar nuan empu.",
 
 

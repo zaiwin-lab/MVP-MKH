@@ -277,6 +277,10 @@
   /* The signature's hover colour. Bright violet rather than the amber the
      rest of the page uses, so the credit line reads as its own mark. */
   --ex-violet: #b39dff;
+  --ex-grid-minor: rgb(255 255 255 / 0.035);
+  --ex-sheen: rgb(255 255 255 / 0.16);
+  --ex-sheen-soft: rgb(255 255 255 / 0.07);
+  --ex-grid-major: rgb(122 170 230 / 0.075);
 
   --ex-band-raised: #0c2142;
   --ex-band-raised-border: rgb(255 255 255 / 0.07);
@@ -325,6 +329,10 @@
   --ex-danger: #a3121a;
 
   --ex-violet: #6d28d9;
+  --ex-grid-minor: rgb(11 32 53 / 0.035);
+  --ex-sheen: rgb(11 32 53 / 0.05);
+  --ex-sheen-soft: rgb(11 32 53 / 0.022);
+  --ex-grid-major: rgb(11 32 53 / 0.075);
 
   --ex-band-raised: #ffffff;
   --ex-band-raised-border: rgb(11 32 53 / 0.08);
@@ -499,6 +507,63 @@
     color: var(--ex-ink-dim);
     opacity: 1;
   }
+}
+
+/* --- Technical surfaces -------------------------------------------------- */
+
+/* A drafting grid, faint enough to read as paper texture rather than as a
+   table. Two line weights: a fine 28px cell and a heavier 140px major
+   division, which is what makes it read as engineering paper and not as a
+   spreadsheet. Masked to fade out before it reaches the copy. */
+@utility blueprint-grid {
+  background-image:
+    linear-gradient(to right, var(--ex-grid-minor) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--ex-grid-minor) 1px, transparent 1px),
+    linear-gradient(to right, var(--ex-grid-major) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--ex-grid-major) 1px, transparent 1px);
+  background-size:
+    28px 28px,
+    28px 28px,
+    140px 140px,
+    140px 140px;
+  mask-image: radial-gradient(
+    120% 90% at 50% 0%,
+    rgb(0 0 0 / 0.85) 0%,
+    rgb(0 0 0 / 0.35) 45%,
+    transparent 78%
+  );
+}
+
+/* A measured rule: a hairline with a tick at each end, as a drawing would
+   dimension a span. Decorative, but it is the honest version of the motif. */
+@utility spec-rule {
+  background-image:
+    linear-gradient(to right, var(--ex-rule), var(--ex-rule)),
+    linear-gradient(to bottom, var(--ex-accent), var(--ex-accent)),
+    linear-gradient(to bottom, var(--ex-accent), var(--ex-accent));
+  background-size:
+    100% 1px,
+    1px 7px,
+    1px 7px;
+  background-position:
+    left center,
+    left center,
+    right center;
+  background-repeat: no-repeat;
+}
+
+/* A diagonal specular band across a panel, as light falls on glass. Pair it
+   with `chrome-panel`, never on its own: the gloss is a highlight on a
+   surface, and without the surface underneath it reads as a stray gradient. */
+@utility gloss-sheen {
+  background-image: linear-gradient(
+    115deg,
+    transparent 22%,
+    var(--ex-sheen-soft) 38%,
+    var(--ex-sheen) 45%,
+    var(--ex-sheen-soft) 52%,
+    transparent 68%
+  );
 }
 
 /* --- Bands -------------------------------------------------------------- */

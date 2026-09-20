@@ -107,6 +107,16 @@ steps or gates to it; every extra interaction costs conversions.
 - The AI calculator is optional, never blocks submission, and calls the real
   DSR model in `src/lib/eligibility.ts`. It must keep saying it is an estimate,
   not an approval.
+- **The hero preview figure is computed, not typed.** `src/lib/sample-estimate.ts`
+  runs the same DSR model against a documented sample couple, so the headline
+  number and the calculator can never disagree in front of a customer. Change
+  the inputs there, not the copy. The card names the income it assumes.
+- Technical surfaces: `blueprint-grid` (drafting paper behind the hero, masked
+  so it never reaches the copy), `spec-rule` (a hairline dimensioned with a
+  tick at each end) and `gloss-sheen`. The sheen is themed, because a white
+  highlight on the bright theme's white card is invisible; there it darkens
+  instead. Always pair `gloss-sheen` with `chrome-panel`: it is a highlight on
+  a surface, and without the surface it reads as a stray gradient.
 - **Copy lives in `src/lib/i18n.ts`**, in English, Bahasa Malaysia, Chinese
   and Iban. Only labels translate; the option `value` a customer picks is
   canonical Malay and is what reaches the CRM. Translating stored values would

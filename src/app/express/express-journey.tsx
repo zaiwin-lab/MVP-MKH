@@ -377,6 +377,12 @@ function Hero({ lang }: { lang: Lang }) {
   const t = COPY[lang];
   return (
     <section className="relative overflow-hidden">
+      {/* Engineering paper behind the fold. Masked so it never reaches the
+          copy, where it would fight the type. */}
+      <span
+        aria-hidden
+        className="blueprint-grid pointer-events-none absolute inset-0 -z-10"
+      />
       <div className="shell relative max-w-6xl pb-16 pt-12 sm:pb-24 sm:pt-16">
         <div className="grid items-center gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:gap-14">
           <div>
@@ -390,9 +396,12 @@ function Hero({ lang }: { lang: Lang }) {
             <p className="rise ex-soft mt-6 max-w-[52ch] text-pretty text-[1.0625rem] leading-[1.65] [animation-delay:140ms] sm:text-[1.125rem]">
               {t.heroBody}
             </p>
-            <p className="rise ex-accent mt-6 text-[0.6875rem] font-bold uppercase tracking-[0.18em] [animation-delay:180ms]">
-              &#10022; {t.poweredBy} &#10022;
-            </p>
+            <div className="rise mt-7 flex items-center gap-3 [animation-delay:180ms]">
+              <span aria-hidden className="spec-rule h-2 w-10 shrink-0 sm:w-14" />
+              <p className="ex-accent text-[0.6875rem] font-bold uppercase tracking-[0.16em]">
+                {t.poweredBy}
+              </p>
+            </div>
 
             <div className="rise mt-8 flex flex-col gap-3 [animation-delay:220ms] sm:flex-row sm:items-center">
               <PrimaryButton

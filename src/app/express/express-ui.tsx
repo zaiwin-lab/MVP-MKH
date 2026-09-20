@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { COPY, LANGS, type Lang } from "@/lib/i18n";
 import type { Option } from "@/lib/lead";
+import { SAMPLE_ESTIMATE } from "@/lib/sample-estimate";
 import { useExTheme } from "@/lib/ex-theme";
 
 /* --------------------------------------------------------------------------
@@ -524,14 +525,23 @@ export function StepCard({
 }
 
 /**
- * The hero's product preview. It shows a real calculator result rather than a
- * decorative shape, and says plainly that it is an example so nobody reads it
- * as their own number.
+ * The hero's product preview. The figure is computed from the same DSR model
+ * the calculator runs, so the headline number and the calculator can never
+ * disagree in front of a customer. It says plainly that it is an example, and
+ * names the income it assumes, so nobody reads it as their own.
  */
 export function PreviewCard({ lang }: { lang: Lang }) {
   const t = COPY[lang];
+  const rows = [
+    { label: t.mockInstalment, value: SAMPLE_ESTIMATE.instalment },
+    { label: t.mockTenure, value: `${SAMPLE_ESTIMATE.tenureYears} ${t.calcYears}` },
+    { label: t.mockType, value: t.mockJointValue },
+  ];
   return (
-    <figure className="chrome-panel relative overflow-hidden rounded-express-lg p-5 sm:p-6">
+    <figure className="chrome-panel relative isolate overflow-hidden rounded-express-lg p-5 sm:p-6">
+      {/* Light falling across glass. It needs the panel underneath it. */}
+      <span aria-hidden className="gloss-sheen pointer-events-none absolute inset-0 -z-10" />
+
       <span aria-hidden className="mb-5 flex items-center gap-1.5">
         <span className="size-2.5 rounded-full bg-[#ff5f57]" />
         <span className="size-2.5 rounded-full bg-[#febc2e]" />
@@ -541,16 +551,22 @@ export function PreviewCard({ lang }: { lang: Lang }) {
         {t.mockTitle}
       </figcaption>
       <p className="ex-accent display-lg mt-2.5 text-[1.5rem] sm:text-[1.875rem]">
-        {t.mockRange}
+        {SAMPLE_ESTIMATE.range}
       </p>
-      <dl className="mt-5 space-y-2.5">
-        {t.mockRows.map((row) => (
+      <p className="ex-dim mt-1.5 text-[0.75rem]">
+        {t.mockBasis(SAMPLE_ESTIMATE.householdIncome)}
+      </p>
+
+      <span aria-hidden className="spec-rule mt-4 block h-2 w-full" />
+
+      <dl className="mt-3 space-y-2.5">
+        {rows.map((row) => (
           <div
             key={row.label}
             className="ex-border flex items-center justify-between gap-4 border-b pb-2.5 text-[0.875rem] last:border-b-0"
           >
             <dt className="ex-soft">{row.label}</dt>
-            <dd className="ex-ink font-bold">{row.value}</dd>
+            <dd className="ex-ink font-bold tabular-nums">{row.value}</dd>
           </div>
         ))}
       </dl>
