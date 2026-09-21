@@ -95,12 +95,20 @@ returns 401 to everything, including Netlify.
 
 ## Verified on the live project
 
-Checked against `my-kenyalang-homes` after deploying, not assumed:
+Project ref `trdnewrqypnzzykspniu` (Singapore). Checked end to end against the
+live site, not assumed:
+
+- a full submission posted to `https://mkhomes.win/` arrived in `public.leads`
+  with every one of the 21 fields intact, the introducer id carried through,
+  and provenance (`netlify_submission_id`, ip, user agent) recorded
+- replaying the same `netlify_submission_id` is rejected by the unique
+  constraint, so a Netlify retry cannot produce a second copy of a lead
+- the function returns `401` to an unsigned request and to a forged signature
 
 - the publishable key and the legacy anon key are both refused on `select`
   **and** `insert` against `public.leads` (`42501 permission denied`)
-- the function returns `500 Not configured` rather than accepting anything
-  while `NETLIFY_WEBHOOK_SECRET` is unset, and `405` on `GET`
+- with `NETLIFY_WEBHOOK_SECRET` unset it returns `500 Not configured` rather
+  than accepting anything, and `405` on `GET`
 - Supabase's security advisor is clean apart from the intentional
   `rls_enabled_no_policy` notice on `leads`, which is the design
 
