@@ -44,6 +44,8 @@ cannot send a Supabase JWT. The function authenticates the caller itself, by
 verifying Netlify's JWS signature, which is why turning JWT verification off is
 safe here and only here.
 
+Deploy **both** files: `index.ts` and `verify.ts`.
+
 Set the function secret:
 
 | Name | Value |
@@ -89,3 +91,20 @@ returns 401 to everything, including Netlify.
   after the fact instead of costing you the data.
 - Netlify's **spam-filtered** submissions do not fire the webhook. Check the
   Forms spam tab periodically; a real lead can land there.
+
+## Testing the signature check
+
+The verifier is the only thing between a public URL and an anonymous stranger
+writing rows into the lead table, so it lives in `verify.ts` on its own and is
+tested without needing a project, a deploy or a live request:
+
+```bash
+cd supabase/functions/netlify-lead-webhook
+node --experimental-strip-types --test verify.test.ts
+```
+
+The test signs bodies the way Netlify does and asserts the verifier rejects a
+wrong secret, a body swapped after signing, a non-Netlify issuer, a missing body
+hash, malformed tokens, and an unset secret. The body-swap case is the one that
+matters most: checking the signature alone would let a captured header be
+replayed against a body of the attacker's choosing.
