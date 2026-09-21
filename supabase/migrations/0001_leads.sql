@@ -89,3 +89,9 @@ create index if not exists leads_phone_idx          on public.leads (phone);
 alter table public.leads enable row level security;
 
 revoke all on public.leads from anon, authenticated;
+
+/* Granted explicitly rather than left to the project's "automatically expose
+   new tables" setting, so this migration behaves the same whichever way that
+   dashboard toggle is set. The service role bypasses RLS, which is what lets
+   the edge function write while nothing else can read. */
+grant all on public.leads to service_role;
