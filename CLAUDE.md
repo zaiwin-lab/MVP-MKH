@@ -153,3 +153,36 @@ steps or gates to it; every extra interaction costs conversions.
   each text box as the ground and the glyph core as the ink. Even then, small
   text can read 0.5 low from antialiased edge pixels; confirm a marginal
   failure against the computed colour before chasing it.
+
+## The backend (`supabase/`)
+
+Leads are captured by **Netlify Forms** and mirrored into Postgres by an edge
+function that Netlify calls on each submission. `supabase/README.md` explains
+the ordering and why it is that way round; the short version is that Netlify
+stores the lead *before* the webhook fires, so the database is a mirror rather
+than a single point of failure, and no key ever reaches the browser.
+
+- **Do not add a Supabase client to the page.** This is a static export, so a
+  browser-side client means a key in the bundle and a lead table whose safety
+  rests on RLS being right forever. The table has RLS on with **no policies**:
+  nothing but the service role can touch it, and the service role lives only in
+  the edge function's environment.
+- **Do not remove Netlify Forms.** It is the capture path of record and the
+  backup, and it is the reason the backend could be connected without deploying
+  the site at all.
+- The columns in `supabase/migrations/0001_leads.sql` from `lead_id` to
+  `status` mirror `src/lib/lead.ts` exactly. That is one contract in three
+  places — the form, the function's mapping, and the table — so renaming a
+  field means renaming it in all three.
+- The webhook is idempotent on `netlify_submission_id`, because Netlify retries
+  on a non-2xx and a duplicated lead gets called twice by the sales team.
+- Spam-filtered submissions never fire the webhook, so the Netlify spam tab is
+  the one place a lead can hide from the database.
+
+## Production has drifted from this repo
+
+The live `mkhomes.win` build was produced outside this repository and differs
+from `main`/this branch: different OG image, different robots rules, English
+rather than Malay as the default language, and the portal served at `/` instead
+of `/express/`. **A deploy from this repo would overwrite it.** Reconcile the
+live build into Git before deploying anything from here.
