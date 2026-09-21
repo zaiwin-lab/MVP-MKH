@@ -1,0 +1,12 @@
+-- The project's "automatic RLS" setting installs `public.rls_auto_enable()` as
+-- a SECURITY DEFINER function to back its event trigger. Living in `public`
+-- makes it callable by anyone through `/rest/v1/rpc/rls_auto_enable`, which is
+-- not what a privileged helper should be — Supabase's own security advisor
+-- flags it as two warnings the moment the setting is switched on.
+--
+-- The event trigger runs as its own owner and is unaffected by this; only the
+-- API route in is closed.
+--
+-- Skip this one if the project was created with automatic RLS turned off: the
+-- function will not exist.
+revoke execute on function public.rls_auto_enable() from anon, authenticated, public;

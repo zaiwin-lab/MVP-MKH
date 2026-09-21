@@ -33,7 +33,8 @@ Supabase dashboard -> New project. Name `my-kenyalang-homes`, region
 
 ### 2. Apply the schema
 
-Run `migrations/0001_leads.sql`. It creates `public.leads`, its indexes, and
+Run `migrations/0001_leads.sql`, then `migrations/0002_lock_down_rls_auto_enable.sql`
+if the project was created with **automatic RLS** enabled. It creates `public.leads`, its indexes, and
 enables RLS with **no policies**, which is what makes the table unreachable by
 any browser-side key.
 
@@ -91,6 +92,17 @@ returns 401 to everything, including Netlify.
   after the fact instead of costing you the data.
 - Netlify's **spam-filtered** submissions do not fire the webhook. Check the
   Forms spam tab periodically; a real lead can land there.
+
+## Verified on the live project
+
+Checked against `my-kenyalang-homes` after deploying, not assumed:
+
+- the publishable key and the legacy anon key are both refused on `select`
+  **and** `insert` against `public.leads` (`42501 permission denied`)
+- the function returns `500 Not configured` rather than accepting anything
+  while `NETLIFY_WEBHOOK_SECRET` is unset, and `405` on `GET`
+- Supabase's security advisor is clean apart from the intentional
+  `rls_enabled_no_policy` notice on `leads`, which is the design
 
 ## Testing the signature check
 
