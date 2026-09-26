@@ -2,10 +2,10 @@
 
 **A guided build-on-your-own-land home journey for Sarawak families.**
 
-[Open the live demonstration](https://my-kenyalang-homes.netlify.app)
+[Open the verified live site](https://mkhomes.win)
 
-> **Maturity:** Working front-end prototype (pre-pilot)  
-> **Delivery:** Static public demonstration; no production backend or external financial-institution integration  
+> **Maturity:** Live pre-pilot lead-journey prototype  
+> **Delivery:** Static Netlify experience with Netlify Forms capture and a signed Supabase lead mirror; no financial-institution integration  
 > **Prepared by:** Zaiwin Kassim, MBA with the KOBIS AI Prodigy Team for KOBIS Berhad
 
 My Kenyalang Homes demonstrates how a family can move through one clear digital journey:
@@ -35,6 +35,9 @@ This prototype brings those steps into one guided experience while keeping impor
 - A client-side Debt Service Ratio eligibility estimate with stated assumptions
 - A Smart Document Box with file type, size and category checks
 - Cross-step selection memory using session storage
+- A focused Express lead journey for mobile campaign traffic
+- Netlify Forms as the lead-capture path of record
+- Signed, idempotent Netlify webhook mirroring leads into Supabase Postgres
 - Form validation and outstanding-document visibility
 - Reference-number generation
 - Downloadable submission summary
@@ -59,21 +62,25 @@ Selections are managed in `src/lib/journey.tsx` and mirrored to `sessionStorage`
 ## What is working today
 
 - All public pages, navigation paths, validation rules and client-side journey state
+- The live Express journey at [mkhomes.win](https://mkhomes.win)
+- Netlify Forms capture with a repository-documented, end-to-end verified Supabase mirror
+- JWS signature and body-hash verification, duplicate-submission protection and no browser-exposed service key
 - The financing eligibility calculator in `src/lib/eligibility.ts`
 - File handling, size and format checks, and filename-based document categorisation
 - Reference-number generation and downloadable summary
 - Static deployment from a Next.js export
 - A licensed/disclosed image workflow, including a photo-import utility and public credits
 
-## What is not yet connected
+## What is connected — and what is not
 
-- **No backend or database.** Submitting advances the prototype journey but does not transmit an application to an organisation.
-- **No financial-institution integration.** Choices can be demonstrated, but no information is sent to a bank or lender.
-- **No automated email.** Any response-time wording is indicative until an approved email workflow exists.
+- **Lead capture is connected.** The live Express form submits to Netlify Forms. Repository evidence dated 21 September 2026 records a complete 21-field submission arriving in the Supabase `public.leads` mirror with introducer attribution and provenance.
+- **The mirror is server-side.** A signed Netlify webhook writes with the service role; browser-facing keys were documented as denied read and write access.
+- **The mirror is not a CRM.** There is no governed staff dashboard, role model, follow-up workflow or customer-service audit trail evidenced here.
+- **No financial-institution integration.** No information is sent to a bank or lender.
+- **No automated email.** Any response-time wording remains indicative until an approved notification workflow exists.
 - **No approval decision.** The calculator is an estimate, not financial advice, eligibility confirmation or loan approval.
-- **No verified production specifications.** Home specifications that remain “To Be Confirmed” require authorised project data.
-- **No completed legal review.** Privacy and terms pages are drafts until reviewed by qualified advisers.
-- **No production security claim.** A backend version would require authentication, permissions, encrypted storage, retention rules, audit logging and security testing.
+- **No verified production specifications.** Home specifications marked “To Be Confirmed” require authorised project data.
+- **Legal and operational review remain incomplete.** Privacy, terms, retention, staff access and incident processes still require qualified approval.
 
 ## Strategic value
 
@@ -100,10 +107,24 @@ AI tools may accelerate design and implementation. Human judgment remains respon
 | Styling | Tailwind CSS 4 |
 | State | React store with sessionStorage persistence |
 | Eligibility logic | Deterministic client-side Debt Service Ratio calculation |
+| Lead capture | Netlify Forms |
+| Lead mirror | Supabase Postgres via signed Edge Function webhook |
 | Deployment | Static export hosted on Netlify |
 | Media workflow | Optimised image import with attribution/disclosure support |
 
-The static export is configured with `output: "export"`, so `out/` can be served by a static host. Adding API routes, middleware, authentication or server-side persistence requires moving to an appropriate runtime and completing security review.
+The public site remains a static export. Its Supabase service-role key stays in the Edge Function environment and is not shipped to the browser.
+
+## Production-source reconciliation required
+
+The repository explicitly records that the live `mkhomes.win` build was produced outside this Git history and differs in its social image, robots rules, default language and root route. Deploying the repository as-is could overwrite those live-only changes.
+
+Before the next production deployment:
+
+1. capture the exact current Netlify source or deployment artifact;
+2. compare it against this default branch;
+3. restore verified live-only changes into Git with the current commit date;
+4. rebuild and test the form, referral attribution, calculator and webhook;
+5. deploy only from the reconciled default branch.
 
 ## Run locally
 
@@ -121,6 +142,7 @@ npm run lint     # eslint
 - `src/lib/credits.ts` records image credits and disclosure text.
 - `public/images/README.md` maps media slots and replacement requirements.
 - `DESIGN.md` records the visual system, accessibility commitments and design rationale.
+- `supabase/README.md` documents the Netlify Forms → signed webhook → Postgres mirror and its verification evidence.
 
 ## Responsible-use requirements
 
@@ -129,7 +151,7 @@ Before any pilot or production use:
 1. Replace indicative prices, specifications and response times with authorised information.
 2. Obtain written approval for partner names, brands, product representations and financial-institution references.
 3. Have qualified advisers review financing wording, privacy notices and terms.
-4. Implement secure server-side storage, authentication, consent, retention and deletion controls.
+4. Add governed staff authentication and authorization, consent, retention, deletion and incident controls around the existing server-side lead mirror.
 5. Test accessibility, mobile journeys, calculations, uploads and failure states.
 6. Keep a human reviewer in control of every eligibility, financing and submission decision.
 7. Do not upload confidential or personal documents to the public demonstration.
@@ -142,6 +164,6 @@ Before selecting a licence, confirm ownership and reuse rights for partner brand
 
 ## Validation status
 
-The repository demonstrates a working front-end journey and documented technical checks. It does **not** yet claim verified users, completed applications, financing approvals, revenue, production security, client endorsement or operational adoption.
+The repository demonstrates a live public lead journey and contains documented backend-verification evidence. The public site was independently reachable at [mkhomes.win](https://mkhomes.win) on 27 September 2026. The repository does **not** claim verified user totals, completed home applications, financing approvals, revenue, production-wide security, endorsement or operational adoption.
 
-Meaningful next validation should include authorised usability sessions, recorded defects, calculation review, document-flow testing and a written decision on pilot scope.
+The highest-priority validation is now source reconciliation: bring the deployed build back under Git control, then run an approved end-to-end test covering the form, referral code, Netlify record, signed webhook, Supabase row and authorised staff follow-up.
