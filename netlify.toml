@@ -13,6 +13,24 @@
 [build.environment]
   NODE_VERSION = "22"
 
+# The advertising campaign points at the bare domain, so the root has to be the
+# lead form. A rewrite rather than a redirect: the visitor keeps the clean
+# mkhomes.win in the address bar, and the ad's landing URL never changes.
+#
+# !! DO NOT DEPLOY THIS YET !!
+#
+# `src/app/express/page.tsx` still sets `robots: { index: false, follow: false }`,
+# which was right while that page was a hidden ad landing page. This rewrite
+# serves it at `/`, so shipping the two together would tell Google not to index
+# mkhomes.win at all and drop the site out of search.
+#
+# Flip that page to `index: true` first, then this is safe.
+[[redirects]]
+  from = "/"
+  to = "/express/"
+  status = 200
+  force = true
+
 # Long-lived caching for the placeholder and, later, the real photography.
 # These are content-addressed by filename, so replacing a photo means replacing
 # the file — bump the name if a stale cache ever becomes a problem.
