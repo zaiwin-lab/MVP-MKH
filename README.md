@@ -4,8 +4,8 @@
 
 [Open the verified live site](https://mkhomes.win)
 
-> **Maturity:** Live pre-pilot lead-journey prototype  
-> **Delivery:** Static Netlify experience with Netlify Forms capture and a signed Supabase lead mirror; no financial-institution integration  
+> **Maturity:** Live pre-pilot lead journey · partial recovery record · production/source reconciliation incomplete  
+> **Delivery:** Static Next.js source plus a dated compiled-site recovery snapshot; Netlify Forms and a signed Supabase mirror are documented, while the current manual/API production deploy is not attached to a Git commit  
 > **Prepared by:** Zaiwin Kassim, MBA with the KOBIS AI Prodigy Team for KOBIS Berhad
 
 My Kenyalang Homes demonstrates how a family can move through one clear digital journey:
@@ -36,6 +36,8 @@ This prototype brings those steps into one guided experience while keeping impor
 - A Smart Document Box with file type, size and category checks
 - Cross-step selection memory using session storage
 - A focused Express lead journey for mobile campaign traffic
+- A root rewrite that makes the Express journey the campaign front door while retaining the clean `mkhomes.win` address
+- A dated compiled-output snapshot that can support emergency restoration but is not editable source
 - Netlify Forms as the lead-capture path of record
 - Signed, idempotent Netlify webhook mirroring leads into Supabase Postgres
 - Form validation and outstanding-document visibility
@@ -48,7 +50,7 @@ This prototype brings those steps into one guided experience while keeping impor
 
 | Step | Route | What it demonstrates |
 |---|---|---|
-| Start | `/` | Value proposition, guided pathway and calculator entry point |
+| Start | `/` | Campaign lead journey served through the `/express/` rewrite while retaining the root URL |
 | 1 | `/choose-land` | Own land, family land or help-me-find-land pathways |
 | 2 | `/choose-home` | Six home concepts, comparison and custom-home route |
 | 3 | `/financing` | Own-finance or financing-assistance pathways and eligibility estimate |
@@ -57,12 +59,14 @@ This prototype brings those steps into one guided experience while keeping impor
 | Guide | `/how-it-works` | The complete journey explained |
 | Support | `/privacy`, `/terms`, `/help`, `/credits` | Draft notices, help and image disclosures |
 
-Selections are managed in `src/lib/journey.tsx` and mirrored to `sessionStorage`. A refresh or back-button journey preserves the Selected Land card and Selection Summary. Nothing is stored server-side in this version.
+Selections are managed in `src/lib/journey.tsx` and mirrored to `sessionStorage`. A refresh or back-button journey preserves the Selected Land card and Selection Summary. Those selections remain browser-local; the separate Express lead form submits through the documented server-side capture path.
 
 ## What is working today
 
 - All public pages, navigation paths, validation rules and client-side journey state
 - The live Express journey at [mkhomes.win](https://mkhomes.win)
+- A 28 September 2026 best-effort snapshot of the compiled live pages, static chunks, fonts, metadata and social image under `snapshots/live-2026-09-28/`
+- Repository-side root-routing and metadata changes intended to align future builds with the current campaign front door
 - Netlify Forms capture with a repository-documented, end-to-end verified Supabase mirror
 - JWS signature and body-hash verification, duplicate-submission protection and no browser-exposed service key
 - The financing eligibility calculator in `src/lib/eligibility.ts`
@@ -116,15 +120,29 @@ The public site remains a static export. Its Supabase service-role key stays in 
 
 ## Production-source reconciliation required
 
-The repository explicitly records that the live `mkhomes.win` build was produced outside this Git history and differs in its social image, robots rules, default language and root route. Deploying the repository as-is could overwrite those live-only changes.
+GitHub now contains two forms of recovery evidence:
+
+1. the editable application source and the 28 September root-routing corrections; and
+2. a best-effort compiled snapshot of the pages and assets that `mkhomes.win` served on 28 September 2026.
+
+This is meaningful recovery progress, but it is **not** a complete production-source record.
+
+Netlify’s current production deploy, `6ab9aaa3cdaaa081cfc5f605`, was published on 28 September 2026 through a manual/API deploy. It has no attached Git commit or commit URL, no recorded source ZIP, and includes three deployed functions—`mkhomes-ref-api`, `mkhomes-ref-go` and `mkhomes-stats-api`—whose source is absent from this repository.
+
+The compiled snapshot is emergency restoration evidence, not editable source. It also records two path entries that would need correction before it could be served directly.
 
 Before the next production deployment:
 
-1. capture the exact current Netlify source or deployment artifact;
-2. compare it against this default branch;
-3. restore verified live-only changes into Git with the current commit date;
-4. rebuild and test the form, referral attribution, calculator and webhook;
-5. deploy only from the reconciled default branch.
+1. obtain the exact editable source and all three function sources used for the current live deploy;
+2. compare them file-by-file with this default branch and the compiled snapshot;
+3. remove secrets and record every live-only difference;
+4. rebuild and test the root journey, referral attribution, calculator, forms, webhook and Supabase mirror;
+5. deploy from the reconciled default branch with an attached Git commit;
+6. retain the dated snapshot as provenance, not as the primary application source.
+
+## Contribution provenance
+
+Six application/recovery commits added on 28 September 2026 are on the default branch but use `claude` as both GitHub author and committer. Their history should not be rewritten. Future accepted work should be committed from the `zaiwin-lab` account or an email verified on that account, with an AI co-author trailer where appropriate.
 
 ## Run locally
 
@@ -164,6 +182,6 @@ Before selecting a licence, confirm ownership and reuse rights for partner brand
 
 ## Validation status
 
-The repository demonstrates a live public lead journey and contains documented backend-verification evidence. The public site was independently reachable at [mkhomes.win](https://mkhomes.win) on 27 September 2026. The repository does **not** claim verified user totals, completed home applications, financing approvals, revenue, production-wide security, endorsement or operational adoption.
+The repository demonstrates a live public lead journey and contains documented backend-verification and recovery evidence. The public site and current Netlify production record were reverified on 28 September 2026. The repository does **not** claim verified user totals, completed home applications, financing approvals, revenue, production-wide security, endorsement or operational adoption.
 
-The highest-priority validation is now source reconciliation: bring the deployed build back under Git control, then run an approved end-to-end test covering the form, referral code, Netlify record, signed webhook, Supabase row and authorised staff follow-up.
+The highest-priority validation is now complete source reconciliation: recover the three deployed functions and editable live source, bring the next production deploy under Git control, then run an approved end-to-end test covering the form, referral code, Netlify record, signed webhook, Supabase row and authorised staff follow-up.
