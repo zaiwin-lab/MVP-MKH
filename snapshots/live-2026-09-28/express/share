@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ms-MY">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>My Kenyalang Homes — Your Land. Your Home.</title>
+<meta name="description" content="Jom Kita Mulakan! Daftar dalam 2 minit. Percuma, ringkas, dipandu. Tiada dokumen diperlukan sekarang."/>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://mkhomes.win/express/share"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="My Kenyalang Homes"/>
+<meta property="og:locale" content="ms_MY"/>
+<meta property="og:url" content="https://mkhomes.win/express/share"/>
+<meta property="og:title" content="My Kenyalang Homes — Your Land. Your Home."/>
+<meta property="og:description" content="Jom Kita Mulakan! Daftar dalam 2 minit. Percuma, ringkas, dipandu. Tiada dokumen diperlukan sekarang."/>
+<meta property="og:image" content="https://mkhomes.win/og.png?v=win12"/>
+<meta property="og:image:secure_url" content="https://mkhomes.win/og.png?v=win12"/>
+<meta property="og:image:type" content="image/jpeg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="My Kenyalang Homes — Jom Kita Mulakan! Program Pemilikan Rumah Sarawak."/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="My Kenyalang Homes — Your Land. Your Home."/>
+<meta name="twitter:description" content="Jom Kita Mulakan! Daftar dalam 2 minit. Percuma, ringkas, dipandu. Tiada dokumen diperlukan sekarang."/>
+<meta name="twitter:image" content="https://mkhomes.win/og.png?v=win12"/>
+<meta name="twitter:image:alt" content="My Kenyalang Homes — Your Land. Your Home."/>
+<link rel="icon" href="/favicon.ico" sizes="256x256" type="image/x-icon"/>
+
+<meta http-equiv="refresh" content="0;url=/express/"/>
+<script>location.replace("/express/");</script>
+<style>
+  body{margin:0;font-family:"Source Sans 3",system-ui,sans-serif;background:#fbf7ef;color:#145238;
+    display:grid;place-items:center;min-height:100vh;text-align:center;padding:2rem;}
+  a{color:#0f4430;font-weight:700}
+</style>
+<link rel="stylesheet" href="/mkh-dark.css?v=win6"/><link rel="stylesheet" href="/ttmup.css?v=win11"/>
+<link rel="stylesheet" href="/ttmup-smart.css?v=win11"/></head>
+<body>
+  <main>
+    <p>Opening Express Journey…</p>
+    <p><a href="/express/">Continue to Express Journey</a></p>
+  </main>
+
+<script src="/ttmup.js?v=win11" defer></script><script src="/mk-ref.js?v=ref4" defer></script>
+<script async id="netlify-rum-container" src="/.netlify/scripts/rum" data-netlify-rum-site-id="5ca6c58a-830a-4333-b61c-b1ed5dd7efea" data-netlify-deploy-branch="" data-netlify-deploy-context="production" data-netlify-cwv-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaXRlX2lkIjoiNWNhNmM1OGEtODMwYS00MzMzLWI2MWMtYjFlZDVkZDdlZmVhIiwiYWNjb3VudF9pZCI6IjZhMTdmNTg1MTEzZDVmODI1NzQ3MTkxNiIsImRlcGxveV9pZCI6IjZhYjlhYWEzY2RhYWEwODFjZmM1ZjYwNSIsImlzc3VlciI6Im5mc2VydmVyIn0.4fXX5MnjX33nK6qK0iOD27L6YDPhRtcj1jmwV0eDjSY"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /express/share
+Disallow: /express/
+Allow: /
+
+Sitemap: https://mkhomes.win/sitemap.xml
