@@ -32,7 +32,6 @@ import {
   STEP_IDS,
   Eyebrow,
   KobisSignature,
-  PrimaryLink,
   PillBadge,
   PreviewCard,
   SectionDivider,
@@ -231,7 +230,6 @@ export function ExpressJourney() {
       <StickyHeader
         activeStep={activeStep}
         showRail={!done}
-        done={done}
         lang={lang}
         onLang={setLang}
       />
@@ -331,14 +329,11 @@ export function ExpressJourney() {
 function StickyHeader({
   activeStep,
   showRail,
-  done,
   lang,
   onLang,
 }: {
   activeStep: number;
   showRail: boolean;
-  /** Submitted. The action in the header changes meaning once it is. */
-  done: boolean;
   lang: Lang;
   onLang: (next: Lang) => void;
 }) {
@@ -354,30 +349,17 @@ function StickyHeader({
           <span className="ml-auto flex items-center gap-2">
             <LangToggle lang={lang} onChange={onLang} />
             <ThemeToggle lang={lang} />
-            {/* Scrolling to a form the visitor has already submitted invites
-                them to fill it in twice, so once it is sent the same slot
-                offers the way out instead. */}
-            {done ? (
-              <PrimaryLink
-                href="/"
-                className="hidden h-11 items-center gap-2 px-5 text-[0.8125rem] md:inline-flex"
-              >
-                <Icon name="arrow" className="size-4 rotate-180" />
-                {t.backHome}
-              </PrimaryLink>
-            ) : (
-              <PrimaryButton
-                onClick={() =>
-                  document
-                    .getElementById("section-tanah")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
-                className="hidden h-11 items-center gap-2 px-5 text-[0.8125rem] md:inline-flex"
-              >
-                {t.heroCta}
-                <Icon name="arrow" className="size-4" />
-              </PrimaryButton>
-            )}
+            <PrimaryButton
+              onClick={() =>
+                document
+                  .getElementById("section-tanah")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+              className="hidden h-11 items-center gap-2 px-5 text-[0.8125rem] md:inline-flex"
+            >
+              {t.heroCta}
+              <Icon name="arrow" className="size-4" />
+            </PrimaryButton>
           </span>
         </div>
         {showRail ? (

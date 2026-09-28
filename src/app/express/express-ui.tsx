@@ -672,21 +672,6 @@ export function KobisSignature({ lang, href }: { lang: Lang; href: string }) {
 }
 
 /** The primary action: polished gold with a highlight travelling across it. */
-/* Shared between the button and the link so the two read as one material.
-   Whether a control navigates or acts is not something the eye should have to
-   resolve from its styling. */
-const PRIMARY_SURFACE =
-  "gold-chrome group relative isolate overflow-hidden rounded-control font-bold text-navy-950 transition-[filter,transform] duration-200 [transition-timing-function:var(--ease-out-quart)] hover:brightness-110 active:translate-y-px";
-
-function PrimarySweep() {
-  return (
-    <span
-      aria-hidden
-      className="sweep pointer-events-none absolute inset-y-0 -z-10 w-1/4 bg-white/35 blur-md"
-    />
-  );
-}
-
 export function PrimaryButton({
   children,
   type = "button",
@@ -705,32 +690,13 @@ export function PrimaryButton({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`${PRIMARY_SURFACE} disabled:cursor-not-allowed disabled:opacity-60 ${className}`}
+      className={`gold-chrome group relative isolate overflow-hidden rounded-control font-bold text-navy-950 transition-[filter,transform] duration-200 [transition-timing-function:var(--ease-out-quart)] hover:brightness-110 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60 ${className}`}
     >
-      <PrimarySweep />
+      <span
+        aria-hidden
+        className="sweep pointer-events-none absolute inset-y-0 -z-10 w-1/4 bg-white/35 blur-md"
+      />
       {children}
     </button>
-  );
-}
-
-/**
- * A plain anchor rather than a client-side route on purpose: leaving the
- * thank-you screen should start the journey over, and a full navigation is
- * what clears the submitted form rather than returning the visitor to it.
- */
-export function PrimaryLink({
-  href,
-  children,
-  className = "",
-}: {
-  href: string;
-  children: ReactNode;
-  className?: string;
-}) {
-  return (
-    <a href={href} className={`${PRIMARY_SURFACE} ${className}`}>
-      <PrimarySweep />
-      {children}
-    </a>
   );
 }
