@@ -5,9 +5,14 @@
 the live build was produced outside this repository and had no copy in our own
 hands: if the Netlify deploy were lost, so was the site.
 
-Netlify deploy `6ab015c74eab6f5e313bd1be` is the authoritative version and can
-be rolled back to from the Netlify UI. Prefer that. Use this only if it is
-gone.
+Netlify's deploy history is the authoritative version and can be rolled back
+to from the Netlify UI. Prefer that. Use this only if it is gone.
+
+The site was redeployed between this snapshot being taken and being committed
+(`6ab015c74eab6f5e313bd1be` -> `6ab9aaa3cdaaa081cfc5f605`), but the served
+homepage was byte-identical across the two, so this snapshot still matches what
+is live. Re-check that before relying on it: a deploy id here goes stale the
+moment someone publishes.
 
 ## What is here
 
