@@ -17,14 +17,9 @@
 # lead form. A rewrite rather than a redirect: the visitor keeps the clean
 # mkhomes.win in the address bar, and the ad's landing URL never changes.
 #
-# !! DO NOT DEPLOY THIS YET !!
-#
-# `src/app/express/page.tsx` still sets `robots: { index: false, follow: false }`,
-# which was right while that page was a hidden ad landing page. This rewrite
-# serves it at `/`, so shipping the two together would tell Google not to index
-# mkhomes.win at all and drop the site out of search.
-#
-# Flip that page to `index: true` first, then this is safe.
+# Because this makes that page the site's public front door, its metadata has
+# to agree: `src/app/express/page.tsx` sets `robots: index` and a canonical of
+# `/`. If this rewrite is ever removed, those go back with it.
 [[redirects]]
   from = "/"
   to = "/express/"

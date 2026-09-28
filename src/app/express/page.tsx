@@ -11,11 +11,15 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Program Pemilikan Rumah \u2014 Jom Kita Mulakan!",
   description: OG_DESCRIPTION,
-  alternates: { canonical: "/express/" },
+  /* The rewrite in netlify.toml serves this page at the site root, so the root
+     is the address it should be indexed and shared under. Pointing either of
+     these at /express/ would send crawlers and link previews to a path that
+     robots.txt disallows. */
+  alternates: { canonical: "/" },
   openGraph: {
     title: OG_TITLE,
     description: OG_DESCRIPTION,
-    url: "/express/",
+    url: "/",
     siteName: "My Kenyalang Homes",
     type: "website",
     locale: "ms_MY",
@@ -23,7 +27,10 @@ export const metadata: Metadata = {
        or Facebook, which is where most of this traffic starts. */
     images: [
       {
-        url: "/og-express.jpg",
+        /* The image the live site already shares under. Keeping the same file
+           and cache-buster means links posted before this deploy still resolve
+           to the card people have already seen. */
+        url: "/og.png?v=win12",
         width: 1200,
         height: 630,
         alt: "My Kenyalang Homes \u2014 Jom Kita Mulakan! Program Pemilikan Rumah Sarawak.",
@@ -34,11 +41,16 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: OG_TITLE,
     description: OG_DESCRIPTION,
-    images: ["/og-express.jpg"],
+    images: ["/og.png?v=win12"],
   },
-  /* An ad landing page has no business in search results competing with the
-     main site, and its ?ref= variants must never be indexed as duplicates. */
-  robots: { index: false, follow: false },
+  /* This is the public home page now, not a hidden ad landing page: the rewrite
+     serves it at the root, so a noindex here would take mkhomes.win itself out
+     of Google entirely.
+
+     The ?ref= duplicates the old directive guarded against are covered by the
+     canonical above and by robots.txt disallowing /express/, so the content is
+     still only indexed once. */
+  robots: { index: true, follow: true },
 };
 
 export default function ExpressPage() {

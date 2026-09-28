@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vendored compiled output kept as a recovery artifact, not source we
+    // author. Linting minified bundles only produces noise about the
+    // minifier's choices.
+    "snapshots/**",
   ]),
 ]);
 
