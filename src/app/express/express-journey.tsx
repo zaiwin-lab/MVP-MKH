@@ -32,7 +32,7 @@ import {
   STEP_IDS,
   Eyebrow,
   KobisSignature,
-  LangPills,
+  PrimaryLink,
   PillBadge,
   PreviewCard,
   SectionDivider,
@@ -231,6 +231,7 @@ export function ExpressJourney() {
       <StickyHeader
         activeStep={activeStep}
         showRail={!done}
+        done={done}
         lang={lang}
         onLang={setLang}
       />
@@ -308,7 +309,7 @@ export function ExpressJourney() {
         </>
       )}
 
-      <ExpressFooter lang={lang} onLang={setLang} clearBubble={Boolean(waHref)} />
+      <ExpressFooter lang={lang} clearBubble={Boolean(waHref)} />
 
       <ServiceBubbles lang={lang} whatsappHref={waHref} />
 
@@ -330,11 +331,14 @@ export function ExpressJourney() {
 function StickyHeader({
   activeStep,
   showRail,
+  done,
   lang,
   onLang,
 }: {
   activeStep: number;
   showRail: boolean;
+  /** Submitted. The action in the header changes meaning once it is. */
+  done: boolean;
   lang: Lang;
   onLang: (next: Lang) => void;
 }) {
@@ -350,17 +354,30 @@ function StickyHeader({
           <span className="ml-auto flex items-center gap-2">
             <LangToggle lang={lang} onChange={onLang} />
             <ThemeToggle lang={lang} />
-            <PrimaryButton
-              onClick={() =>
-                document
-                  .getElementById("section-tanah")
-                  ?.scrollIntoView({ behavior: "smooth" })
-              }
-              className="hidden h-11 items-center gap-2 px-5 text-[0.8125rem] md:inline-flex"
-            >
-              {t.heroCta}
-              <Icon name="arrow" className="size-4" />
-            </PrimaryButton>
+            {/* Scrolling to a form the visitor has already submitted invites
+                them to fill it in twice, so once it is sent the same slot
+                offers the way out instead. */}
+            {done ? (
+              <PrimaryLink
+                href="/"
+                className="hidden h-11 items-center gap-2 px-5 text-[0.8125rem] md:inline-flex"
+              >
+                <Icon name="arrow" className="size-4 rotate-180" />
+                {t.backHome}
+              </PrimaryLink>
+            ) : (
+              <PrimaryButton
+                onClick={() =>
+                  document
+                    .getElementById("section-tanah")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
+                className="hidden h-11 items-center gap-2 px-5 text-[0.8125rem] md:inline-flex"
+              >
+                {t.heroCta}
+                <Icon name="arrow" className="size-4" />
+              </PrimaryButton>
+            )}
           </span>
         </div>
         {showRail ? (
@@ -485,11 +502,9 @@ function Process({ lang }: { lang: Lang }) {
 
 function ExpressFooter({
   lang,
-  onLang,
   clearBubble,
 }: {
   lang: Lang;
-  onLang: (next: Lang) => void;
   /** Reserve room for the floating WhatsApp button, when there is one. */
   clearBubble: boolean;
 }) {
@@ -497,9 +512,10 @@ function ExpressFooter({
   return (
     <footer className="band-deep ex-border border-t">
       <div className={`shell max-w-6xl pt-12 ${clearBubble ? "pb-24" : "pb-12"}`}>
-        {/* Three columns that each own one idea: who this is, what language
-            you read it in, and what happens to what you send. The credits sit
-            under the thing they belong to rather than all in one corner. */}
+        {/* Three columns that each own one idea: who this is, who built it,
+            and what happens to what you send. The language switcher lives in
+            the header only — offering it twice on one screen reads as two
+            different controls. */}
         <div className="grid gap-10 text-center lg:grid-cols-3 lg:gap-8 lg:text-left">
           <div className="min-w-0">
             <p className="ex-ink font-express text-[1.125rem] font-extrabold tracking-[-0.03em]">
@@ -510,11 +526,7 @@ function ExpressFooter({
             </p>
           </div>
 
-          <div className="flex flex-col items-center gap-3">
-            <span className="ex-dim text-[0.625rem] font-bold uppercase tracking-[0.16em]">
-              {t.footerLanguage}
-            </span>
-            <LangPills lang={lang} onChange={onLang} />
+          <div className="flex flex-col items-center justify-center gap-3">
             <KobisSignature lang={lang} href={EXPRESS_CONTACT.kobisUrl} />
           </div>
 

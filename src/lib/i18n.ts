@@ -53,7 +53,7 @@ type Copy = {
   closerTitle: string;
   closerTitleTwo: string;
   closerLede: string;
-  footerLanguage: string;
+  backHome: string;
   footerRights: string;
 
   steps: [string, string, string, string, string];
@@ -225,7 +225,7 @@ const ms: Copy = {
   closerTitleTwo: "bermula di sini.",
   closerLede:
     "Sertai keluarga Sarawak yang sedang membina rumah sendiri bersama My Kenyalang Homes.",
-  footerLanguage: "Bahasa",
+  backHome: "Kembali ke Laman Utama",
   footerRights: "Hak cipta terpelihara.",
 
   steps: ["Tanah", "Rumah", "Bajet", "Guide", "Siap"],
@@ -414,7 +414,7 @@ const en: Copy = {
   closerTitleTwo: "starts here.",
   closerLede:
     "Join the Sarawak families building their own homes with My Kenyalang Homes.",
-  footerLanguage: "Language",
+  backHome: "Back to Home",
   footerRights: "All rights reserved.",
 
   steps: ["Land", "Home", "Budget", "Guide", "Done"],
@@ -605,7 +605,7 @@ const zh: Copy = {
   closerTitle: "\u60a8\u7684\u5bb6",
   closerTitleTwo: "\u4ece\u8fd9\u91cc\u5f00\u59cb\u3002",
   closerLede: "\u52a0\u5165\u6b63\u5728\u4e0e My Kenyalang Homes \u5efa\u9020\u81ea\u5df1\u5bb6\u56ed\u7684\u7802\u62c9\u8d8a\u5bb6\u5ead\u3002",
-  footerLanguage: "\u8bed\u8a00",
+  backHome: "\u8fd4\u56de\u9996\u9875",
   footerRights: "\u7248\u6743\u6240\u6709\u3002",
 
   steps: ["\u571f\u5730", "\u623f\u5c4b", "\u9884\u7b97", "\u5f15\u5bfc", "\u5b8c\u6210"],
@@ -798,7 +798,7 @@ const iba: Copy = {
   closerTitleTwo: "berengkah ditu.",
   closerLede:
     "Sama enggau bala sebilik Sarawak ti benung ngaga rumah sida empu enggau My Kenyalang Homes.",
-  footerLanguage: "Jaku",
+  backHome: "Pulai ngagai Laman Utama",
   footerRights: "Semua hak ditagang.",
 
   steps: ["Tanah", "Rumah", "Bajet", "Tunjuk", "Tembu"],

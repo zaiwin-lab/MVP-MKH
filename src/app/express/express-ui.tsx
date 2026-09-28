@@ -573,34 +573,6 @@ export function PreviewCard({ lang }: { lang: Lang }) {
 }
 
 /** Footer language pills, as on the reference site. */
-export function LangPills({
-  lang,
-  onChange,
-}: {
-  lang: Lang;
-  onChange: (next: Lang) => void;
-}) {
-  return (
-    <div role="group" aria-label={COPY[lang].langLabel} className="flex items-center gap-2">
-      {LANGS.map((entry) => {
-        const active = entry.code === lang;
-        return (
-          <button
-            key={entry.code}
-            type="button"
-            onClick={() => onChange(entry.code)}
-            aria-pressed={active}
-            className={`min-h-9 rounded-full px-4 py-2 font-bold tracking-wide transition-colors duration-200 ${
-              entry.code === "zh" ? "text-[0.9375rem] leading-none" : "text-[0.75rem]"
-            } ${active ? "gold-chrome text-navy-950" : "ex-chip ex-soft hover:opacity-80"}`}
-          >
-            {entry.label}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
 
 export function FieldError({ id, children }: { id: string; children: ReactNode }) {
   return (
@@ -700,6 +672,21 @@ export function KobisSignature({ lang, href }: { lang: Lang; href: string }) {
 }
 
 /** The primary action: polished gold with a highlight travelling across it. */
+/* Shared between the button and the link so the two read as one material.
+   Whether a control navigates or acts is not something the eye should have to
+   resolve from its styling. */
+const PRIMARY_SURFACE =
+  "gold-chrome group relative isolate overflow-hidden rounded-control font-bold text-navy-950 transition-[filter,transform] duration-200 [transition-timing-function:var(--ease-out-quart)] hover:brightness-110 active:translate-y-px";
+
+function PrimarySweep() {
+  return (
+    <span
+      aria-hidden
+      className="sweep pointer-events-none absolute inset-y-0 -z-10 w-1/4 bg-white/35 blur-md"
+    />
+  );
+}
+
 export function PrimaryButton({
   children,
   type = "button",
@@ -718,13 +705,32 @@ export function PrimaryButton({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`gold-chrome group relative isolate overflow-hidden rounded-control font-bold text-navy-950 transition-[filter,transform] duration-200 [transition-timing-function:var(--ease-out-quart)] hover:brightness-110 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60 ${className}`}
+      className={`${PRIMARY_SURFACE} disabled:cursor-not-allowed disabled:opacity-60 ${className}`}
     >
-      <span
-        aria-hidden
-        className="sweep pointer-events-none absolute inset-y-0 -z-10 w-1/4 bg-white/35 blur-md"
-      />
+      <PrimarySweep />
       {children}
     </button>
+  );
+}
+
+/**
+ * A plain anchor rather than a client-side route on purpose: leaving the
+ * thank-you screen should start the journey over, and a full navigation is
+ * what clears the submitted form rather than returning the visitor to it.
+ */
+export function PrimaryLink({
+  href,
+  children,
+  className = "",
+}: {
+  href: string;
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <a href={href} className={`${PRIMARY_SURFACE} ${className}`}>
+      <PrimarySweep />
+      {children}
+    </a>
   );
 }
